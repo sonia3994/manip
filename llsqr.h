@@ -22,7 +22,7 @@ public:
 	float slope()       {calc(); return b;};
 	float intercept()   {calc();return a;};
 
-	float setSlope(float s) { b=s; finished=0; }
+	float setSlope(float s) { b=s; finished=0; return 0; }
 
 	linear_least_square(){finished=n=0;sum=xsum=ysum=0.f;}
 	void init(void) {finished=n=0;sum=xsum=ysum=0;}

@@ -2050,7 +2050,7 @@ char *PolyAxis::axisCommand(char *name, char *str)
 			} else {
 				cmd = arg = "";
 			}
-			ClientDev *getCurrentClient();
+			extern ClientDev *getCurrentClient();
 			ClientDev *client = getCurrentClient();
 			int wasExpert = client->isExpert(0);
 //

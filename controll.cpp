@@ -112,7 +112,7 @@ char* Controller::command(char* commandName, char* argString)       // command p
           }
           if (!(getCommandFlag() & getCommand(i)->getAccessMask())) {
             // horrible, terrible hack follows
-            ClientDev *getCurrentClient();
+            extern ClientDev *getCurrentClient();
             ClientDev *client = getCurrentClient();
             if (!(getCommand(i)->getAccessMask() & kAccessExpert) || client->isExpert()) {
               if (!argString) argString = ""; // prevent accessing null pointer

@@ -488,7 +488,7 @@ void Axis::alarmReset()
   } else {
     display->message("No alarm present - tension reset only");
   }
-  sprintf(display->outString,"Peak tension was .2f N", highTension);
+  sprintf(display->outString,"Peak tension was %.2f N", highTension);
   display->message();
   highTension = 0;
 }

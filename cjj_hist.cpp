@@ -1,10 +1,10 @@
 /**********************************
-/*
-/*	Chris Jillings, August 8, 1995
-/*
-/*	see cjj_hist.h for comments
-/*
-/**********************************/
+**
+**	Chris Jillings, August 8, 1995
+**
+**	see cjj_hist.h for comments
+**
+***********************************/
 #include <stdio.h>
 #include <math.h>
 #include "doslib.h"
@@ -451,9 +451,9 @@ float cjj_hist_sigma(struct cjj_hist *a)
 /********************************************/
 void cjj_hist_comb(struct cjj_hist *ans,struct cjj_hist *a,struct cjj_hist *b)
 /* this more for integrating up neutrino spectra with cross-section data
-/* and a detector response than anything else
-/* No error checking: use at own risk
-/********************************************/
+** and a detector response than anything else
+** No error checking: use at own risk
+*********************************************/
 {
     int i;
     for(i = 0;i < a->num_bins;i++){
@@ -467,9 +467,9 @@ void cjj_hist_comb(struct cjj_hist *ans,struct cjj_hist *a,struct cjj_hist *b)
 /********************************************/
 float cjj_hist_int(struct cjj_hist* a)
 /* this is for integrating a real histo, it is NOT a
-/* a numerical integration of a set of equally spaced x,y
-/* points
-/********************************************/
+** a numerical integration of a set of equally spaced x,y
+** points
+*********************************************/
 {
     int i;
     float value;
@@ -485,9 +485,9 @@ float cjj_hist_int(struct cjj_hist* a)
 /********************************************/
 float cjj_hist_sum_range(struct cjj_hist* a, float low, float high)
 /* this is for integrating a real histo, it is NOT a
-/* a numerical integration of a set of equally spaced x,y
-/* points. The integration is between low and high inclusive
-/********************************************/
+** a numerical integration of a set of equally spaced x,y
+** points. The integration is between low and high inclusive
+*********************************************/
 {
     int i;
     int low_bin,high_bin;
@@ -518,8 +518,8 @@ float cjj_hist_sum_range(struct cjj_hist* a, float low, float high)
 /********************************************/
 float cjj_hist_int1(struct cjj_hist* a)
 /* this is for integrating a spectrum, it is NOT a
-/* histogram.
-/********************************************/
+** histogram.
+*********************************************/
 {
     int i;
     float value;

@@ -23,9 +23,9 @@ float mott(float angle, float beta);
 
 
 /*********************************************
-/*	These number defines are for the NR in C routine ran2() which I
-/*	am calling cjj_ran()
-/********************************************/
+**	These number defines are for the NR in C routine ran2() which I
+**	am calling cjj_ran()
+*********************************************/
 #define IM1 2147483563L
 #define IM2 2147483399L
 #define AM (1.0/IM1)
@@ -46,20 +46,20 @@ float mott(float angle, float beta);
 float cjj_ran(long* cjj_iseed_start)
 /********************************************/
 /*	Chris Jillings, July 1995
-/*
-/*	Returns a random float on the interval
-/*  0 -> 1	exclusive of endpoints
-/*	The observant reader will see this is
-/*	simply NR in C's ran2() with some coding
-/*	improvements (commented)
-/*	First call must be with a negative number
-/* 	to set up shuffle table
-/*	Everywhere else, the integer argument is
-/*	called cjj_iseed.
-/*	cjj_iseed_start is used only in this routine
-/*	The real seed (if cjj_iseed_start > 0 is
-/*	stored in idum1
-/*********************************************/
+**
+**	Returns a random float on the interval
+**  0 -> 1	exclusive of endpoints
+**	The observant reader will see this is
+**	simply NR in C's ran2() with some coding
+**	improvements (commented)
+**	First call must be with a negative number
+** 	to set up shuffle table
+**	Everywhere else, the integer argument is
+**	called cjj_iseed.
+**	cjj_iseed_start is used only in this routine
+**	The real seed (if cjj_iseed_start > 0 is
+**	stored in idum1
+**********************************************/
 {
 	int j;
 	long k;
@@ -75,7 +75,7 @@ float cjj_ran(long* cjj_iseed_start)
 
 	/*	There is initialization to do if *cjj_iseed_start is <= 0 */
 	/*	This should only occur on the first call where it
-	/* 	must occur.	Also throw in an error check for zero (deadly) */
+	** 	must occur.	Also throw in an error check for zero (deadly) */
 	/* 	I rewrote the control statements to make them clear */
 
 	if (*cjj_iseed_start <=0)
@@ -124,9 +124,9 @@ float cjj_ran(long* cjj_iseed_start)
 float throw_exp(float mean) 
 /***********************************/
 /*	Chris Jillings July 1995
-/*	Throws to an exp decline with
-/*      mean value mean
-/***********************************/
+**	Throws to an exp decline with
+**      mean value mean
+************************************/
 {
 	float retvar;
 	float temp;
@@ -142,10 +142,10 @@ float throw_exp(float mean)
 float fgauss(float sigma)
 /**************************************/
 /*	Another routine from Tom Radcliffe
-/*	Throws to a gaussian of mean 0 with
-/*	a sigma supplied.
-/*	Algorithm due to Kahn
-/**************************************/
+**	Throws to a gaussian of mean 0 with
+**	a sigma supplied.
+**	Algorithm due to Kahn
+***************************************/
 {
         float           y;
         float           z;
@@ -168,8 +168,8 @@ float fgauss(float sigma)
 int cjj_hist_ran(struct cjj_hist* source, struct cjj_hist* dest,
                  int number, char type)
 /* The random number generator must be initialized before calling 
-/* this routine
-/******************************************/
+** this routine
+*******************************************/
 {
     int i;  /* loop control */
     float max = 0.0; /* for finding max height of histo/spectrum */
@@ -252,7 +252,7 @@ cutoff is in DEGREES
 	/* the next line makes sure that either beta hasn't changed by too much or that the 
            cutoff hasn't changed. If they have changed, and cutoff is positive, make cutoff
            negative to reinitialize everything. */
-	if( ((cutoff >0.0) && (abs(beta - beta_old)/beta_old > 0.05))  ||
+	if( ((cutoff >0.0) && (fabs(beta - beta_old)/beta_old > 0.05))  ||
                                 ((cutoff > 0.0) && (cutoff_old != cutoff)) ) cutoff *=-1;
 	cutoffby2 = cutoff/2.0;
 	if (cutoff<0.0)
@@ -367,8 +367,8 @@ cuttoff and angle (in degrees)
 float mott(float angle, float beta)
 /*************************************************/
 /* returns the cross section at a particular angle.
-/* Normed in a funny way
-/*************************************************/
+** Normed in a funny way
+**************************************************/
 {
 	float a;
 	angle *= TO_RAD;

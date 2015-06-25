@@ -146,7 +146,7 @@ int ManPos3::validLengths(float l1, float l2, float l3)
 		if (calcPosition(l1,l2,l3,0.5)) return(0);	// get a reasonable position
 		ThreeVector pos=mPosition;
 		i=validPosition(pos);								// is position "inside vessel"
-		if(abs(mPositionError)>5) i=0;					// within 5 cm of a good position
+		if(fabs(mPositionError)>5) i=0;					// within 5 cm of a good position
 	}
 	return (i);
 }

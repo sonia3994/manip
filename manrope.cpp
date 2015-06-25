@@ -293,7 +293,7 @@ int ManipulatorRope::intersection(const ThreeVector &x1, const ThreeVector &x2,
 		float theta, oldtheta,R1,R2;
 		ThreeVector RR;
 			// Iterate to find theta that minimizes distance
-		for(theta=0, oldtheta=1; abs(theta-oldtheta)<0.001;){
+		for(theta=0, oldtheta=1; fabs(theta-oldtheta)<0.001;){
 				oldtheta=theta;
 				R1=norm(x1-intersect); R2=norm(x2-intersect);
 			 RR=R2*x1+R1*x2;

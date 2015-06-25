@@ -266,7 +266,7 @@ float dot_prod(float *a, float *b)
 /****************************************/
 /*	Chris Jillings, July, 1995 */
 /*
-/*	Does a three-vector dot product   */
+**	Does a three-vector dot product   */
 {
 	return (a[X]*b[X] + a[Y]*b[Y] + a[Z]*b[Z]);
 }
@@ -276,7 +276,7 @@ void cross_prod(float* a,float* b,float* answer)
 /*****************************************/
 /*	Chris Jillings, July, 1995 */
 /*
-/*	Does a three-vector cross product   */
+**	Does a three-vector cross product   */
 /*	answer = a x b						*/
 {
 	answer[X] = a[Y]*b[Z] - b[Y]*a[Z];
@@ -288,8 +288,8 @@ void cross_prod(float* a,float* b,float* answer)
 void three_vec_norm(float *a)
 /*****************************************/
 /*	Chris Jillings July 1995
-/*
-/*	Norms a three vec to unity				*/
+**
+**	Norms a three vec to unity				*/
 /*	A zero vector is returned unchanged     */
 {
 	float length;
@@ -448,35 +448,35 @@ void matdef(float euler[3][3],float phi, float theta, float psi)
 int eigen_symm(float **a, int n, float* lambda, float **v)
 /*******************************************************************/
 /*  Calculates Eigenvalues/vectors using the Jacobi rotations method
-/*  Chris Jillings, July, 1995
-/*******************************************************************/
+**  Chris Jillings, July, 1995
+********************************************************************/
 /*
-/*	a is an n x n SYMMETRIC, REAL matrix
-/*	If a is not symmetric and real, the routine returns -1.
-/*	If the routine cannot diagonalize the matrix after
-/*	MAX_JACOBI_ITS (set at 50 if you don't change it) the 
-/*	routine value is -2. If the routine returns successfully,
-/*	the return value is the number of iterations taken to diagonalize
-/*	the matrix. If the matrix is already diagonal, the routine
-/*  returns 0.
+**	a is an n x n SYMMETRIC, REAL matrix
+**	If a is not symmetric and real, the routine returns -1.
+**	If the routine cannot diagonalize the matrix after
+**	MAX_JACOBI_ITS (set at 50 if you don't change it) the 
+**	routine value is -2. If the routine returns successfully,
+**	the return value is the number of iterations taken to diagonalize
+**	the matrix. If the matrix is already diagonal, the routine
+**  returns 0.
+**
+**	Please note, the values of a above the diagonal are changed 
+**	by the routine, but the values on and below are not.
+**
+**	The routine is based on NR in C. I have not used unit offset 
+**	arrays as NR in C does. I have changes a few variable names.
+**	See section 11.1 and the routine jacobi for reference
+**
+********************************************************************/
 /*
-/*	Please note, the values of a above the diagonal are changed 
-/*	by the routine, but the values on and below are not.
-/*
-/*	The routine is based on NR in C. I have not used unit offset 
-/*	arrays as NR in C does. I have changes a few variable names.
-/*	See section 11.1 and the routine jacobi for reference
-/*
-/*******************************************************************/
-/*
-/*	ARGS:
-/*		a[][]:		the  real, symmetric matrix
-/*		n:			the dimension
-/*		lambda[]:	the eigenvalues
-/*		v[][]:		the matrix whose columns are normed
-/*					eigenvectors
-/*
-/*******************************************************************/
+**	ARGS:
+**		a[][]:		the  real, symmetric matrix
+**		n:			the dimension
+**		lambda[]:	the eigenvalues
+**		v[][]:		the matrix whose columns are normed
+**					eigenvectors
+**
+********************************************************************/
 {
 	int i;	/* Loop control */
 	int j;	/* Loop control */
