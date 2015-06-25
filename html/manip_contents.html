@@ -1,0 +1,241 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+</HEAD>
+<BODY>
+<FONT COLOR="#FF0000"><FONT SIZE=+3>DRAFT</FONT></FONT>&nbsp;
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>&nbsp;
+<HR SIZE=4 WIDTH="100%">
+
+<P><B><FONT SIZE=+2>Table of Contents</FONT></B>
+<UL><A HREF="manip_user.html">User Guide</A>
+<UL>
+<LI>
+<A HREF="manip_user.html#SystemOverview">System Overview</A></LI>
+
+<LI>
+<A HREF="manip_user.html#SoftwareOverview">Software Overview</A></LI>
+
+<LI>
+<A HREF="manip_user.html#SupportFiles">Support Files</A></LI>
+
+<LI>
+<A HREF="manip_user.html#SourcePosition">Source Position</A></LI>
+
+<LI>
+<A HREF="manip_user.html#PositionAccuracy">Position Accuracy</A></LI>
+
+<LI>
+<A HREF="manip_user.html#TimeSynchronization">Time Synchronization</A></LI>
+
+<LI>
+<A HREF="manip_user.html#SafetyShutoffs">Safety Shutoffs</A></LI>
+</UL>
+</UL>
+
+<UL><A HREF="manip_cmd.html">Manipulator Commands</A>
+<UL>
+<LI>
+<A HREF="manip_cmd.html#CmdFile">Command Files</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#General">General Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Object-based">Object-based Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#PolyAxis">PolyAxis Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#R_Source">R_Source Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#N2_Laser">N2 Laser Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Dye_Laser">Dye Laser Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Filter">Filter Wheel Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Axis">Axis Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Umbilical">Umbilical Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Encoder">Encoder Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Loadcell">Loadcell Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Motor">Motor Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#Pulser">Pulser Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#AV">AV Commands</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html#SenseRope">SenseRope Commands</A></LI>
+</UL>
+</UL>
+
+<UL><A HREF="manip_proc.html">Procedures</A>
+<UL>
+<LI>
+<A HREF="manip_proc.html#RunningManip">Running the MANIP Software</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#UpdatingManip">Upgrading the MANIP Software</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#BackupManip">Backing up the MANIP Software</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#InsertingSource">Inserting a Source</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#CalibratingPosition">Calibrating the Source Position</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#CalibratingLoadcell">Calibrating a Loadcell</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#CalibratingAxisSprings">Calibrating Axis Springs</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#RecoveringTensionError">Recovering from a Tension
+Error</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#RecoveringAxisError">Recovering from an Axis Error
+(or Encoder Error)</A></LI>
+
+<LI>
+<A HREF="manip_proc.html#ReplacingCounterboard">Replacing a Counter Board</A></LI>
+</UL>
+</UL>
+
+<UL><A HREF="manip_dat.html">Data Files</A>
+<UL>
+<LI>
+<A HREF="manip_dat.html#WIRING.DAT">WIRING.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#SERVER.DAT">SERVER.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#MOTOR.DAT">MOTOR.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#PULSER.DAT">PULSER.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#LOADCELL.DAT">LOADCELL.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#ENCODER.DAT">ENCODER.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#FILTER.DAT">FILTER.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#DYE.DAT">DYE.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#LASER.DAT">LASER.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#SENSROPE.DAT">SENSROPE.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#AV.DAT">AV.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#AXIS.DAT">AXIS.DAT</A></LI>
+
+<LI>
+<A HREF="manip_dat.html#POLYAXIS.DAT">POLYAXIS.DAT</A></LI>
+</UL>
+</UL>
+
+<UL><A HREF="manip_code.html">Source Code Documentation</A>
+<UL>
+<LI>
+<A HREF="manip_code.html#ManipulatorObjects">Manipulator Objects</A></LI>
+
+<LI>
+<A HREF="manip_code.html#ObjectHierarchy">Object Hierarchy</A></LI>
+</UL>
+</UL>
+
+<UL><A HREF="manip_calc.html">Calculation Methods</A>
+<UL>
+<LI>
+<A HREF="manip_calc.html#RopeLengths">Physical Rope Lengths</A></LI>
+
+<LI>
+<A HREF="manip_calc.html#ModelledRopeLengths">Modelled Rope Lengths</A></LI>
+
+<LI>
+<A HREF="manip_calc.html#ManipulatorPosition">Manipulator Position</A></LI>
+
+<LI>
+<A HREF="manip_calc.html#PositionError">Position Error</A></LI>
+
+<LI>
+<A HREF="manip_calc.html#AxisError">Axis Error or Encoder Error</A></LI>
+</UL>
+</UL>
+
+<UL><A HREF="manip_umbil.html">Umbilical Lookup Tables</A>
+<UL>
+<LI>
+<A HREF="manip_umbil.html#FileGeneration">Generating a Set of Lookup Tables</A></LI>
+
+<LI>
+<A HREF="manip_umbil.html#FileStructure">File Structure</A></LI>
+
+<LI>
+<A HREF="manip_umbil.html#CalculationMethods">Calculation Methods</A></LI>
+</UL>
+</UL>
+
+<UL><A HREF="manip_daq.html">DAQ Manipulator Object</A>
+<UL>
+<LI>
+<A HREF="manip_daq.html#Connecting">Connecting to the Manipulator Hardware</A></LI>
+
+<LI>
+<A HREF="manip_daq.html#Graphics">Graphics Display</A></LI>
+
+<LI>
+<A HREF="manip_daq.html#SupportFiles">Support Files</A></LI>
+</UL>
+</UL>
+
+<UL>Figures
+<UL>
+<LI>
+<A HREF="figures/manip_tension00.html">Rope tensions</A></LI>
+
+<LI>
+<A HREF="figures/manip_length.html">Rope lengths</A></LI>
+
+<LI>
+<A HREF="figures/manip_catenary.html">Umbilical shape</A></LI>
+</UL>
+</UL>
+
+<HR WIDTH="100%">
+</BODY>
+</HTML>

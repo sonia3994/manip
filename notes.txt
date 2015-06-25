@@ -1,0 +1,9 @@
+Manip2 upgrade notes
+--------------------
+
+- AVR32 counts full motor steps, while the old motor driver counted half steps
+  --> motor steps are 2 x old size
+
+- the new encoder counters count quarter steps, while the old counter boards
+  counted full steps
+  --> encoder steps are 0.25 x old size

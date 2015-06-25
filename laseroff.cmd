@@ -1,0 +1,11 @@
+n2laserhipressureloadcell polls off
+n2laserlowpressureloadcell polls off
+filterwheela polls off
+filterwheelb polls off
+dyelaser polls off
+testrope polls off
+testropeencoder polls off
+testropeloadcell polls off
+testumbilical polls off
+testumbilicalencoder polls off
+testumbilicalloadcell polls off

@@ -1,0 +1,153 @@
+VERSION1.00
+//
+// This file contains data for all PolyAxis and derived types.
+// Derived types must specify the derived class name after the
+// object name at the start of the object data.  If no derived
+// type is given "PolyAxis" is assumed.
+//
+// This file is parsed at program startup, and all objects are
+// created at that time.
+//
+
+// weight of 42 N seemed light.  Fish scales give closer to 50 - PH
+//
+// 05/27/99 - CENTRAL_TENSION is for source in air.  When source
+//            is in water, this will be reduced by the buoyancy
+//            of the source to maintain a constant umbilical tension.
+//
+
+
+
+POLYAXIS: LASERBALL
+	AXES:  NORTHROPE SOUTHROPE URM1ROPE URM1UMBILICAL                   //
+	POSITION: -1.0692846 0.9999401 2.0000525                    //
+	MOTION: ORTHO           // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON   // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 40             // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -66.4           // offset from pivot point to source center
+	ORIENTATION: 1.000000            //
+	SOURCE_MASS: 40 N
+	SOURCE_VOLUME: 1000.0 cm^3
+	SOURCE_HEIGHT: 81.5          // (actual 67.7cm) distance source drops below holder (cm)
+	SOURCE_WIDTH: 8            // width of source
+	SOURCE_SHAPE: CYLINDER Z
+END;
+
+POLYAXIS: N16
+	AXES:                                                         //
+	POSITION: 9 -25 1299.9999                                   //
+	MOTION: ORTHO           // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON   // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 110       // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -78.59  // offset from pivot point to source center
+	SOURCE_MASS: 132.5 N
+	SOURCE_VOLUME: 4200.0 cm^3
+	SOURCE_HEIGHT: 90          // (actual 78.6cm) distance source drops below holder (cm)
+	SOURCE_WIDTH: 11.4         // width of source
+	SOURCE_SHAPE: CYLINDER Z
+END;
+
+
+POLYAXIS: SONOBALL
+	AXES:                                                         //
+	POSITION: 0 0 1300.2328                                     //
+	MOTION: GUIDETUBE       // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON   // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 20        // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -1      // offset from pivot point to source center
+	SOURCE_MASS: 67 N
+	SOURCE_VOLUME: 1000.0 cm^3
+	SOURCE_HEIGHT: 120         // (actual 90.7cm) distance source drops below holder (cm)
+	SOURCE_WIDTH: 8            // width of source
+	SOURCE_SHAPE: CYLINDER Z
+END;
+
+POLYAXIS: FOOTSWITCH
+	AXES:                                                         //
+	POSITION: -16.035 23.495001 1558.4902                       //
+	MOTION: ORTHO           // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON   // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 55        // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -50.2   // offset from pivot point to source center
+	SOURCE_MASS: 70 N
+	SOURCE_VOLUME: 1000.0 cm^3
+	SOURCE_HEIGHT: 45          // (actual 78.7cm) distance source drops below holder (cm)
+	SOURCE_WIDTH: 8            // width of source
+	SOURCE_SHAPE: CYLINDER Z
+END;
+
+POLYAXIS: BUCKET
+	AXES:                                                       //
+	POSITION: -16.035 23.495001 -412230.22                      //
+	MOTION: ORTHO           // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON   // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 55        // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -1      // offset from pivot point to source center
+	SOURCE_MASS: 70 N
+	SOURCE_VOLUME: 1000.0 cm^3
+	SOURCE_HEIGHT: 60          // (actual 46.34cm) distance source drops below holder (cm)
+	SOURCE_WIDTH: 8            // width of source
+	SOURCE_SHAPE: CYLINDER Z
+END;
+
+
+
+POLYAXIS: DUMMY
+	AXES:                                                                                                           //
+	POSITION: 0 0 0                                               //
+	MOTION: ORTHO           // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON  // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 20               // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -1     // offset from pivot point to source center
+	SOURCE_MASS: 51.5 N
+	SOURCE_VOLUME: 1000.0 cm^3
+	SOURCE_HEIGHT: 34                                               // distance source drops below holder (cm)
+	SOURCE_WIDTH: 6                                                 // width of source
+	SOURCE_SHAPE: CYLINDER Z
+END;
+
+POLYAXIS: THING
+	AXES:                                                 //
+	POSITION: -0.2316784 0 100.21413                              //
+	MOTION: ORTHO           // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON           // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 20               // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -1     // offset from pivot point to source center
+	SOURCE_MASS: 42.0 N
+	SOURCE_VOLUME: 0.0 cm^3
+	SOURCE_HEIGHT: 34
+	SOURCE_WIDTH: 6
+	SOURCE_SHAPE: CYLINDER Z
+END;
+
+//POLYAXIS: SKIPPY R_SOURCE               // R_SOURCE derived from polyaxis
+//        AXES:                                                                                   //
+//        POSITION: 0 0 1452.8655                                       //
+//        MOTION: ORTHO           // segmented moves on or off (rewritten)
+//        EQUALIZE_TENSIONS: ON           // tension equalization on or off (rewritten)
+//                              CENTRAL_TENSION: 20               // central rope tension for guide tube motion
+//        SOURCE_OFFSET: 0 0 -1     // offset from pivot point to source center
+//        SOURCE_MASS: 42.0 N
+//        SOURCE_VOLUME: 0.0 cm^3
+//        SOURCE_HEIGHT: 34
+//        SOURCE_WIDTH: 20
+//        SOURCE_SHAPE: RECTANGLE
+//        THETA_NAME:     ThetaMotor              // The database name for the theta axis motor
+//        PHI_NAME: PhiMotor                              // The database name for the phi axis motor
+//END;
+
+
+POLYAXIS: testurm
+	AXES:                                       //
+	POSITION: 9 -25 1500                                        //
+	MOTION: ORTHO           // segmented moves on or off (rewritten)
+	EQUALIZE_TENSIONS: ON   // tension equalization on or off (rewritten)
+	CENTRAL_TENSION: 5      // central rope tension for guide tube motion
+	SOURCE_OFFSET: 0 0 -1      // offset from pivot point to source center
+	SOURCE_MASS: 30 N
+	SOURCE_VOLUME: 8.0 cm^3
+	SOURCE_HEIGHT: 81.3          // distance source drops below holder (cm)
+	SOURCE_WIDTH: 10 in            // width of source
+	SOURCE_SHAPE: CYLINDER Z
+END;
+

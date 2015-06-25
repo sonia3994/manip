@@ -1,0 +1,12 @@
+centralropeloadcell    polls off
+centralropeloadcell    polls off
+centralropeencoder     polls off
+centralrope3           polls off
+centralrope3loadcell   polls off
+centralrope3encoder    polls off
+laserumbilical         polls off
+laserumbilicalencoder  polls off
+laserumbilicalloadcell polls off
+gasumbilical           polls off
+gasumbilicalencoder    polls off
+gasumbilicalloadcell   polls off

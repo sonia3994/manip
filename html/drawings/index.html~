@@ -1,0 +1,120 @@
+<HTML>
+<HEAD>
+<TITLE>Laserball</TITLE>
+</HEAD>
+<body background="bg-plain.gif">
+<h2><img src="/images/sno.gif" width=25 height=31 alt="SNO LOGO">Laserball</h2>
+<center>
+<h4>Access to this page is restricted to members of the SNO Collaboration.</h4>
+</center>
+
+<p>
+Anyone wishing to contribute documents to this page please contact
+<a href="mailto:fduncan@sno.phy.queensu.ca">fduncan@sno.phy.queensu.ca</a>
+</p>
+
+
+
+<hr width=80%>
+<h3>General Documents</h3>
+<ul>
+<li><a href="manual/n2_dye_laser_manual.ps.gz">N2 Dye Laser Manual</a>
+</ul>    
+
+
+
+
+<hr width=80%>
+<h3>Figures</h3>
+<ul>
+<li><a href="lasergas.gif">Laser Gas System</a>
+</ul>
+
+
+
+<hr width=80%>
+<h3>Drawings</h3>
+The dwg drawings are AutoCad drawings
+<ul>
+
+<li>lbass (<a href="./drawings/lbass.dwg">dwg</a>,
+              <a href="./drawings/lbass.eps">eps</a>)
+                Laserball Assembly Drawing.<br>  
+                Not yet complete <br>
+                (missing carriage and the laserball flask).
+
+<li>laserball1 (<a href="./drawings/laserball1.ps">ps</a>)
+
+<li>laserball_bucket (<a href="./drawings/laserball_bucket.ps">ps</a>)
+
+<li>laserball_full (<a href="./drawings/laserball_full.ps">ps</a>)
+
+<li>laserball_new (<a href="./drawings/laserball_new.ps">ps</a>)
+
+<li>lasrba   (<a href="./drawings/lasrba.dwg">dwg</a>,
+              <a href="./drawings/lasrba.eps">eps</a>)
+              Bucket Attachment
+
+<li>lasrbal2 (<a href="./drawings/lasrbal2.dwg">dwg</a>,
+              <a href="./drawings/lasrbal2.eps">eps</a>)
+
+<li>lasrball (<a href="./drawings/lasrball.dwg">dwg</a>,
+              <a href="./drawings/lasrball.eps">eps</a>)
+
+<li>lasring  (<a href="./drawings/lasring.dwg">dwg</a>,
+              <a href="./drawings/lasring.eps">eps</a>)
+              Neck Restraint Ring
+
+<li>lasrna   (<a href="./drawings/lasrna.dwg">dwg</a>,
+              <a href="./drawings/lasrna.eps">eps</a>)
+
+<li>lasrngbl (<a href="./drawings/lasrngbl.dwg">dwg</a>,
+              <a href="./drawings/lasrngbl.eps">eps</a>)
+              Ball Restraint Ring
+
+<li>lasrngbu (<a href="./drawings/lasrngbu.dwg">dwg</a>,
+              <a href="./drawings/lasrngbu.eps">eps</a>)
+              Bucket Restraint Ring
+
+<li>lasrngnk (<a href="./drawings/lasrngnk.dwg">dwg</a>,
+              <a href="./drawings/lasrngnk.eps">eps</a>)
+              Neck Restraint Ring
+
+<li>lasrngrd (<a href="./drawings/lasrngrd.dwg">dwg</a>,
+              <a href="./drawings/lasrngrd.eps">eps</a>)
+              Restraining Rod
+
+<li>srcboff  (<a href="./drawings/srcboff.dwg">dwg</a>,
+              <a href="./drawings/srcboff.eps">eps</a>)
+              Source Blank-off Attachment
+
+<li>ssattac2 (<a href="./drawings/ssattac2.dwg">dwg</a>,
+              <a href="./drawings/ssattac2.eps">eps</a>)
+              Stainless Steel Manipulator Attahcment #2
+
+<li>ssattact (<a href="./drawings/ssattact.dwg">dwg</a>,
+              <a href="./drawings/ssattact.eps">eps</a>)
+              Stainless Steel Manipulator Attachment Tube
+
+<li>sspressp (<a href="./drawings/sspressp.dwg">dwg</a>,
+              <a href="./drawings/sspressp.eps">eps</a>)
+              Stainless Steel Pressure Plate
+
+</ul>
+
+<hr width=80%>
+<p>
+<h4>Tools and Documentation</h4>
+</p>
+<ul>
+<li> <a href="../doc/index.html">Queen's Internal Documentation</a>
+<li> <a href="http://root.cern.ch">Root Documentation</a>
+<li> <a href="http://sno.sno.laurentian.ca">SNO Site Internal Web Page</a>
+<li> <a href="http://www.sno.phy.queensu.ca/private/snoman/doc/html/companion_frames.html">Snoman Companion</a>
+<li> <a href="http://www.hep.upenn.edu/SNO/">UPenn Site (snodb documentation)</a>
+</ul>
+<p>
+</BODY>
+</HTML>
+
+

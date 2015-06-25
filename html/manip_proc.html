@@ -1,0 +1,386 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <TITLE>Manipulator</TITLE>
+</HEAD>
+<BODY>
+<FONT COLOR="#FF0000"><FONT SIZE=+3>DRAFT</FONT></FONT>&nbsp;
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>
+<BR>
+<HR size=4 width="100%">
+
+<P><B><FONT SIZE=+2>Procedures Manual</FONT></B>
+
+<P>This document explains the various procedures used with the manipulator
+system.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="RunningManip"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Running
+the MANIP Software</FONT></FONT></B>
+
+<P>There are two simple steps to follow running the MANIP software.
+
+<P>1) Type "<B>m</B>" at the DOS prompt -- this runs a batch file to change
+directories to the current version of MANIP.
+
+<P>2) Type "<B>manrun</B>" to start MANIP -- this runs a batch file that
+will restart MANIP automatically if it quits.
+
+<P>Note:&nbsp; MANIP is run automatically from the AUTOEXEC.BAT file when
+the manipulator PC is powered up.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="UpdatingManip"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Upgrading
+the MANIP Software</FONT></FONT></B>
+
+<P>This procedure must be followed when upgrading the MANIP software to
+a new version:
+
+<P>1) On the manipulator PC, make a new directory for the updated software
+by typing "<B>mkdir \motors.X_Y</B>", where Y and Z are the major and minor
+version numbers for the new software.
+
+<P>2) CD to the new directory: "<B>cd \motors.X_Y</B>".
+
+<P>3) Get the software update from surf:
+<UL>a) Type "<B>ftp surf.sno.laurentian.ca</B>" to run ftp and connect
+to surf.&nbsp; User ID is "manipulator".
+
+<P>b) Type "<B>binary</B>" to transfer the file in binary format.
+
+<P>c) Get the new version by typing "<B>get manipX_Y.zip manip.zip</B>".&nbsp;
+This will get the new version from surf and rename it to manip.zip in the
+current directory.
+
+<P>d) When the transfer finishes, type "<B>get restore.bat</B>" to get
+the batch file you need to restore the manipulator software.
+
+<P>e) When this transfer is done, type "<B>quit</B>".</UL>
+4) Type "<B>restore</B>" to unzip the manipulator software into the
+proper directories.&nbsp; Note: Typing "restore all" will also extract
+.DAT and .CMD files from the .ZIP file, but this usually isn't what
+you want because these could be from the test setup at Queen's.
+
+<p>5) <B>Copy .DAT and .CMD files</B> from the previous manip
+directory into the new manip directory (ie. "copy \motors.A_B\manip\*.dat manip" and
+"copy \motors.A_B\manip\*.cmd manip", where A_B is the old version number).
+
+<p>6) <B>Edit .DAT files</B> as required by the new MANIP version. 
+(This will only be necessary for some updates, and should be specified
+in the release notice.)
+
+<P>7) <B>Edit M.BAT</B> (in the \bin directory u/g, or in the \bat directory at Queen's)
+and change the directory name to the current version of MANIP.
+
+<P>8) Follow the steps in the section called <A HREF="#RunningManip">Running
+the MANIP Software</A> to run the new version of MANIP.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="BackupManip"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Backing
+up the MANIP Software</FONT></FONT></B>
+
+<P>When any changes are made to the manipulator software or data files,
+the new files should be backed up using the following procedure:
+
+<P>1) Change to the root of the desired MANIP directory.&nbsp; If you were
+just running MANIP, you can do this by typing "<B>cd ..</B>", otherwise
+you can type "cd \motors.X_Y" to change to the appropriate directory.
+
+<P>2) Back up all changed files:&nbsp; Type "<B>backup all</B>" to backup
+all files, or "backup" to backup all but .DAT files.
+
+<P>3) Save the zip file to surf:
+<UL>a) Type "<B>ftp surf.sno.laurentian.ca</B>" to run ftp and connect
+to surf.&nbsp; User ID is "manipulator", you should know the password.
+
+<P>b) Type "<B>binary</B>" to transfer the in binary format.
+
+<P>c) Write the backup file to surf with the appropriate name by typing
+"<B>put manip.zip manipX_Y.zip</B>", where X_Y is the current version of
+MANIP.&nbsp; Note: This command will overwrite any existing file of the
+same name on surf, so take care to get the correct file name.
+
+<P>d) Type "<B>quit</B>" when the transfer is complete.</UL>
+4) The current version of MANIP is now backed up on surf, and can be restored
+by following the procedures in the section called <A HREF="#UpdatingManip">Upgrading
+the MANIP Software</A>.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="InsertingSource"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Inserting
+a Source</FONT></FONT></B>
+
+<P>This procedure must be followed each time a new source is inserted into
+the detector.
+
+<P>1) Physically move the source and its central axis hardware into position,
+and <B>insert the source</B> into the glove box or guide tube using the
+established insertion procedures. At this point you may need to control
+the length of individual manipulator ropes or umbilicals to get the source
+into position.
+
+<P>2) <B>Verify that the source position is reasonable</B>. It should be
+about 0 0 1480 if the source is mated with the with the fitting at the
+top of the umbilical box. X and Y coordinates will vary depending on which
+glove box port is being used, but their values are not significant. If
+the position is not reasonable, use the LOCATE command to locate the approximate
+position of the source (i.e. LOCATE 0 0 1480).
+
+<P>3) Execute steps in "Calibrating the Source Position" to <B>calibrate
+the rope lengths</B> before lowering the source into the vessel. Steps
+1 and 2 of the calibration procedure can be skipped since the side ropes
+are not connected to the source.
+
+<P>4) The <B>source can now be lowered</B> into the detector using the
+"&lt;source> TO &lt;x-y-z>" command.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="CalibratingPosition"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Calibrating
+the Source Position</FONT></FONT></B>
+
+<P>This procedure is performed to calibrate the manipulator rope lengths
+before a source is lowered into the detector. Note: Steps 1 and 2 can be
+skipped if the side ropes are not connected to the source. Steps 4 and
+5 can be skipped if the source is to be lowered into the detector without
+side ropes.
+
+<P>1) <B>Begin the calibration procedure</B> by typing "STARTCAL &lt;source>".
+This command brings the source to a position in the glove box where the
+side ropes can be detached, removes the side ropes from the source object
+in software, and sets them to a constant tension so they can be physically
+removed from the source.
+
+<P>2) <B>Detach the side ropes</B> by carefully removing them from the
+source. Be sure to keep tension on both the top and bottom of the side
+ropes as you slowly release them to their rest position. Tension must be
+kept on the top half of the rope to prevent the rope from falling off the
+pulleys or drum. Tension must be kept on the bottom half of the rope to
+keep it from shifting on the neck ring and adversely affecting the length
+calibration. Be careful when releasing the ropes, because releasing them
+too quickly will cause the encoder wheel to slip, and information about
+encoder drift since the last calibration will be lost.
+
+<P>3) <B>Calibrate the rope lengths</B> by typing "DOCAL &lt;source>".
+This command executes a batch file which pretensions the ropes and moves
+the source to mate with the fitting at the top of the umbilical, then it
+automatically calibrates all the rope lengths. If any errors are reported
+during this process, the calibration is invalid and must be repeated. First
+type "STOPCAL &lt;source>", then correct the problem before attempting
+to repeat the DOCAL command.
+
+<P>4) <B>Re-attach the side ropes</B> to the source, being careful to maintain
+an even tension on the ropes as they are being handled.
+
+<P>5) <B>Finish the procedure</B> by typing "DONECAL &lt;source>". This
+turns off the side-rope tension mode and connects the side ropes to the
+source in the software. At this point the source position is calibrated
+and the source can be lowered into the vessel.
+
+<P>To terminate the calibration procedure prematurely for any reason, type
+"STOPCAL &lt;source>".
+
+<P><B><U>Technical Note:</U></B> The command files used during calibration
+contain specific information about the source position and connectivity.
+Before using this set of command files, they must be tailored to the particular
+geometry being used.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="CalibratingLoadcell"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Calibrating
+a Loadcell</FONT></FONT></B>
+
+<P>This procedure calibrates the loadcell for an Axis object, allowing
+the control rope tensions to be determined accurately.
+
+<P>1) Type "&lt;axis> CALIBRATE" to <B>begin the calibration procedure</B>.
+
+<P>2) <B>Hang a known weight</B> from the rope.
+
+<P>3) Type "&lt;axis> POINT &lt;weight> &lt;units>" to <B>enter a calibration
+point</B>. For example, typing "WESTROPE POINT 5 kg" would enter a 5kg
+calibration point for the west rope. When the POINT command is executed,
+the specified weight and current loadcell digital reading are recorded.
+
+<P>4) <B>Repeat </B>steps 2) and 3) for all calibration points. A minimum
+of 2 points are required for a complete calibration. If only one point
+is entered, then a new zero offset will be calculated but the old value
+for the gain will be used.
+
+<P>5) Type "&lt;axis> CALIBRATE" again to <B>end the calibration procedure</B>.
+A linear regression is performed on the points entered to determine the
+appropriate constants for calibration of the loadcell. The <A HREF="manip_dat.html#LOADCELL.DAT">LOADCELL.DAT</A>
+file is automatically updated with these new constants.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="CalibratingAxisSprings"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Calibrating
+Axis Springs</FONT></FONT></B>
+
+<P>1) This procedure must be performed <B>after calibration of the loadcell
+and encoder </B>for each axis.
+
+<P>2) <B>Deploy the rope</B> using the "&lt;axis> DOWN" command until the
+spring can be totally relaxed, keeping tension on the rope by hand to avoid
+tangling during motor movement. Hold onto the rope after it has passed
+over the encoder wheel.
+
+<P>3) Slowly <B>release the rope</B> by hand to let the spring relax, type
+"&lt;axis>ENCODER MONITOR" and <B>record the current encoder position</B>.
+If the loadcell is properly calibrated, the tension should now read zero.
+
+<P>4) By hand, pull on the rope until the <B>spring just starts to stretch</B>.
+<B>Record the current axis rope tension</B>.
+
+<P>5) Continue stretching the spring by pulling on the rope by hand until
+the <B>spring has nearly hit the end of its travel</B> (stop just before
+the kevlar rope in the spring becomes taught). Again, <B>record the current
+axis rope tension</B>.
+
+<P>6) Pull on the rope until the spring is <B>at maximum extension</B>
+and the kevlar rope in the spring is taught. Type "&lt;axis>ENCODER MONITOR"
+and <B>record the encoder position</B>.
+
+<P>7) Quit MANIP, and <B>edit the <A HREF="manip_dat.html#AXIS.DAT">AXIS.DAT</A>
+file</B> with a text editor. Change the following entries for this axis:
+<UL>a) Set MIN_SPRING_TENSION to the rope tension from step 4) above.
+<BR>b) Set MAX_SPRING_TENSION to the rope tension from step 5) above.
+<BR>c) Set SPRING_STRETCH to the difference of the encoder positions from
+step 6) and step 3).</UL>
+8) Re-run MANIP and type "&ltsource> &lt;axis> RESET" to reset the encoder error for
+this axis. Stretch the spring by manually pulling on the rope by hand to
+a variety of spring extensions. <B>Check that the encoder error values
+are small</B> (they should be less than 1-2 cm at minimum and maximum extensions,
+and less than about 4-5 cm everywhere in between). If the axis encoder
+errors are too large, repeat the above calibration procedure.
+
+<P>9) Use the "&lt;axis> UP" command to <B>return the axis to its original
+condition</B>, keeping tension on the rope by hand while the motor is moving.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="RecoveringTensionError"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Recovering
+from a Tension Error</FONT></FONT></B>
+
+<P>If the tension on any rope connected to a source goes outside the acceptable
+range, the manipulator motion will be halted immediately, and a tension
+error will be reported. Take the following steps to diagnose and solve
+the problem.
+
+<P><B>If the problem is low tension on a rope:</B>
+
+<P>DO NOT drive the rope with low tension. Instead, let out on the other
+ropes to increase tension on the problem rope. The exception to this rule
+is if the source is resting on something such as the bottom of the vessel
+or if you are well into the low tension region below the AV side attachments.
+In this case, you may have to carefully take up the low-tension rope. Beware
+though, because driving a rope under low tension is likely to cause the
+rope drop out of the grooves in the drive assembly take-up drum. Under
+normal circumstances however, for low tension on a side rope you would
+let the central rope and umbilical down in increments of one centimeter
+using the command line "&lt;source> &lt;axis> DOWN 1; &lt;source> &lt;umbilical> DOWN 1" until
+tension is regained. If the low tension is in the central rope, let out
+the umbilical and side ropes. The exception is if the low tension rope
+is an umbilical. Driving an umbilical under low tension should not risk
+tangling in the umbilical retrieval mechanism. To recover from a low umbilical
+tension error, take up the umbilical then reduce the amount of slack using
+the "&lt;umbilical> SLACK" command if necessary.
+
+<P><B>If the problem is high tension on a rope:</B>
+
+<P>Ease the problem rope down a centimeter at a time using the "&lt;source> &lt;axis>
+DOWN 1" command until the tension in the problem rope drops below the threshold
+for that axis.
+
+<P>CAUTION: Be careful to watch the tensions in other axes while you are
+manually driving the axes up and down. When driven in this mode, the motors
+will NOT stop if another one of the tensions gets outside the allowed range.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="RecoveringAxisError"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Recovering
+from an Axis Error (or Encoder Error)</FONT></FONT></B>
+
+<P>An axis error indicates there is a discrepancy between the motor position,
+encoder and loadcell of the axis hardware. See the <A HREF="manip_calc.html#AxisError">axis
+error calculation documentation</A> for more details about how it is derived.
+Occasional axis errors may occur because of the gradual drift between the
+motor and encoder due to tension effects, but they should be an unusual
+phenomenon. <B>Frequent axis errors indicate a problem with the hardware</B>.
+The following is a list of potential hardware problems that could generate
+axis errors:
+<OL>
+<LI>
+The ropes have fallen off the pulleys in the axis assembly.</LI>
+
+<LI>
+The motor is stalling because the rope tensions are too high, the motor
+is damaged, the gears are binding, or something has become tangled inside
+the drive mechanism.</LI>
+
+<LI>
+The motor is not plugged in or there is no power to the motor drive circuits.</LI>
+
+<LI>
+The motor is plugged into the wrong channel of Alvin's box.</LI>
+
+<LI>
+The loadcell is malfunctioning, has been damaged, needs calibrating, or
+is unplugged.</LI>
+
+<LI>
+The encoder is not functioning properly or has become unplugged, or has
+the wrong calibration.</LI>
+</OL>
+To correct an axis error, use the Axis RESET command. You can also reset
+all axes of a source with the PolyAxis RESET command. Note: A reset of
+all axes is automatically performed when you execute a PolyAxis LOCATE
+command to initialize the source position.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="ReplacingCounterboard"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Replacing
+a Counter Board</FONT></FONT></B>
+
+<P>Follow these steps to replace a defective counter board box:
+
+<P>1) Verify that the replacement counter board is <B>calibrated for the
+loadcell range</B> to which it will be connected.&nbsp; See the document&nbsp;
+<A HREF="loadcell.html">loadcell.html</A> for a description of this calibration
+procedure.
+
+<P>2) Verify that the new counter board <B>analog channel does not conflict
+</B>with other counter boards in the same data concentrator slot.
+
+<P>3) <B>Quit</B> the MANIP program.
+
+<P>4) <B>Turn off</B> the data concentrator box.
+
+<P>5) Remove the old counter board box, and <B>plug in</B> the new one.&nbsp;
+Be sure to insert the terminator on the analog lines if this is the last
+board in the chain.&nbsp; Use a screwdriver to secure all connectors.
+
+<P>6) After changing counter boards, you must <B><A HREF="#CalibratingLoadcell">recalibrate
+the loadcell</A></B>.
+
+<P>
+<HR width="100%">
+</BODY>
+</HTML>

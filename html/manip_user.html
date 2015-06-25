@@ -1,0 +1,257 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.01 (Macintosh; I; 68K) [Netscape]">
+</HEAD>
+<BODY>
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>&nbsp;
+<HR SIZE=4 WIDTH="100%">
+<B><a href="manip_ver.html">Version 5.0</a> - October 12, 2012</B>
+<HR size=4 width="100%">
+
+<P><B><FONT SIZE=+2>User Guide</FONT></B>
+
+<P>This document explains the basic use of the manipulator software.
+
+<P>This document should be used in conjunction with the following documents
+for a full overview of the manipulator system:
+<UL>
+<LI>
+<A HREF="manip_contents.html">Table of Contents</A></LI>
+
+<LI>
+<A HREF="manip_cmd.html">Manipulator Commands</A></LI>
+
+<LI>
+<A HREF="manip_proc.html">Procedures</A></LI>
+
+<LI>
+<A HREF="manip_dat.html">Data Files</A></LI>
+
+<LI>
+<A HREF="manip_code.html">Source Code Documentation</A></LI>
+
+<LI>
+<A HREF="manip_ver.html">Revison History</A></LI>
+
+<LI>
+<A HREF="manip_calc.html">Calculation Methods</A></LI>
+
+<LI>
+<A HREF="manip_umbil.html">Umbilical Lookup Tables</A></LI>
+
+<LI>
+<A HREF="manip_daq.html">DAQ Manipulator Object</A></LI>
+</UL>
+
+Also available are some plots of the manipulator system:
+<UL>
+<LI>
+<A HREF="figures/manip_tension00.html">Rope tensions</A></LI>
+
+<LI>
+<A HREF="figures/manip_length.html">Rope lengths</A></LI>
+
+<LI>
+<A HREF="figures/manip_catenary.html">Umbilical shape</A></LI>
+
+<LI>
+<A HREF="figures/manip_ortho.html">PolyAxis ORTHO motion</A></LI>
+</UL>
+
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="SystemOverview"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>System
+Overview</FONT></FONT></B>
+<BR>
+<BR>The manipulator software controls a set of motors which are used to
+drive the ropes attached to the manipulator source positioning system.
+The program runs on Mac/Linux, and can be controlled from the local
+console or a remote computer. Any authorized remote computer may issue
+commands by connecting to port 2000 of the manipulator PC with a standard
+telnet style connection.
+
+<P>There are a total of 8 <B><A HREF="MotorMount.JPG">motor mounts</A></B>
+which the manipulator PC can drive. Each one has a motor to drive the
+rope, and encoder to measure the rope position, and a loadcell to measure
+the rope tension. The maximum number of ropes that can be connected
+simultaneously is three -- one central rope and two side ropes (plus one
+umbilical). This allows the source to be moved in one of two planes depending on
+whether the east/west or north/south side ropes are attached.
+
+<P>The manipulator software also controls the <B>umbilical drive units</B>
+and the nitrogen laser, and monitors the acrylic vessel position through
+7 sense ropes.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="SoftwareOverview"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Software
+Overview</FONT></FONT></B>
+
+<P>The manipulator software is <B>object based</B>, and operates with a
+simple <B>command line interface</B>. Objects respond to a set of <A HREF="manip_cmd.html">commands</A>
+which allow control and monitoring of the various manipulator components.
+Most interaction will be with the higher level objects which control the
+manipulator motion with the highest intelligence and greatest number of
+built-in safeguards.
+
+<P>The primary object type for controlling the manipulator position is
+the <B>PolyAxis</B> class. Each physical source has a corresponding PolyAxis
+object in the software. For a detailed explanation of the object hierarchy,
+see the <A HREF="manip_code.html">source code documentation</A>.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="SupportFiles"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Support
+Files</FONT></FONT></B>
+
+<P>When the program starts up, it reads all of the initialization parameters
+from <B>.DAT files</B> from the current directory. These files contain
+information about the hardware setup as well as the current operating parameters
+and source position.
+
+<P>A geometry test is done at startup if the file <B>TESTGEOM.IN</B> is
+found. A set of position calculations is performed on data from the file
+and the results are compared to calculations for the current PolyAxis object.
+The differences are displayed for each point stored in the file. The file
+TESTGEOM.IN simply contains the output of the PolyAxis MONITOR command
+for a number of points in the vessel. The purpose of this check is to
+catch discrepancies in the geometry parameters of the data files.
+
+<P>The <B><A HREF="manip_cmd.html#CmdFile">command files</A></B> contain
+lists of commands to perform in a batch. The command files may have any
+name, but always end in a .CMD extension. These files are used to execute
+commonly used groups of commands.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="SourcePosition"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Source
+Position Control</FONT></FONT></B>
+
+<P>Before a source can be moved in the detector, its position must first
+be <A HREF="manip_proc.html#CalibratingPosition">calibrated</A>. Once
+this is done, the source can <B>driven to any point</B> in the detector
+using the absolute TO command, or the relative BY command (see the <A HREF="manip_cmd.html#PolyAxis">PolyAxis
+command list</A> for a complete description of these and other PolyAxis
+commands). These commands will not let you move the source to any point
+where it would come in contact with the vessel or leave any of the ropes
+with a tension that is outside the working tension range (specified separately
+for each rope in the file <A HREF="manip_dat.html#AXIS.DAT">AXIS.DAT</A>).
+
+<P>Depending on the geometry of the ropes attached to the source, <B>certain
+coordinates are ignored</B> when entering moving the source. For example,
+with a single-axis system you could specify the source move to 0 0 500
+even though the actual X-Y coordinates of the feedthrough are not 0 0.
+In this case, the X-Y coordinates entered are ignored, and the source is
+driven to the proper Z coordinate. Similarly, a source with the east/west
+side ropes attached can only move in the X-Z plane, so the entered Y coordinate
+is ignored.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="PositionAccuracy"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Position
+Accuracy</FONT></FONT></B>
+
+<P>With three ropes attached to the manipulator, the source can be moved
+in a plane. In this configuration the manipulator position accuracy is
+about 3 cm inside the acrylic vessel body. However, the accuracy varies
+with position inside the vessel and can be as good as 1 cm in some areas.
+The accuracy in the vessel neck is much worse, with up to 15 cm of error
+at times. With only one rope attached, the source can be moved in a vertical
+line. In this configuration, the position accuracy is about 2 cm.
+
+<P>The manipulator position accuracy depends heavily on the surveyed accuracy
+of the rope attachment points and acrylic vessel neck ring. Errors in
+the surveyed position of the AV attachment blocks and neck ring translate
+into manipulator position errors of roughly the same magnitude. Accuracy
+in the surveyed position of the top feedthroughs has a diminished effect
+on the 3-rope manipulator system, but is crutial for the 1-rope manipulator.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="TimeSynchronization"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Time
+Synchronization</FONT></FONT></B>
+
+<P>The manipulator PC clock must be synchronized with the SNO time server
+before starting the MANIP program.&nbsp; This allows accurate timestamps
+to be generated for the data inserted into the event stream.&nbsp; The
+timestamps also contain information about the time zone (which is assumed
+to be GMT-5 because this software is designed to run only in Sudbury) and
+the state of daylight savings time.&nbsp; The daylight savings time status
+is taken from the TZ environment variable.&nbsp; (i.e. from DOS, "SET TZ=EST5EDT"
+for daylight savings time, and "SET TZ=EST5" for standard time.)
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="SafetyShutoffs"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Safety
+Shutoffs</FONT></FONT></B>
+
+<P>The motion of the manipulator will be halted immediately if any one
+of a number of situations arises. Note that these safety features are
+implemented by the PolyAxis class only if the source is driven through
+a PolyAxis command <U>or</U> if the ropes are being driven directly and
+one or more of the PolyAxis ropes is in tension mode. These features can
+be overridden by setting <A HREF="manip_cmd.html#PolyAxis">ERRORSTOP</A>
+off, but this should hopefully never be necessary.
+
+<P>The <B>tension error shutoff</B> will stop the manipulator motion if
+any of the rope tensions either drops below its minimum, or goes above
+its maximum value. Should the need arise, follow the procedures for <A HREF="manip_proc.html#RecoveringAxisError">recovering
+from a tension error</A>.
+
+<P>The <B>axis error shutoff</B> will stop the motion if any of the encoders
+disagree with the motor position outside a certain tolerance. There are
+also procedures established for <A HREF="manip_proc.html#RecoveringAxisError">recovering
+from an axis error</A>.
+
+<P>The <B>calculation error shutoff </B>stops the motion if there is a
+problem with the calculations. This may happen if the solution is inconsistent
+because of an unusually large error in one or more of the rope lengths.
+To fix this situation, a <A HREF="manip_proc.html#CalibratingPosition">calibration</A>
+of the source position should be done.
+
+<P>The <B>net force shutoff</B> will stop the manipulator if the net force
+on the source is outside a certain range. The net force is calculated
+as the sum total of all forces including gravity, buoyancy and forces due
+to all ropes. This net force should be zero, and if it exceeds a certain
+limit it is an indication that some outside force is acting on the source,
+which could mean that a rope has become tangled or the source has come
+in contact with something in the vessel. There are no established procedures
+from recovering from this situation. Use your head if this ever arises,
+but it should be a very uncommon occurrence.  <FONT COLOR="#ff0000"><B>Note:</B> This shutoff has been
+disabled in the current version of the software.</FONT>
+
+<P>The <B>stuck stop</B> stops the source near an endpoint to prevent futile
+hunting for a position that is unattainable. This can happen because the
+manipulator software attempts to drive the ropes to within one encoder
+step of the desired length, but in practice this goal may be unrealistic
+because of the effects of static friction combined with the springs on
+the ropes. If the motors reverse more than four times while trying to
+reach a particular rope length, a "stuck stop" is issued, and the manipulator
+motion is halted. In this case, the source is very near the endpoint and
+the reported position is accurate, so no action should be necessary.
+
+<P>The <B>axis flag shutoff</B> stops motion if a critical axis flag bit
+has been set.  The axis flags can be wired to limit switches or tension
+switches to prevent certain failure modes.  The axis flags are described
+in more detail in the section on <a href="manip_dat.html#AXIS.DAT">AXIS.DAT</a>.
+
+<P>The <B>axis alarm shutoff</B> stops motion if a rope has exceeded a
+preset maximum tension at any time in its history.  To resume use of the
+manipulator after an axis alarm, the axis ALARMRESET command must be used.
+See the section on <a href="manip_cmd.html#Axis">axis commands</a> for more details.
+
+<P>
+<HR WIDTH="100%">
+<BR>
+</BODY>
+</HTML>

@@ -1,0 +1,38 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>SNO Online Monitoring</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.12-20smp i686) [Netscape]">
+</head>
+<body>
+
+<h1>manmon documentation</h1>
+<hr WIDTH="100%">
+<center>
+<img src="./figures/manmon_main.gif">
+</center>
+
+
+
+<h3>Source Window</h3>
+The source window shows information related to the source polyaxis.  A polyaxis is the
+multirope (and umbilical) object connected to a source.
+<center>
+<img src="./figures/manmon_source.gif">
+</center>
+  
+<ul>
+<li>Snapshot<br>
+  Snapshot records the state of the source to a file labeled <b><SOURCE>_yymmdd.snapshot</b>.
+  Source position, rope tensions and lengths are recorded to a file.
+<li>Snapshot2<br>
+  Snapshot2 records the state of the source to a file labeled <b><SOURCE>_yymmdd.snapshot2</b>.
+  Information include is the date, hour,min,sec, the position, the error values and the
+  information on each axis including encoder and motor info.  One entry per line in an ascii
+  file.
+</ul>
+
+</body>
+</html>
+

@@ -1,0 +1,445 @@
+VERSION3.00  // This MUST be the first line of the file
+
+// Revisions:
+//
+// 12/5/97 Added N2 laser, dye laser and ND filter wheels
+//         connection and motors.
+//                                            Richard Ford
+// 2012/10/03 - PH major overhaul for new AVR interface
+
+
+
+//------------------------------------------------------
+// Rope and Umbilical Counter Boards
+
+
+
+
+
+// AVR32 devices
+
+AVR32: avr1
+    SERIAL:     ffffffff3850313339302020ff1116
+END;
+
+AVR32: avr2
+    SERIAL:     0                       //  26c639683854373837312020ff051c
+END;
+
+AVR32: avr3
+    SERIAL:     ffffffff3850313339302020ff1107
+END;
+
+AVR32: avr4
+    SERIAL:     ffffffff3850313339302020ff1013
+END;
+
+AVR32: avr5
+    SERIAL:     380f16633854373837312020ff020b
+END;
+
+AVR32: avr6
+    SERIAL:     0
+END;
+
+AVR32: avr7
+    SERIAL:     0
+END;
+
+AVR32: avr8
+    SERIAL:     0
+END;
+
+AVR32: avr9
+    SERIAL:      26c639683854373837312020ff051c       //   ffffffff3850313339302020ff1116
+END;
+
+AVR32: avr10
+    SERIAL:     0
+END;
+
+AVR32: avr11
+    SERIAL:     0
+END;
+
+AVR32: avr12
+    SERIAL:     0
+END;
+
+AVR32: avr13
+    SERIAL:     0
+END;
+
+AVR32: avr14
+    SERIAL:     0
+END;
+
+AVR32: avr15
+    SERIAL:     0
+END;
+
+
+//------------------------------------------------------------
+// Side Ropes
+
+COUNTERBOARD: northrope
+	AVR32:		avr9
+	COUNTER:	c0
+	ADC:   		a00
+	DIGITAL:	s00,s01,s02,s03
+END;
+
+COUNTERBOARD: southrope
+	AVR32:		avr2
+	COUNTER:	c0
+	ADC:   		a00
+	DIGITAL:	s00,s01,s02,s03
+END;
+
+COUNTERBOARD: eastrope
+	AVR32:		avr3
+	COUNTER:	c0
+	ADC:   		a00
+	DIGITAL:	s00,s01,s02,s03
+END;
+
+COUNTERBOARD: westrope
+	AVR32:		avr4
+	COUNTER:	c0
+	ADC:   		a00
+	DIGITAL:	s00,s01,s02,s03
+END;
+
+
+//---------------------------------------------
+// URM's
+
+
+//URM-1
+
+COUNTERBOARD: urm1rope
+	AVR32:		avr5
+	COUNTER:	c0
+	ADC:   		a00
+	DIGITAL:	s00,s01,s02,s03
+END;
+
+COUNTERBOARD: urm1umbilical
+	AVR32:		avr5
+	COUNTER:	c1
+	ADC:   		a10
+	DIGITAL:	s10,s11,s12,s13
+END;
+
+
+// URM-2
+
+COUNTERBOARD: urm2rope
+	AVR32:		avr6
+	COUNTER:	c0
+	ADC:   		a00
+	DIGITAL:	s00,s01,s02,s03
+END;
+
+
+COUNTERBOARD: urm2umbilical
+	AVR32:		avr6
+	COUNTER:	c1
+	ADC:   		a10
+	DIGITAL:	s10,s11,s12,s13
+END;
+
+// URM-3
+
+COUNTERBOARD: urm3rope
+        AVR32:           avr7
+        COUNTER:         c0
+        ADC:             a00
+        DIGITAL:         s0,s1,s2,s3
+END;
+
+COUNTERBOARD: urm3umbilical
+        AVR32:           avr7
+        COUNTER:         c1
+        ADC:             a10
+        DIGITAL:         s10,s11,s12,s13
+END;
+
+
+// Test URM
+
+COUNTERBOARD: testUmbilical
+	AVR32:		avr15
+	COUNTER:	c0
+	ADC:   		a00
+	DIGITAL:	s00,s01,s02,s03
+END;
+
+COUNTERBOARD: testRope
+	AVR32:		avr15
+	COUNTER:	c1
+	ADC:   		a10
+	DIGITAL:	s10,s11,s12,s13
+END;
+
+
+
+
+
+//-------------------------------------------------
+// Rope motors
+
+MOTOR: northropemotor
+	AVR32:		avr9
+	MOTOR:		m1
+END;
+
+MOTOR: southropemotor
+	AVR32:		avr2
+	MOTOR:		m0
+END;
+
+MOTOR: eastropemotor
+	AVR32:		avr3
+	MOTOR:		m0
+END;
+
+MOTOR: westropemotor
+	AVR32:		avr4
+	MOTOR:		m0
+END;
+
+
+
+MOTOR: urm1ropemotor
+	AVR32:		avr5
+	MOTOR:		m0
+END;
+
+MOTOR: urm1umbilicalmotor
+	AVR32:		avr5
+	MOTOR:		m1
+END;
+
+
+MOTOR: urm2ropemotor
+	AVR32:		avr6
+	MOTOR:		m0
+END;
+
+MOTOR: urm2umbilicalmotor
+	AVR32:		avr6
+	MOTOR:		m1
+END;
+
+
+MOTOR: urm3ropemotor
+        AVR32:          avr7
+        MOTOR:          m0
+END;
+
+MOTOR: urm3umbilicalmotor
+        AVR32:          avr7
+        MOTOR:          m1
+END;
+
+// -------------------------------------------------------
+// Laser stuff
+
+//Connections and control for the DYE LASER
+
+COUNTERBOARD: DYELASERENCODER                    // Final wiring avr9, m0, c0, s00, s01
+	AVR32:		avr7
+	COUNTER:	c1                  
+END;
+
+COUNTERBOARD: DYELASERSTARTLIMITSWITCH
+	AVR32:		avr7
+	DIGITAL:	s10
+END;
+
+COUNTERBOARD: DYELASERENDLIMITSWITCH
+	AVR32:		avr7
+	DIGITAL:	s11
+END;
+
+
+// Connections and control for the ND filter wheels
+
+COUNTERBOARD: FILTERWHEELAENCODER
+        AVR32:          avr8                      // Final wiring avr9, m1, c1, s10
+        COUNTER:        c1
+END;
+
+COUNTERBOARD: FILTERWHEELBENCODER
+        AVR32:          avr7                      // Final wiring avr9, m2, c2, s20
+        COUNTER:        c0
+END;
+
+COUNTERBOARD: FILTERWHEELASWITCH
+        AVR32:          avr8
+        DIGITAL:        s20
+END;
+
+COUNTERBOARD: FILTERWHEELBSWITCH
+        AVR32:          avr7
+        DIGITAL:        s01                     // was s00
+END;
+
+
+PULSER: laserTriggerPulser
+	AVR32:          avr10
+	MOTOR:          m0
+END;
+
+LOCKOUT: lockout
+	AVR32:          avr10
+	PULSER:         laserTriggerPulser
+	CHANNEL:    0
+	MAX_LENGTH: 100
+END;
+
+
+MOTOR: dyelasermotor
+        AVR32:          avr7
+        MOTOR:          m0                 // 1<-> 0
+END;
+
+MOTOR: filterwheelamotor
+        AVR32:          avr8
+        MOTOR:          m2
+END;
+
+MOTOR: filterwheelbmotor
+        AVR32:          avr7
+        MOTOR:          m1
+END;
+
+
+// -------------------------------------------------------
+// Additional connections and control for the N2 LASER
+
+
+CBLASERPOWER: N2LASERPOWERSWITCH
+	AVR32:		avr10
+	DIGITAL:	s00
+END;
+
+CBLASERTRIGGER: N2LASERTRIGGERSWITCH
+	AVR32:		avr10
+	DIGITAL:	s01
+END;
+
+COUNTERBOARD: N2LASERDEBUG
+	AVR32:		avr10
+	DIGITAL:	s02
+END;
+
+COUNTERBOARD: N2LASERSTATUS
+	AVR32:		avr10
+	DIGITAL:    s03
+END;
+
+COUNTERBOARD: N2LASERPOWERSTATUS
+	AVR32:		avr10
+	DIGITAL:    s10
+END;
+
+COUNTERBOARD: N2LASERLOCKSTATUS
+	AVR32:		avr10
+	DIGITAL:    s11
+END;
+
+COUNTERBOARD: N2LASERTRIGGERSTATUS
+	AVR32:		avr10
+	DIGITAL:    s12
+END;
+
+COUNTERBOARD: N2LASERWARMUPSTATUS
+	AVR32:		avr10
+	DIGITAL:    s13
+END;
+
+COUNTERBOARD: N2LASERREADYSTATUS
+	AVR32:		avr10
+	DIGITAL:    s20
+END;
+
+COUNTERBOARD: N2LASERRUNNINGSTATUS
+	AVR32:		avr10
+	DIGITAL:    s21
+END;
+
+COUNTERBOARD: N2LASER_40V_STATUS
+	AVR32:		avr10
+	DIGITAL:    s22
+END;
+
+COUNTERBOARD: N2LASER_12V_STATUS
+	AVR32:		avr10
+	DIGITAL:    s23
+END;
+
+COUNTERBOARD: N2LASERDYEMOTOR1STATUS
+	AVR32:		avr10
+	DIGITAL:    s30
+END;
+
+COUNTERBOARD: N2LASERDYEMOTOR2STATUS
+	AVR32:		avr10
+	DIGITAL:    s31
+END;
+
+COUNTERBOARD: N2LASERDYEMOTOR3STATUS
+	AVR32:		avr10
+	DIGITAL:    s32
+END;
+
+COUNTERBOARD: N2LASERDYEMOTOR4STATUS
+	AVR32:		avr10
+	DIGITAL:    s33
+END;
+
+COUNTERBOARD: N2LASERHIPRESSURE
+	AVR32:		avr10
+	ADC:   		a00
+END;
+
+COUNTERBOARD: N2LASERLOWPRESSURE
+	AVR32:		avr10
+	ADC:   		a10
+END;
+
+
+//---------------------------------------------------------------------------------------------
+
+// The AV stuff
+
+SENSEROPE: SROPE1
+	AVR32:   avr12
+	COUNTER: c0
+END;
+SENSEROPE: SROPE2
+	AVR32:   avr12
+	COUNTER: c1
+END;
+SENSEROPE: SROPE3
+	AVR32:   avr12
+	COUNTER: c2
+END;
+SENSEROPE: SROPE4
+	AVR32:   avr12
+	COUNTER: c3
+END;
+SENSEROPE: SROPE5
+	AVR32:   avr12
+	COUNTER: c4
+END;
+SENSEROPE: SROPE6
+	AVR32:   avr12
+	COUNTER: c5
+END;
+SENSEROPE: SROPE7
+	AVR32:   avr12
+	COUNTER: c6
+END;

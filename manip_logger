@@ -1,0 +1,531 @@
+#!/usr/bin/perl -w
+#------------------------------------------------------------------------------
+# File:         manip_logger
+#
+# Description:  Log manip position to SNO+ couch DB
+#
+# Usage:        manip_logger [-c] [IP [port]]
+#
+#               IP/port = Manip system to poll (default: localhost/2000)
+#
+# Options:      -c - output to console instead of SNO+ couch DB
+#
+# Revisions:    2013/07/29 - P. Harvey Created
+#               2014/09/25 - PH Conform to SNO+ DB standards and style
+#------------------------------------------------------------------------------
+use strict;
+use IO::Socket;
+use Time::Local;
+use Time::HiRes qw(time alarm sleep);
+my $exeDir;
+BEGIN {
+    # get exe directory
+    $exeDir = ($0 =~ /(.*)[\\\/]/) ? $1 : '.';
+    # add script directory at start of include path
+    unshift @INC, "$exeDir";
+}
+use CouchDB;
+
+# constants
+my $manipIP = 'localhost';
+my $manipPort = 2000;
+my $dbIP = 'couch.snopl.us';    # CouchDB server IP
+my $dbPort = 80;                # CouchDB port number (was 5984)
+my $dbRealm = 'Password required';
+my $dbUser = 'snoplus';
+my $dbPass = 'PureTe->Dirac!=True';
+my $dbBase = 'manip/';          # base path for manipulator documents in CouchDB
+my $logfile = 'manip_logger.log';
+my $gateValvePosition = 1300;   #!!!! FILL THIS IN WITH THE ACTUAL GATE VALVE POSITION
+my $movingPollTime = 1;         # polling period for moving sources (sec)
+my $staticPollTime = 10;        # polling period for static sources (sec)
+
+# function prototypes
+sub Print($;$);
+sub Init();
+sub Poll();
+sub Close();
+sub Cleanup();
+sub Command($);
+sub Receive(;$);
+sub ParseCmd($);
+sub GetPolyStatus($);
+sub FormatJSON($$;$);
+sub UpdateSourceDB();
+sub UpdateDB($$$);
+
+# install signal handlers
+$SIG{INT}  = 'SigInt';      # do cleanup on Ctrl-C
+$SIG{PIPE} = 'SigPipe';     # broken I/O pipe
+$SIG{ALRM} = 'SigAlarm';    # alarm (used for network timeout)
+
+# variables
+my $interrupted;    # flag that CTRL-C was pressed
+my $alarmed;        # flag that network activity timed out
+my $connected;      # flag that we are currently connected
+my $updateSourceDB; # flag to update source list in CouchDB
+my $sock;           # the manip telnet socket
+my %poly;           # lookup for all available POLYAXIS objects
+my %active;         # next poll time for active POLYAXIS objects
+my %status;         # source status (0=dormant, 1=deployed, 2=moving)
+my $console;        # flag for console output
+my $db;             # couch DB interface object
+
+while (@ARGV and $ARGV[0] =~ /^-/) {
+    my $arg = shift;
+    $arg eq '-c' and $console = 1, next;
+    die "Unknown option $arg\n";
+}
+$manipIP = shift if @ARGV;
+$manipPort = shift if @ARGV;
+
+$db = new CouchDB($dbIP, $dbPort, $dbRealm, $dbUser, $dbPass) unless $console;
+
+# JSON formatting information for manip POLYAXIS object
+# - POLYAXIS monitor command returns response like this:
+#   Monitor: LASERBALL
+#   Time: 2013-07-30 07:50:15.67 DST
+#   Polls: ON
+#   Status: STOPPED_NONE
+#   Position:	-1.07	0.95	0.88
+#   Source Offset:	0.00	0.00	-66.40
+#   Net Force:	-0.01	-2.61	-58.94
+#   Length Error:	0.22
+#   Carriage Tilt:	0.03
+#   Axes:		NORTHROPE	SOUTHROPE	URM1ROPE	URM1UMBILICAL
+#   Lengths:	2015.92	2020.49	1599.49	1449.01
+#   Tensions:	-4.87	-2.10	-12.85	-30.21
+#   Encoder Errors:	-0.00	2023.00	1598.50	1963.33
+#   Velocities:	0.00	0.00	0.00	0.00
+#   Central tension: 40.0  (buoy = 10.8)
+#   Orientation:	1 (NORTH)
+#   Result: HW_ERR_OK
+my %polyaxisFmt = (
+    'Monitor' => [ 'string', 'type' ], # name this "type" in JSON output
+    'Time' => [ 'time', 'sudbury_time' ],
+    'Status' => 'string',
+    'Position' => 'number_array',
+    'Source Offset' => 'number_array',
+    'Net Force' => 'number_array',
+    'Length Error' => 'number',
+    'Carriage Tilt' => 'number',
+    'Axes' => 'string_array',
+    'Lengths' => 'number_array',
+    'Tensions' => 'number_array',
+    'Encoder Errors' => 'number_array',
+    'Velocities' => 'number_array',
+    'Orientation' => 'number',
+);
+
+# - N2LASER monitor command returns response like this:
+#   Monitor: N2LASER
+#   Time: 2013-08-23 11:15:32.65 DST
+#   Polls: ON
+#   Laser Status: <0000> PROBLEM ""
+#   N2 Pressure:  -36.7 ;Flow:   0
+#   Power: 120V-OFF 12V-OFF 40V-OFF
+#   Filter1: 6-IDLE ;Filter2: 2-IDLE ;ND:  1.60
+#   Dye Laser Cell: -1 ;Wavelength:  -1 ;Status: IDLE
+#   Stir Motors: OFF-OFF-OFF-OFF
+#   Trigger rate:  20.0 OFF
+my %laserFmt = (
+    'Monitor' => [ 'string', 'type' ], # name this "type" in JSON output
+    'Time' => [ 'time', 'sudbury_time' ],
+    'Laser Status' => 'string',
+    'N2 Pressure' => 'number',
+    'Flow' => 'number',
+    'Power' => 'string',
+    'Filter1' => 'string',
+    'Filter2' => 'string',
+    'ND' => 'number',
+    'Dye Laser Cell' => 'number',
+    'Wavelength' => 'number',
+    'Status' => [ 'string', 'dye_status' ],
+    'Stir Motors' => 'string',
+    'Trigger rate' => 'string',
+);
+
+#..............................................................................
+# main program
+
+Print "\nStarted\n";
+
+until ($interrupted) {
+    # retry at 1 second intervals until we have a connection
+    $sock or Init() or sleep(1), next;
+    # poll our manipulator and write to database
+    Poll();
+}
+
+# clean up and exit
+Cleanup();
+Print "Normal exit\n";
+exit 0;
+
+#------------------------------------------------------------------------------
+# Signal handlers
+sub SigInt()    { Print "\nCtrl-C pressed\n"; $interrupted = 1 }
+sub SigPipe()   { Print "\nSIGPIPE\n" }
+sub SigAlarm()  { $alarmed = 1 }
+
+#------------------------------------------------------------------------------
+# Print timestamped message
+# Inputs: 0) message string, 1) optional data for log file
+sub Print($;$)
+{
+    my $str = shift;
+    my $dat = shift;
+    my $pre = ($str =~ s/^\n// ? "\n" : '');
+    my @t = localtime;
+    $t[5] += 1900;  # year
+    $t[4] += 1;     # month
+    $str = sprintf("$pre%.4d-%.2d-%.2d %.2d:%.2d:%.2d %s", reverse(@t[0..5]), $str);
+    print $str;
+    if (open ERR, ">>$logfile") {
+        print ERR $str;
+        print ERR $dat if $dat;
+        close ERR;
+    } else {
+        warn "Error writing to log file!\n";
+    }
+}
+
+#------------------------------------------------------------------------------
+# Initialize manip connection
+# Inputs: none
+# Returns: true on success
+# Note: Do not call this routine if $sock is already open
+sub Init()
+{
+    local $_;
+    for (;;) { # (a cheap "goto")
+        my $proto = getprotobyname('tcp');
+        socket(SOCK, PF_INET, SOCK_STREAM, $proto) or last;
+        my $iaddr = inet_aton($manipIP);
+        my $paddr = sockaddr_in($manipPort, $iaddr);
+        connect(SOCK, $paddr) or last;
+        $sock = \*SOCK;
+        my $response = Receive(1);
+        $response =~ /CONNECTION ACCEPTED\n$/ or last;
+        # get list of available POLYAXIS objects
+        $response = Command("list polyaxis\n");
+        $response =~ /^Available polyaxis objects are:\s+(.*)Result:/s or last;
+        my @poly = sort split ' ', $1;
+        $poly{$_} = 1 foreach @poly;
+        # enable command logging by this client
+        $response = Command("cmdlog on\n");
+        $response =~ /Result: COMMAND_ACCEPTED\n$/ or last;
+        Print "Connected to manip on $manipIP\n";
+        # initial poll of all POLYAXIS objects
+        GetPolyStatus($_) foreach @poly;
+        $updateSourceDB = 1;
+        $connected = 1;
+        return 1;   # success!
+    }
+    Close();
+    unless (defined $connected) {
+        Print "Waiting for manip on $manipIP...\n";
+        $connected = 0;
+    }
+    return 0;
+}
+
+#------------------------------------------------------------------------------
+# Poll the manipulator
+sub Poll()
+{
+    # receive command log strings (but don't wait too long for them)
+    # - note that the timeout time defines our polling period
+    my $cmd = Receive(0.01);
+    # parse this command
+    ParseCmd($cmd);
+    # poll all active POLYAXIS objects
+    my $poly;
+    foreach $poly (sort keys %active) {
+        GetPolyStatus($poly) if time() >= $active{$poly};
+    }
+    # update source list in DB if anything changed
+    if ($updateSourceDB) {
+        UpdateSourceDB();
+        undef $updateSourceDB;
+    }
+}
+
+#------------------------------------------------------------------------------
+# Close our manipulator connection
+sub Close()
+{
+    # close the connection if necessary
+    if ($sock) {
+        if ($connected) {
+            Print "Disconnected\n";
+            undef $connected;
+        }
+        close $sock;
+        undef $sock;
+    }
+    # reset necessary variables
+    undef %poly;
+    undef %active;
+}
+
+#------------------------------------------------------------------------------
+# Cleanup for program termination
+sub Cleanup()
+{
+    if ($sock) {
+        Command("logout\n"); # tell manip to disconnect
+        Close();
+    }
+}
+
+#------------------------------------------------------------------------------
+# Send command to manip and return response
+# Inputs: 0) command string (terminated by newline)
+# Returns: command response (or '' on error)
+sub Command($)
+{
+    my $cmd = shift;
+    my $response;
+    if ($sock and print $sock $cmd and flush $sock) {
+        $response = Receive(1);
+        if ($response) {
+            if (defined $connected and $connected == 2) {
+                Print "Manip responding again\n";
+                $connected = 1;
+            }
+        } elsif (defined $connected and $connected == 1) {
+            Print "Manip not responding\n";
+            $connected = 2;
+        }
+    } else {
+        Close();
+        $response = '';
+    }
+    return $response;
+}
+
+#------------------------------------------------------------------------------
+# Receive response from manip
+# Inputs: optional time out in fractional seconds (0 to wait forever)
+# Returns: data or '' if timed out or error
+sub Receive(;$)
+{
+    my $timeout = shift;
+    my $response = '';
+    undef $alarmed;
+    alarm $timeout if $timeout;  # set timeout
+    my $result = recv($sock, $response, 65536, 0);
+    alarm 0 if $timeout;
+    unless (defined $result) {
+        $response = '';      # (just to be sure)
+        $alarmed or Close(); # close socket on any error but timeout
+    }
+    return $response;
+}
+
+#------------------------------------------------------------------------------
+# Parse command from cmdlog
+# Inputs: 0) command string
+sub ParseCmd($)
+{
+    my $cmd = shift;
+    # add to polling list if this was any POLYAXIS command
+    # (ie. "2013-07-30 09:04:40 [console] laserball to 0 0 0")
+    if ($cmd =~ /^\d{4}-.*\]\s+(\w+)/) {
+        #!!!! SHOULD WE ALSO LOG ALL COMMANDS TO THE DATABASE?
+        my $obj = uc $1;
+        # the object state may have been changed by the command,
+        # so poll now if this is a POLYAXIS
+        $active{$obj} = time() if $poly{$obj};
+    }
+}
+
+#------------------------------------------------------------------------------
+# Convert local manipulator time string to Unix time
+# Inputs: 0) Manipulator time string
+# Returns: seconds since Unix time zero, or undef on invalid time
+sub ManipTime($)
+{
+    my $time = shift;
+    my $t;
+    # convert manipulator local time to UTC
+    my @t = ($time =~ /\d+/g);
+    if (@t >= 7) {
+        $t[0] -= 1900;  # year
+        $t[1] -= 1;     # month
+        $t = timegm(reverse(@t[0..5])) + $t[6] / 100;
+        $t += ($time =~ /DST/ ? 4 : 5) * 3600;  # shift for time zone (with DST if necessary)
+    }
+    return $t;
+}
+
+#------------------------------------------------------------------------------
+# Get status of POLYAXIS or N2LASER and write the the SNO+ couch DB
+# Inputs: 0) POLYAXIS or N2LASER object name
+# Returns: none
+# Notes: Maintains %active lookup for active POLYAXIS objects
+sub GetPolyStatus($)
+{
+    local $_;
+    my $poly = shift;
+    my $response = Command("$poly monitor\n") or return;
+    my $lastPoll = $active{$poly} || time;
+
+    for (;;) {
+        # keep trying until we get the response from our command
+        unless ($response =~ /^Monitor: $poly$/mgi) {
+            ParseCmd($response);                # maybe it was a logged command
+            $response = Receive(0.1) and next;  # try again
+            last;
+        }
+        my %info = ( Status => undef, Position => undef, Axes => undef, sudbury_time => undef );
+
+        my $fmt = $poly eq 'N2LASER' ? \%laserFmt : \%polyaxisFmt;
+        my $json = FormatJSON($response, $fmt, \%info);
+
+        unless ($info{sudbury_time}) {
+            Print "No time for $poly\n";
+            return;
+        }
+        my $time = ManipTime($info{sudbury_time});
+        unless ($time) {
+            Print "Invalid time for $poly\n";
+            return;
+        }
+        # write to CouchDB
+        UpdateDB($poly, $time, $json);
+
+        if ($poly eq 'LASERBALL') {
+            # also poll N2LASER if this is the laserball
+            GetPolyStatus('N2LASER');
+        } elsif ($poly eq 'N2LASER') {
+            return; # all done if this is the N2LASER
+        }
+
+        # set next polling time according to source status
+        my $status = 0;
+        if ($info{Status} and $info{Status} =~ /^MOVING/) {
+            # poll quickly when moving
+            $active{$poly} = $lastPoll + $movingPollTime;
+            $status = 2;    # 2=moving
+        } elsif ($info{Position} and $info{Axes}) {
+            # poll more slowly if connected to any AXIS and below gate valve
+            my @pos = split ' ', $info{Position};
+            if (@pos == 3 and $pos[2] < $gateValvePosition) {
+                $active{$poly} = $lastPoll + $staticPollTime;
+                $status = 1; # 1=deployed
+            }
+        } else {
+            # otherwise, don't poll
+            delete $active{$poly};
+        }
+        unless (defined $status{$poly} and $status{$poly} == $status) {
+            $status{$poly} = $status;
+            $updateSourceDB = 1;
+        }
+        return;
+    }
+    Print "BAD poll for $poly\n";
+    # wait 1 sec and try again
+    $active{$poly} = $lastPoll + 1 unless $poly eq 'N2LASER';
+}
+
+#------------------------------------------------------------------------------
+# Format manip response for JSON output
+# Inputs: 0) response string
+#         1) Reference to hash of monitor labels and formats
+#         2) Optional hash of information to return (by name, not label)
+# Returns: JSON string
+sub FormatJSON($$;$)
+{
+    my ($response, $fmt, $info) = @_;
+    my $json = '';
+    while ($response =~ /(.*?):[ \t]*(.*?)(;|$)/mg) {
+        my ($label, $value) = ($1, $2);
+        my $format = $$fmt{$label} or next;
+        my $name;
+        if (ref $format eq 'ARRAY') {
+            $name = $$format[1];
+            $format = $$format[0];
+        } else {
+            ($name = lc $label) =~ tr/ /_/;
+            $format = 'string' unless $format;
+        }
+        $value =~ s/\(.*//; # remove anything from bracket onwards
+        $value =~ s/\s+$//; # remove trailing white space
+        # return this information if requested
+        $$info{$name} = $value if $info and exists $$info{$name};
+        $json .= ",\n" if $json;
+        $json .= qq( "$name": );
+        if ($format eq 'string') {
+            $value =~ s/"/\\"/g;  # escape quotes
+            $json .= qq("$value");
+        } elsif ($format eq 'string_array') {
+            $value =~ s/\s+/", "/g;
+            $value = qq("$value") if length $value;
+            $json .= "[ $value ]";
+        } elsif ($format eq 'number') {
+            $json .= $value;
+        } elsif ($format eq 'number_array') {
+            $value =~ s/\s+/, /g;
+            $json .= "[ $value ]";
+        } elsif ($format eq 'time') {
+            $value =~ s/ DST$/-04:00/ or $value .= '-05:00'; # (Sudbury)
+            $value =~ s/ /T/;
+            $json .= qq("$value");
+        } else {
+            warn "Unknown format ($format) for $name\n";
+        }
+    }
+    return $json;
+}
+
+#------------------------------------------------------------------------------
+# Update list of sources in the CouchDB
+# Inputs: none
+# Returns: none
+sub UpdateSourceDB()
+{
+    local $_;
+    my (@srcs, @dply, @move);
+    foreach (sort keys %poly) {
+        push @srcs, $_;
+        next unless $status{$_};
+        push @dply, $_;
+        push @move, $_ if $status{$_} == 2;
+    }
+    my $srcs = @srcs ? '"'.join('", "',@srcs).'"' : '';
+    my $dply = @dply ? '"'.join('", "',@dply).'"' : '';
+    my $move = @move ? '"'.join('", "',@move).'"' : '';
+    my $json = qq( "type": "SOURCES",\n) .
+               qq( "available": [ $srcs ],\n) .
+               qq( "deployed": [ $dply ],\n) .
+               qq( "moving": [ $move ]);
+    UpdateDB('SOURCES', time(), $json);
+}
+
+#------------------------------------------------------------------------------
+# Update CouchDB entry
+# Inputs: 0) object name, 1) document time (seconds since time zero), 2) JSON data
+# Notes: Input JSON data should not be wrapped in braces, nor terminated with a newline
+sub UpdateDB($$$)
+{
+    my ($obj, $time, $json) = @_;
+    my $hsec = int(($time - int($time)) * 100 + 0.5);
+    my @t = gmtime $time;
+    $t[5] += 1900;  # year
+    $t[4] += 1;     # month
+    my $stamp = sprintf('%.4d%.2d%.2d%.2d%.2d%.2d%.2d', reverse(@t[0..5]), $hsec);
+    my $path = "$dbBase$obj-$stamp";
+    my $data = qq({\n "timestamp": $time,\n "version": 0,\n$json\n}\n);
+    if ($console) {
+        print "======== $path\n$data";
+    } else {
+        my ($resp, $err) = $db->Put($path, $data);
+        Print "CouchDB Error $err\n", "$path = $data" if $err;
+    }
+}
+
+#------------------------------------------------------------------------------
+# end

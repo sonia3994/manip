@@ -1,0 +1,41 @@
+VERSION2.00
+
+// Revisions:   06/03/97 Fist version -- Richard Ford
+//              12/10/01 PH - added LAST_CELL
+//
+// 12/5/97 The Counter Board laser controller bit masks
+//         are no longer used as the mask is now specified
+//         in the wiring.dat file. The data entry is retained
+//         here for information only.
+//                                            Richard Ford
+DYE: dyeLaser
+	MOTOR: dyeLaserMotor                             //
+	ENCODER: dyeLaserEncoder                                 //
+	START_LIMIT: 0.000000            //
+	END_LIMIT: 44.0                               //
+	NEUTRAL_POSITION: 25.0                           //
+	PRESENT_POSITION: 11.443400                           //
+	PRESENT_CELL: 1.000000                     //
+	CELL_POSITION0: 5.800399     //cell 0 position from front (rewritten after calibration)
+	CELL_WAVELENGTH0: 337.1        //cell 0 wavelength (nm)
+	CELL_POSITION1: 11.442048    //
+	CELL_WAVELENGTH1: 365.0                          //
+	CELL_POSITION2: 21.395802//
+	CELL_WAVELENGTH2: 386.0                          //
+	CELL_POSITION3: 31.577757//
+	CELL_WAVELENGTH3: 500.0                          //
+	CELL_POSITION4: 41.537460//
+	CELL_WAVELENGTH4: 0.0                          //
+	CELL_POSITION5: 41.537460//
+	CELL_WAVELENGTH5: 0.0                          //
+	CELL_POSITION6: 41.537460//
+	CELL_WAVELENGTH6: 0.0                          //
+	CELL_POSITION7: 41.537460//
+	CELL_WAVELENGTH7: 0.0                          //
+	CELL_POSITION8: 41.537460//
+	CELL_WAVELENGTH8: 0.0                          //
+	CELL_POSITION9: 41.537460//
+	CELL_WAVELENGTH9: 0.0                          //
+//      STARTSWITCHMASK: 0X0008      // Masks to get limit switch from control board
+//      ENDSWITCHMASK:   0X0004      // "
+END;

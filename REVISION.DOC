@@ -1,0 +1,121 @@
+2014/09/11 Version 5.3 - PH
+
+- attempt to fix filter wheel quirks
+
+2014/01/29 Version 5.2 - PH
+
+- fixed bug which could cause crash on some systems
+
+2013/10/03 Version 5.1 - PH
+
+- added global POLLS command
+- fixed problem with duplicate AVR's in free list
+- made AVR commands expert
+- don't add duplicate identical adjacent commands to history buffer
+
+2012/10/12 Version 5.0 - PH
+
+- adapted to run on Linux with AVR32 USB hardware
+- added AVR32 object and INIT and VER commands
+- changed date format in log files
+
+2006/03/16 Version 4.1 - PH
+
+- added "zpoll" command
+- changed alias to allow controlling with original name
+
+2005/01/13 Version 4.0 - PH
+
+- added alias for all objects, and alias command for PolyAxis
+  (Note: You must add ALIAS as first entry for each polyaxis
+  if you want the aliases to be persistent when you quit MANIP.)
+
+2005/01/07 Version 3.9 - PH
+
+- changed AV class to turn off polls when sensing is off
+- AV monitor command polls sensropes to get actual raw lengths
+
+2003/05/05 Version 3.8 - PH
+
+- reset source orientation if ropes disconnected
+- save AV position and rotation in AV.DAT
+
+2003/03/31 Version 3.7 - PH
+
+- added PolyAxis SOURCEOFFSET and SOURCEORIENTATION commands
+- added optional SOURCE_ORIENTATION setting to POLYAXIS.DAT
+	(Note: Add SOURCE_ORIENTATION after SOURCE_OFFSET in
+	POLYAXIS.DAT if you want to save this setting.)
+- don't allow PolyAxis to move if any Axis has polls off
+
+2003/01/13 Version 3.6 - PH
+
+- added ALLOW command
+
+2001/12/18 Version 3.5 - PH
+
+- turn off motor windings at regular intervals if statis is off
+- added PRESENT_CELL to DYE.DAT
+- added printout of raw loadcell readings for calibration point
+
+2001/10/24 Version 3.4 - PH
+
+- additional expert commands now extend the timeout
+- added 5 virtual dye cells
+
+2000/12/07 Version 3.3 - PH
+
+- the RESET command now also resets error stop status
+- added extra message if polyaxis stops due to an axis error
+
+2000/09/28 Version 3.2 - PH
+
+- total re-write of network code
+- write loadcell calibrations to command log file
+- added PUT and GET commands
+
+2000/09/05 Version 3.1 - PH
+
+- added checks for source position in guide tubes
+- added VESSEL_THICKNESS and TUBE_RADIUS to AV.DAT
+
+2000/08/23 Version 3.0 - PH
+
+- added expert mode with password access
+- added ability to access Axis commands through PolyAxis
+- added new PolyAxis "single axis" mode when running individual axes
+- added extra logic in PolyAxis to check while driving single axis
+- added umbilical "addSlack" command
+- added slack printout to monitor command
+- log changes in umbilical length due to "init" command
+- automatic umbilical "init" when entering vessel in 3 axis mode
+- added Axis "tensionLimits" command
+
+2000/06/05 Version 2.8 - PH
+
+- compensate for umbilical slack when using PolyAxis 'locate' or
+	umbilical 'init' commands
+- add stop messages to command log output
+- stop on encoder or tension errors at axis level
+- added axis 'errorstop' command
+
+1998/07/07 Version 1.4.1 - PH
+
+- avoid sending error messages to remote hosts with command responses
+
+1998/05/26 Version 1.4 - PH
+
+- stop ALL polyaxis and axis on STOP command
+- ESC key now performs STOP command
+- added AV attachments to AV MONITOR command
+- added GUIDETUBE PolyAxis motion type
+- allow only one connection per host
+
+1996/12/10 Version 1.1 - PH
+
+- changed lots of stuff
+
+1995/07/25 Version 0.1 - Tom Radcliffe
+
+- original DOS version created (drives sources using fuzzy logic)
+

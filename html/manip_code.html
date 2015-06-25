@@ -1,0 +1,615 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+</HEAD>
+<BODY>
+<FONT COLOR="#FF0000"><FONT SIZE=+3>DRAFT</FONT></FONT>&nbsp;
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>&nbsp;
+<HR SIZE=4 WIDTH="100%">
+
+<P><B><FONT SIZE=+2>Source Code Documentation</FONT></B>
+
+<P>The manipulator software is written in C++, and uses the object-oriented
+features of the language to build a set of objects which control the various
+components of the manipulator system.
+
+<P>At the highest level, the PolyAxis objects actually control the position
+of the manipulator carriage. This class is so named because PolyAxis objects
+may be connected to one or more Axis objects which in turn drive the individual
+manipulator ropes. Currently, a PolyAxis is only controllable if it is
+connected to either one or three Axes. With one axis attached, the source
+can be moved only in the Z axis. With two axes, the source can be moved
+in either the X-Z or the Y-Z plane, depending on which axes are attached.
+
+<P>There is one PolyAxis object for each of the possible sources. These
+objects are read in from the POLYAXIS.DAT file when the MANIP program starts
+up. Interaction with these objects is through a simple <A HREF="manip_cmd.html">command
+line interface</A> which can be accessed from either the local keyboard
+or a remote computer.
+
+<P>More complex sources may be derived from the PolyAxis class, allowing
+additional functionality and an expanded command suite. The <A HREF="manip_cmd.html#R_Source">rotating
+source</A> is an example of this; it allows control of two additional motors
+used to rotate the source.
+
+<P>As well as the PolyAxis objects, all possible Axis objects are automatically
+constructed from the data file (AXIS.DAT in this case) at program startup.
+This gives you access to the Axis objects at runtime, allowing them to
+be associated with the appropriate PolyAxis objects for controlling the
+manipulator.
+
+<P>This document explains the objects used in the manipulator software.
+As well as the PolyAxis and Axis objects, there are a host of other objects
+used to control the individual components of the manipulator system.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="ManipulatorObjects"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Manipulator
+Objects</FONT></FONT></B>
+
+<P>The following table lists all of the objects of the manipulator software,
+with a brief explanation of their function.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR>
+<TD VALIGN=TOP><B>am9513</B></TD>
+
+<TD>System timing controller chip used by the TIO10 card. Each am9513 has
+five channels.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>am9513channel</B></TD>
+
+<TD>A single channel of the am9513 timer chip.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>BitSwitch</B></TD>
+
+<TD>Allows controlling the state of one digital I/O bit through the counterboards.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>AV</B></TD>
+
+<TD>Acrylic vessel positioning system. Keeps track of the AV position in
+space.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Axis</B></TD>
+
+<TD>Controls a single manipulator rope. Contains a Motor to drive the rope,
+a rotary Encoder to measure the position, and a Loadcell to measure the
+tension.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CBAnalogIO</B></TD>
+
+<TD>Counter board analog I/O object.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CBbcdIO</B></TD>
+
+<TD>Counter board binary coded decimal I/O.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CBDigitalIO</B></TD>
+
+<TD>Counter board digital I/O.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CBLaserPowerIO</B></TD>
+
+<TD>Controls power to the nitrogen laser.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CBLaserTriggerIO</B></TD>
+
+<TD>Controls the laser trigger to actually start the laser firing.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Client</B></TD>
+
+<TD>Base class for netork clients [virtual]. One client object is created
+for each remote host that is connected.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Command</B></TD>
+
+<TD>Class to encapsulate a command string with its procedures.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Controller</B></TD>
+
+<TD>Provides an interface for objects to execute individual commands, and
+for derived objects to modify the command set of their base classes.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>DataInput</B></TD>
+
+<TD>DataInput acts as a repository for accessing many of the lower level
+hardware objects.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Dispatcher</B></TD>
+
+<TD>Dispatcher for user-interface commands entered via the keyboard or
+remote computer.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Display</B></TD>
+
+<TD>Video display interface used for all screen output.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Dye</B></TD>
+
+<TD>Controls the laser dye switching hardware which consists of a Motor,
+Encoder and two limit switches accessed via Hardware IO.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Encoder</B></TD>
+
+<TD>A rotary digital encoder. Uses HardwareIO to access the counter board
+which contains the up/down counter for the encoder.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Filter</B></TD>
+
+<TD>The laser attenuation filter wheel. The wheel is motor-driven with
+a position encoder,and has a tab stop which is accessed through HardwareIO.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Hardware</B></TD>
+
+<TD>Base class provides objects with the ability to accept commands, be
+polled on a regular basis, and become part of a hardware registry and an
+automatic database update mechanism.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>HardwareIO</B></TD>
+
+<TD>Base hardware class for accessing the counter board analog and digital
+I/O.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>InputFile</B></TD>
+
+<TD>Used to read formatted data from ASCII data files.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Keyboard</B></TD>
+
+<TD>Keyboard interface object.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Laser</B></TD>
+
+<TD>High-level nitrogen laser object. Controls the laser power, dye switcher
+and filter wheels.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Loadcell</B></TD>
+
+<TD>Measures tension or pressure using a loadcell connected to one channel
+of a counterboard analog input.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>LockedMotor</B></TD>
+
+<TD>A specialized motor that runs synchronously with a master motor.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Lockout</B></TD>
+
+<TD>Object used to output a signal to lock out the use of gate valves while
+a manipulator is deployed.&nbsp; Uses one of the digital output channels
+of a Pulser for its output.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ManipulatorRope</B></TD>
+
+<TD>Used to store the physical parameters and derived quantities for a
+single manipulator rope.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ManPos</B></TD>
+
+<TD>Base class provides the interface for manipulator position calculation
+routines.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ManPos1</B></TD>
+
+<TD>Calculates the manipulator position for a single-axis system.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ManPos3</B></TD>
+
+<TD>Calculates the manipulator position for a three-axis system.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Motor</B></TD>
+
+<TD>Contains the code to drive a stepper motor.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>NBitWrite</B></TD>
+
+<TD>Allows setting a group of bits as a unit.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Object</B></TD>
+
+<TD>Base class provides an interface to name an object and gives it the
+ability to sign out Hardware objects from the registry.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>OutputDev</B></TD>
+
+<TD>Base class used to re-direct output to various devices.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>OuputFile</B></TD>
+
+<TD>Used to write formatted data to ASCII data files.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>pia</B></TD>
+
+<TD>Interface board in PC that communicates with data concentrator box.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>PCTCPClient</B></TD>
+
+<TD>Network client based on PC-TCP network libraries.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>PCTCPServer</B></TD>
+
+<TD>Network server based on TC-TCP network libraries.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>PolyAxis</B></TD>
+
+<TD>The fundamental manipulator object. This is the high-level object that
+actually controls the manipulator position.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Pulser</B></TD>
+
+<TD>Used to output a square wave at a specified frequency.&nbsp; Currently,
+the only pulser created is the laser trigger pulser.&nbsp; The pulser object
+also has two digial output channels which can be used by other objects
+(such as the Lockout object).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>R_Source</B></TD>
+
+<TD>Derived from PolyAxis, this specialized object has two extra motors
+used to rotate the directional source.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>SenseRope</B></TD>
+
+<TD>A single sense rope used to monitor the acrylic vessel position. Seven
+of these ropes are used bye the AV positioning system.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Server</B></TD>
+
+<TD>Base class for network servers [virtual]. Provides an interface to
+allow control and monitoring from a remote computer.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>tio10</B></TD>
+
+<TD>Interface to the TIO10 digital I/O boards in the PC. A TIO10 card contains
+two am9513 chips.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>Umbilical</B></TD>
+
+<TD>A specialized form of an Axis. The umbilical is not used to control
+the source position, and has the additional quality of having a finite
+density and buoyancy.</TD>
+</TR>
+</TABLE>
+
+
+<P><A NAME="ObjectHierarchy"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Object
+Hierarchy</FONT></FONT></B>
+
+<P>In general, objects in the manipulor code are representations of physical
+entities. The table below shows the inheritence hierarchy and associations
+for the manipulator objects. Objects in bold to the right inherit from
+their base classes to the left. The rightmost column lists the objects
+used by each of the higher level objects.
+
+<P>The basis for all of the higher level physical objects is the Controller
+class. This class supports a command interface allowing the user to interact
+with the object, and a polling mechanism allowing the object to perform
+autonomous operations. The Controller class is derived from the Hardware
+class, which in turn is derived from the Object class. The Hardware and
+Object classes have been omitted from the following table for simplicity.
+
+<P>For example, the PolyAxis class (which is the high-level class used
+to control the position of the calibration source) is derived from Controller
+so it can perform autonomous operations and interact with the user, but
+it accesses the AV object to get information about the position of the
+vessel, Axis objects to control the individual manipulator ropes, a ManPos
+object to perform the position calculations, and an Umbilical object to
+control the umbilical. The R_Source derived from PolyAxis has all this
+functionality plus it acesses a Motor and LockedMotor to control the angular
+position of the rotating source.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR>
+<TD ALIGN=CENTER COLSPAN="3"><B><FONT SIZE=+1>Inheritance</FONT></B></TD>
+
+<TD ALIGN=CENTER><B><FONT SIZE=+1>Associations</FONT></B></TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>am9513</B></TD>
+
+<TD>am9513channel</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>am9513channel</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="12"><B>Controller</B></TD>
+
+<TD COLSPAN="2"><B>AV</B></TD>
+
+<TD>SenseRope</TD>
+</TR>
+
+<TR>
+<TD><B>Axis</B></TD>
+
+<TD><B>Umbilical</B></TD>
+
+<TD>Motor, Encoder, Loadcell, ManipulatorRope</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>Dye</B></TD>
+
+<TD>HardwareIO, Motor, Encoder</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>Encoder</B></TD>
+
+<TD>HardwareIO</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>Filter</B></TD>
+
+<TD>HardwareIO, Motor, Encoder</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>Laser</B></TD>
+
+<TD>HardwareIO, Dye, Filter, Loadcell</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>Loadcell</B></TD>
+
+<TD>HardwareIO</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>Lockout</B></TD>
+
+<TD>Axis, Pulser</TD>
+</TR>
+
+<TR>
+<TD><B>Motor</B></TD>
+
+<TD><B>LockedMotor</B></TD>
+
+<TD>am9513channel, pia, tio10</TD>
+</TR>
+
+<TR>
+<TD><B>PolyAxis</B></TD>
+
+<TD><B>R_Source</B></TD>
+
+<TD>AV, Axis, ManPos, Umbilical (and Motor, LockedMotor for R_Source)</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>Pulser</B></TD>
+
+<TD>am9513channel, pia, tio10</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>SenseRope</B></TD>
+
+<TD>HardwareIO</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>DataInput</B></TD>
+
+<TD>HardwareIO, Motor, BitSwitch, CBAnalogIO, CBbcdIO, CBDigitalIO, CBLaserPowerIO,
+CBLaserTriggerIO, NBitWrite, tio10</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>Display</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>Dispatcher</B></TD>
+
+<TD>Display</TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="5"><B>HardwareIO</B></TD>
+
+<TD COLSPAN="2"><B>CBAnalogIO</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="3"><B>CBDigitalIO</B></TD>
+
+<TD><B>CBbcdIO</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD><B>CBLaserPowerIO</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD><B>CBLaserTriggerIO</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>NBitWrite</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>InputFile</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>Keyboard</B></TD>
+
+<TD>Dispatcher, Display</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>ManipulatorRope</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="2"><B>ManPos</B></TD>
+
+<TD COLSPAN="2"><B>ManPos1</B></TD>
+
+<TD ROWSPAN="2">AV, ManipulatorRope, Umbilical</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="2"><B>ManPos3</B></TD>
+</TR>
+
+<TR>
+<TD><B>Object</B></TD>
+
+<TD><B>Server</B></TD>
+
+<TD><B>PCTCPServer</B></TD>
+
+<TD>Dispatcher, Display, Client</TD>
+</TR>
+
+<TR>
+<TD><B>OutputDev</B></TD>
+
+<TD><B>Client</B></TD>
+
+<TD><B>PCTCPClient</B></TD>
+
+<TD>Dispatcher, Display</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>OutputFile</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>pia</B></TD>
+
+<TD>-</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3"><B>tio10</B></TD>
+
+<TD>am9513, pia</TD>
+</TR>
+</TABLE>
+
+<HR WIDTH="100%">
+</BODY>
+</HTML>

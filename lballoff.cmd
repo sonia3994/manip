@@ -1,0 +1,19 @@
+testrope polls off
+testropeencoder polls off
+testropeloadcell polls off
+testumbilical polls off
+testumbilicalencoder polls off
+testumbilicalloadcell polls off
+westrope polls off
+westropeencoder polls off
+westropeloadcell polls off
+eastrope polls off
+eastropeencoder polls off
+eastropeloadcell polls off
+centralrope polls off
+centralropeencoder polls off
+centralropeloadcell polls off
+laserumbilical polls off
+laserumbilicalloadcell polls off
+laserumbilicalencoder polls off
+

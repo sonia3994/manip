@@ -1,0 +1,1143 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <TITLE>Manipulator</TITLE>
+</HEAD>
+<BODY>
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>&nbsp;
+<HR size=4 width="100%">
+<B><a href="manip_ver.html">Version 5.0</a> - October 12, 2012</B>
+<HR size=4 width="100%">
+
+<P><B><FONT SIZE="+2">Manipulator Commands</FONT></B>
+
+<P>This is an explanation of all the commands available through the manipulator
+control software. Some commands have required parameters indicated by angle
+braces &lt;>, and others have optional parameters indicated by square braces
+[].
+
+<P>Commands are not case sensitive, and are indicated here in uppercase
+for convention only.
+
+<P>Commands may be separated by semicolons, allowing you to enter more
+than one command on a line. This can be useful if you want to perform a
+number of tasks simultaneously, such as starting a group of motors at the
+same time.
+
+<P>Not all commands are available at all times. For instance, while an
+object is busy only a limited set of commands are accessible.  Also, some
+commands are accessible only while in expert mode (use the EXPERT command
+to enter or leave expert mode).
+
+<P><A NAME="CmdFile"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Command
+Files</FONT></FONT></B>
+
+<P>Command files are ASCII files that contain a list of commands (one per
+line) to be executed in order. Command file names end in .CMD. If an unrecognized
+command is entered, the manipulator program appends a .CMD to the command
+entered, and attempts to run a command file by that name. For example,
+entering "TESTING ONE TWO THREE" will attempt to read commands from the
+file TESTING.CMD with parameters ONE, TWO and THREE. Parameters entered
+on the command line are subsituted for strings %1, %2, %3 ... %9 in the
+file.
+
+<P>Commands are executed sequentially from the file as soon as the target
+object is accessible. Care must be taken to avoid unexpected results such
+as with the command sequence:
+<UL><B>LASERBALL TO 0 0 0</B>
+<BR><B>WAIT 120</B>
+<BR><B>LASERBALL TO -500 0 0</B></UL>
+The wait command will begin execution as soon as the laserball has started
+moving to 0 0 0, so the second move command will be executed 120 seconds
+after the motion started to the first point provided the laserball is ready
+to accept the next movement command. If the intent was for the source to
+remain stationary for 120 seconds, then this is the correct command sequence:
+<UL><B>LASERBALL TO 0 0 0</B>
+<BR><B>LASERBALL WAIT</B>
+<BR><B>WAIT 120</B>
+<BR><B>LASERBALL TO -500 0 0</B></UL>
+The LASERBALL WAIT command halts processing of the command file until the
+LASERBALL object is ready for another command (i.e. the motion has stopped).
+
+<P>The STOP command halts processing of the current command file. Note
+that command file execution continues even after an error occurs in one
+of the executed commands.
+
+<P>It is possible to execute a command file from within another command file,
+however when the second command file ends, execution of the first command
+file does not resume.  
+
+<P>When the MANIP program starts, it automatically tries to execute a command
+called AUTOEXEC.&nbsp; This has the effect of executing all commands in
+the AUTOEXEC.CMD file (if it exists) each time MANIP is run.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="General"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>General
+Commands</FONT></FONT></B>
+
+<P>General commands can be entered at any time from the keyboard or remote
+host, and are not associated with a particular object.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>HELP</B></TD>
+
+<TD>Display a list of available commands.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SHOW &lt;polyaxis></B></TD>
+
+<TD>Sets the PolyAxis object to be displayed on the screen. Many PolyAxis
+objects may exist at the same time, but only one at a time may be displayed
+on the local screen.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Gracefully stop the motion of the source by ramping down the motors
+of all axes.  Also stops processing of command file.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>HALT</B></TD>
+
+<TD>Stop the motors immediately on all Axes. This command stops the motors
+abruptly and should only be used in emergencies. Use the STOP<B> </B>command
+instead if possible.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MEM</B></TD>
+
+<TD>Display MANIP memory usage.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>LOGOUT</B></TD>
+
+<TD>Disconnect the remote host who sent this command. If the command is
+executed from the console, all remote hosts are disconnected and the server
+is restarted.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STATUS</B></TD>
+
+<TD>Gives status of currently displayed PolyAxis. This command allows remote
+hosts to view the information displayed on the local monitor.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LIST [type]</B></TD>
+
+<TD>Lists all objects of a specified type. If no type is given, all available
+objects are listed. Valid types are: PolyAxis, Axis, Encoder, Loadcell,
+Motor, AV, SenseRope, Dye, Filter and Laser.</TD>
+</TR>
+
+<TR>
+<TD><B>COMMAND</B></TD>
+
+<TD>Displays name of currently executing command file.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CONNECTIONS</B></TD>
+
+<TD>Displays a list of currently connected network clients.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>EXPERT [password|OFF]</B></TD>
+
+<TD>With the proper password, this command allows the current client to
+have access to expert commands.  If no password is given, the current
+mode (Expert or Normal) is indicated.  Type "EXPERT OFF", or any
+argument other than the correct password to leave expert mode.  Currently
+there is a 30 minute timeout on expert mode, after which you must re-enter
+the password.  The 30 minute timer can be reset by using the EXPERT command
+with the correct password at any time.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ALLOW &lt;ip></B></TD>
+
+<TD>Temporarily allow logins from specified IP until MANIP terminates.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CLEAR</B></TD>
+
+<TD>Clear the screen.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>GET &lt;file></B></TD>
+
+<TD>Get an ASCII file from the manipulator computer.  The filename must be
+specified.  This command is only valid when executed from a remote host.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PUT &lt;file></B></TD>
+
+<TD>Put an ASCII file to the manipulator computer.  The filename must be
+specified.  After the command is accepted, the client should send the
+ASCII file.  When the transfer is complete, close the file by sending the
+string "ENDPUT" (case is not significant) on a separate line with no extra
+white space, or abort with "ABORTPUT".  The PUT command is only valid when
+executed from a remote host.  This command can be used to replace the manipulator
+data files, however MANIP must be restarted to load the new values.  Note that MANIP
+writes some values from variables in memory when it quits, so it will not be possible to
+modify some data values using this technique.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>KILL &lt;client ID></B></TD>
+
+<TD>Closes connection to specified client. The &lt;client ID> is the ID
+in the CONNECTIONS list of the client to be killed.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>WAIT &lt;time></B></TD>
+
+<TD>Wait for specified time in seconds before executing next command. (i.e.
+WAIT 20) This command is useful only in command files.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ZPOLL</B></TD>
+
+<TD>Issue "MONITOR" command for the source with the lowest Z position.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CMDLOG [ON|OFF]</B></TD>
+
+<TD>Echo all commands to the host issuing this command. If issued from
+the console, write commands to local file CMD.DAT. If no state is specified,
+the current state of command logging is displayed. Local command logging
+is on by default when the program starts up.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>DATALOG [ON|OFF]</B></TD>
+
+<TD>Echo all data shown on screen to host issuing this command. If issued
+from the console, write data to local file DATA.LOG. If no state is specified,
+the current state of data logging is displayed. Local data logging is off
+by default when the program starts up.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ERRORLOG [ON|OFF]</B></TD>
+
+<TD>Echo all errors to host issuing this command. If issued from the console,
+write errors to local file ERROR.LOG. If no state is specified, the current
+state of error logging is displayed. Local error logging is on by default
+when the program starts up.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>DEBUG [ON|OFF]</B></TD>
+
+<TD>Turn on or off debug print statements. Off by default.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>POLLS [ON|OFF]</B></TD>
+
+<TD>Turn on or off polling of all objects.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>QUIT</B></TD>
+
+<TD>Quit the program and return to DOS. All position information a many
+settings are preserved in the data files, and will be restored the next
+time the program is run. See the <A HREF="manip_dat.html">data file documentation</A>
+for more information about which settings are preserved (all settings marked
+as [dynamic] are written by the software and restored automatically).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>INIT</B></TD>
+
+<TD>Enumerate USB devices to initialize AVR32 objects.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>VER</B></TD>
+
+<TD>Return current MANIP version.</TD>
+</TR>
+
+</TABLE>
+
+<P><A NAME="Object-based"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Object-based
+Commands</FONT></FONT></B>
+
+<P>Object-based commands are issued by typing the name of the object followed
+by the command. If no command or an invalid command is given, then a list
+of commands for that object is displayed. If the object name is invalid,
+a list of valid objects is displaed. All objects support the monitor and
+wait commands. Other commands unique to the specific type of object may
+also be available.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>MONITOR [logfile]</B></TD>
+
+<TD>Returns information about the current status of the object. If a log
+file name is specified, the output of the monitor command is appended to
+the specified file as well as going to the screen. Note: The filename MUST
+contain a "." or the output is not written.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>WAIT</B></TD>
+
+<TD>Suspends command file execution until the particular object is accessible
+for all commands. This command is only useful when run from a command file.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>POLLS [ON|OFF]</B></TD>
+
+<TD>Get/set polling state for an object.  Set to "on" or "off" to turn on/off polling.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="AVR32"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>AVR32
+Commands</FONT></FONT></B>
+<P>The AVR32 commands may be used to talk directly with the AVR32 USB device.</P>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD><B>INIT</B></TD>
+<TD>Enumerate USB bus for AVR32 devices and initialize this single AVR32 if found.</TD></TR>
+<TR VALIGN=TOP>
+<TD><B>&lt;all&gt;</B></TD>
+<TD>Send arbitrary commands directly to the AVR32.  Use the AVR32 "HELP" command
+for a short list of available AVR32 commands.</TD></TR>
+</TR></TABLE>
+
+<P><A NAME="PolyAxis"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>PolyAxis
+Commands</FONT></FONT></B>
+
+<P>The PolyAxis object is the primary object used for controlling the position
+of the source. The most common of these commands are LOCATE, which must
+be done each time a source is inserted, and TO, which is used each time
+the source is moved to a new location.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD><B>TO &lt;x y z></B></TD>
+
+<TD>The fundamental command used to move the manipulator to a specific
+position. The destination position must be given, and is specified by its
+x, y and z coordinates separated by spaces. If the desitination is illegal
+(outside the vessel, or outside the allowed tension region) an error message
+will be displayed, and the source will not be moved. The source may not
+move to the exact coordinates you specify due to physical constraints.
+For example, a source constrained to move in the x-z plane at y=0 will
+move to location (x 0 z) regardless of the y coordinate entered in the
+command. (i.e. PROTOTYPE TO 100.0 0 123.4)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>BY &lt;dx dy dz></B></TD>
+
+<TD>Moves the source relative to its current position. The displacement
+in x, y and z is specified in the command. (i.e. PROTOTYPE BY 0 0 10 --
+moves the prototype source up 10 cm)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Stops the motion of the source by gracefully ramping down the motor
+speeds of all axes connected to the source. This command also effects motors
+not contained by axes, such as the aiming motors of a rotating source.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>HALT</B></TD>
+
+<TD>Immediately stops the motion of the source by abruptly halting the
+motors of all axes. Used for emergencies only. For normal circumstances,
+use the STOP command instead.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LOCATE &lt;x y z></B></TD>
+
+<TD>Calibrate the initial position of the source. This command forces recalculation
+of all rope lengths, and resets all axis errors to zero. The position specified
+in the command is the current source position. This command must be issued
+for a known position in the glove box before a new source is lowered into
+the detector.  If an umbilical is connected, this command performs an umbilical
+"init" which assumes there is no physical slack in the umbilical.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TENSIONFIND</B></TD>
+
+<TD>Attempt to determine the source position based on measured rope tensions.
+This calculation is highly error-prone due to static friction and errors
+in tension measurements, sowill not accurately determine the source position.
+The results of the calculation are displayed, and the source position is
+left unchanged. In an emergency, this command can be used in conjunction
+with the LOCATE command to retrieve a lost source.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PATTERN &lt;file> [time]</B></TD>
+
+<TD>Move the source around a predefined pattern specified by the given
+file. Time is the time in seconds that the manipulator will remain stationary
+between pattern points. If no time is specified, the default of 120 seconds
+is assumed. The pattern file is an ASCII file. The first line spcifies
+the name of the output log file. Then subsequent lines specify X Y Z coordinates
+of the patter points. A line containing the string "REPEAT" causes the
+pattern to be repeated from the first point.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TENSIONS [x y z]</B></TD>
+
+<TD>Display expected tensions for the specified position, or for the current
+position if none is specified. In the vessel, the central rope tension
+must be known in order to calculate the side rope tensions. If no position
+is specified, the current central rope tension is used. Otherwise the central
+rope control tension (from AXIS.DAT) is used.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LENGTHS [x y z]</B></TD>
+
+<TD>Display the expeced rope lengths for the specified position, or for
+the current position if none is specified.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NETFORCE [x y z]</B></TD>
+
+<TD>Display the net force for the specified location, or for the current
+position if none is specified.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>CONNECT [axis...]</B></TD>
+
+<TD>Connect the polyaxis to one or more axes. (i.e. PROTOTYPE CONNECT EASTROPE
+CENTRALROPE WESTROPE -- connects the prototype source to three axes) If
+no axes are specified, the currently connected axes are displayed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DISCONNECT [axis...]</B></TD>
+
+<TD>Disconnects axes from a polyaxis object. If no axis list is given,
+then <U>all</U> axes are disconnected from the source.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RESET</B></TD>
+
+<TD>Executes the reset command for all currently connected axes. The reset
+command resets the <A HREF="manip_calc.html#AxisError">encoder errors</A>,
+and should only be necessary in the event of motor, encoder or loadcell
+failure.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>MOTION [strategy]</B></TD>
+
+<TD>Sets or displays motion strategy for moves in the vessel. Strategy
+is one of DIRECT, ORTHO or UMBIL. If no strategy is given, the current
+state is displayed. If motion is set to DIRECT, the manipulator will move
+the source directly between the two points. ORTHO mode moves in horizontal
+and vertical lines to reach the destination. See the
+<a href="../figures/manip_ortho.html">ORTHO motion figure</a> for a visual
+representation of this motion type.  This mode is useful because
+it avoids high and low tension areas when moving between points near the
+edges of the vessel. UMBIL motion causes the source to move in paths of
+constant umbilical length when the umbilical is rubbing on the neck ring.
+The source is moved to the center line of the vessel in order to change
+the umbilical length. For DIRECT moves, every move within the vessel is
+accomplished in one segment. Moves between the vessel and the neck are
+always broken up into two segments, with an intermediate point just below
+the neck ring. In ORTHO mode, vessel moves can be broken two segments,
+and in UMBIL mode, up to three segments. Use of ORTHO mode is suggested
+for 3-axis control.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>EQUALIZE [ON|OFF]</B></TD>
+
+<TD>Turns on or off tension equalization mode, or displays the current
+state if no parameters are given. With tension equalization on, the side
+ropes are set to their calculated tensions after the source comes to rest.
+This may prevent unwanted motion of the source due to relaxing of the springs
+when the source is supposed to be stationary. It is suggested that this
+mode be left OFF unless source motion problems are observed.</TD>
+</TR>
+<TR>
+<TD VALIGN=TOP><B>&lt;axis> &lt;cmd> [args...]</B></TD>
+
+<TD>Executes Axis level commands via the PolyAxis object.  Allows
+control of individual source ropes.  Additional logic is built in
+if Axes are driven at this level.  This logic prevents an axis from being
+driven at low or high tension, and prevents other PolyAxis ropes from going
+into low or high tension while the Axis is driving.  If a rope is already
+outside the tension range, then other Axes may be driven but only in a
+direction which would restore the axis to an acceptable tension.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="R_Source"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>R_Source
+PolyAxis Commands</FONT></FONT></B>
+
+<P>The rotating source is derived from the polyaxis class, and supports
+all of the polyaxis commands plus these additional commands to control
+the motors for rotation. Note that from the user interface, the R_Source
+appears as a regular polyaxis object, but with extra commands.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>SETORIENTATION &lt;theta> &lt;phi></B></TD>
+
+<TD>Initializes the direction at the source is pointing to a specific theta
+and phi. (i.e. SETORIENTATION 0 90 -- tells the software that the source
+is at theta=0 and phi=90)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>AIMAT &lt;theta> &lt;phi></B></TD>
+
+<TD>Rotate the source to point at a specific direction.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ROTATE [vel]</B></TD>
+
+<TD>Rotate theta and phi continuously at the specified velocity in degrees/sec.
+If no velocity is given, a default velocity is used. To stop the source
+rotating, use the STOP command.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="N2_Laser"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>N2 Laser
+Commands</FONT></FONT></B>
+
+<P>These commands control the functioning of the nitrogen laser.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>POWERON</B></TD>
+
+<TD>Turns on the 120V power for the nitrogen laser and the motor power
+supply for the dye laser and filter wheels operation. On power-up the nitrogen
+laser begins the warmup cycle. You should check that the nitrogen pressure
+and flow are correct first using the MONITOR command. Note that this assumes
+the switch controls on the local panel are in the remote position and that
+the power connections are in the default configeration, see the N2/Dye
+laser manual for instructions.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POWEROFF</B></TD>
+
+<TD>Switches off the nitrogen laser power and motor power if in remote
+mode (see above).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>START</B></TD>
+
+<TD>Commands the trigger controler to start the laser running. There is
+a 2 minute wait cycle before the laser will trigger, or re-trigger if it
+was stopped. The laser thyratron must be warmed up before the laser will
+trigger, although the start command can be entered at any time and it will
+get executed after the warmup.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Immediately stops the laser running without powering down the thyratron
+or high voltage. There is a 2 minute wait cycle before laser will retrigger.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>HIPRESSURE</B></TD>
+
+<TD>Show the N2 pressure at the local regulator (psi).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LOWPRESSURE</B></TD>
+
+<TD>Show the N2 pressure at the laser inlet, after the flow meter. This
+should not be below 80psi (85-90 psi is normal). The laser will automatically
+stop if this pressure is below 70psi.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>GASFLOW</B></TD>
+
+<TD>Show the N2 gas flow calculated from the 2 pressure transducer reading.
+This has an arbitrary scale but should not get below 30.0 which corresponds
+to about 1.0 L/min. Laser will stop automatically below 20.0.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SETND</B></TD>
+
+<TD>Set the filter wheels to the setting closest to the specified ND fraction.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RATE</B></TD>
+
+<TD>Set the laser firing rate in Hz.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>BLOCK</B></TD>
+
+<TD>Turn both filter wheels to the beam stop position.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Dye_Laser"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Dye Laser
+Commands</FONT></FONT></B>
+
+<P>These commands control the output frequency of the laser by allowing
+you to select among various dye cells.  Note that the Laser beam must
+be blocked before changing dye cells to prevent an excessive amount of
+light from entering the detector.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>INIT</B></TD>
+
+<TD>Forces selector stepper motor to agree with the encoder readout. This
+should only be necessary during maintenance or an abnormal power outage.
+You should probably follow this command with the findzero command as the
+selector motor is likely lost at this point (unless you used the tostart
+command).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>WAVELENGTH &lt;val></B></TD>
+
+<TD>Find the closest wavelength dye available and moves to select that
+dye cell. The wavelength is specified in nm. Use the monitor command to
+see which cell position and wavelength was selected.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL &lt;num></B></TD>
+
+<TD>Moves the selector motor carriage to the position to use the cell number
+given.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>FORWARD &lt;dist></B></TD>
+
+<TD>Move selector motor forward this many centimeters.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>BACKWARD &lt;dist></B></TD>
+
+<TD>Move selector motor backward this many centimeters.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TOSTART</B></TD>
+
+<TD>Go to the zero mark. If the zero-point limit switch is not encounted
+at the expected location then the motor will move the selector carriage
+slowly until it is found. You should use the monitor command to see if
+it did find the limit switch as expected.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TOEND</B></TD>
+
+<TD>Go to end mark (see tostart).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TONEUTRAL</B></TD>
+
+<TD>Goes to a location where the laser beam is hitting a black beam stop.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Stops the motor but this is not working properly yet!</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CALCELL &lt;num></B></TD>
+
+<TD>Updates the carriage position database (dyelaser.dat) so that the present
+carriage position becomes the new position for the cell number given.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>FINDZERO</B></TD>
+
+<TD>The selector motor runs backwards until it locates the zero-point limit
+switch. It then initializes the optical encoder. This should only be necessary
+after an abnormal power outage.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Filter"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Filter Wheel
+Commands</FONT></FONT></B>
+
+<P>These commands control the output amplitude of the laser by allowing
+you to insert various density filters into the beam. There are two filter
+wheels, filterwheela and filterwhellb, each with eight stop (filter) positions.
+On each wheel one of the positions is a blank (straight through hole) and
+one of the positions is a beam stop. The other 6x6 positions are listed
+in the data file dyelaser.dat.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>CWD [degrees]</B></TD>
+
+<TD>Advancewheel clockwise by degrees.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CCWD [degrees]</B></TD>
+
+<TD>Move counter-clockwise by degrees.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CWS [stops]</B></TD>
+
+<TD>Advance this number of stops.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CCWS [stops]</B></TD>
+
+<TD>Counter-clockwise this many stops.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POSITION [num]</B></TD>
+
+<TD>Goto this stop-position number.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TOTAB</B></TD>
+
+<TD>Goto the zero mark tab stop.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CALTAB</B></TD>
+
+<TD>Make the current position the zero-point position. Should not be necessary
+except during unusual maintenance.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND [value]</B></TD>
+
+<TD>Find and goto the stop-position with a ND filter closest to the value
+given. You might want to check with the monitor command to see what you
+got.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Stop the filter wheel movement.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CALPOSITION [num]</B></TD>
+
+<TD>Update the stop-position database (filter.dat) to make the current
+wheel position the position for the given stop number.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>FINDTAB</B></TD>
+
+<TD>Find the zero mark tab stop and initialize the encoder. This should
+only be necessary after an abnormal power outage.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>INIT</B></TD>
+
+<TD>Initialize, force encoder readout to agree with stepper motor. This
+should only be necessary during maintenance or after an abnormal power
+outage. You probably want to use the findtab command next if the filter
+wheel is confused about it's position.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Axis"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Axis Commands</FONT></FONT></B>
+
+<P>These commands will not be used during normal operation of the manipulator.
+They are useful only for calibration, debugging and rescue operations.
+<TABLE BORDER CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>UP &lt;dist></B></TD>
+
+<TD>Take up rope by specified distance in cm. The motor will continue to
+drive until the encoder indicates the specified amount of rope has been
+reeled in. No tension or error stops apply to this or any other axis command.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DOWN &lt;dist></B></TD>
+
+<TD>Let out the specified amount of rope.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TO &lt;pos></B></TD>
+
+<TD>Adjust the rope length to the specified value in cm.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CALIBRATE</B></TD>
+
+<TD>Begin calibration procedure for the loadcell. After calibration is
+started, use the POINT command to enter calibration points, then finish
+by entering the CALIBRATE command again. See the section on the <A HREF="manip_proc.html#CalibratingLoadcell">calibration
+procedure</A> for more information about doing a calibration.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POINT &lt;tens> &lt;units></B></TD>
+
+<TD>Enters a point for calibration of the loadcell. The the rope tension
+and units must both be specified. i.e. "EASTROPE POINT 10 N". Must be in
+calibration mode to execute this command.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MAXSPEED &lt;speed></B></TD>
+
+<TD>Sets maximum speed for the motor in cm/s.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Stop the motor immediately. The motor speed is not ramped down gradually.
+Resets sticky mode.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TENSION &lt;tens></B></TD>
+
+<TD>Set the axis to the specified tension in N. This is the only command
+for which sticky mode is on by default. The axis will actively hold the
+tension indefinitely until a stop command is executed unless the STICKY
+command is executed prior to this command, in which case the control .</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RESET</B></TD>
+
+<TD>Reset the encoder error for the axis. The encoder error represents
+the agreement between the encoder, loadcell and motor, and relies on the
+calibration of all three, as well as calibration of the spring constant
+and stretch for the axis.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STICKY</B></TD>
+
+<TD>Invert sticky mode for next axis command. When sticky mode is on, the
+axis will actively hold a specific tension or length until the stop command
+is entered. Sticky mode is on by default for the TENSION command, and off
+for all other commands that cause movement (UP, DOWN and TO). The stop
+command resets sticky mode.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MINLENGTH</B></TD>
+
+<TD>Calibrate rope length at the minimum length. This command is only useful
+for side ropes. Before this command is used, the side ropes must be tensioned
+and removed from the carriage.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ALARMRESET</B></TD>
+
+<TD>Clears Axis tension alarm, and resets high tension to zero after printing
+out the previous maximum tension value.  This command must be used after
+an Axis alarm to allow control of the Axis.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ALARMACTION [0|1|2]</B></TD>
+
+<TD>Sets the action for Axis alarms.  If no argument is given, the current
+alarm action is displayed.  Valid arguments are 0 (no action), 1 (warning
+only) or 2 (stop motors).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ALARMTENSION [&lt;val>]</B></TD>
+
+<TD>Sets the Axis alarm tension threshold.  If no argument is given,
+the current tension threshold (in N) is displayed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ERRORSTOP [ON|OFF]</B></TD>
+
+<TD>Turns on or off error stops for the next axis command.  If no argument
+is given, the current state of the error stop is printed.  Axis will stop
+driving if a tension error, flag error, or encoder error occurs unless
+the error stop is off.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TENSIONLIMITS</B></TD>
+
+<TD>Prints the current minimum and maximum tension limits for this axis.
+These limits are set in the AXIS.DAT file, and can't be changed at runtime.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Umbilical"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Umbilical
+Axis Commands</FONT></FONT></B>
+
+<P>The umbilical is a special type of axis, and supports all the regular
+axis commands plus these additional commands.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>INIT</B></TD>
+
+<TD>Initialize the umbilical length to agree with the tabulated length
+for the current source position without slack.  If there is slack specified
+by the SLACK command, it will be played out the next time the source
+is driven or the ADDSLACK command is used.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>SLACK [len]</B></TD>
+
+<TD>Specify the amount of slack in umbilical beyond the tabulated length.
+If no length is given, the current SLACK setting is displayed.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>ADDSLACK [delta length]</B></TD>
+
+<TD>Drives the umbilical to play out the specified
+additional length of umbilical.  If no value is specified,
+the umbilical is driven to the current slack setting.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Encoder"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Encoder Commands</FONT></FONT></B>
+
+<P>These commands will not be used during normal operation of the manipulator.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>READ</B></TD>
+
+<TD>Read the current value from the encoder. Not very useful since the
+MONITOR command was introduced.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>READLOOP</B></TD>
+
+<TD>Start reading the encoder repeatedly, printing out the value continuously
+until the STOPLOOP command is executed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOPLOOP</B></TD>
+
+<TD>Stop the current readloop command.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SETPOSITION &lt;len></B></TD>
+
+<TD>Set the current encoder position.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Loadcell"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Loadcell
+Commands</FONT></FONT></B>
+
+<P>These commands will not be used during normal operation of the manipulator.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>READ</B></TD>
+
+<TD>Read the tension of the loadcell. Not very useful since the introduction
+of the MONITOR command.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>READLOOP</B></TD>
+
+<TD>Place the loadcell in a read loop. The loadcell is read continuously
+until the STOPLOOP command is executed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOPLOOP</B></TD>
+
+<TD>Stop the current readloop command.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CALIBRATE</B></TD>
+
+<TD>Begin or end the calibration procedure. Once started, points for loadcell
+calibration are entered using the POINT command.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POINT &lt;val> &lt;units></B></TD>
+
+<TD>Enter a calibration point during the calibration procedure.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Motor"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Motor Commands</FONT></FONT></B>
+
+<P>These commands will not be used during normal operation of the manipulator.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>SETCRUISE &lt;vel></B></TD>
+
+<TD>Set motor cruising speed (units/s - the units are specified in the
+MOTOR.DAT file). The motor will ramp up to this speed at the current acceleration
+setting.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SETACCEL &lt;acc></B></TD>
+
+<TD>Set the nominal motor acceleration (units/s/s). This must be less than
+or equal to the maximum acceleration specified in the MOTOR.DAT file.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>INITPOS &lt;pos></B></TD>
+
+<TD>Initiate the motor position to the specified value. The motor is not
+moved, but the position is updated.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SETPOS &lt;pos></B></TD>
+
+<TD>Drive the motor to the specified position.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CHANGEPOS &lt;disp></B></TD>
+
+<TD>Move the motor by a relative amount specified by the displacement.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Stop the motor motion immediately.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CYCLE &lt;disp></B></TD>
+
+<TD>Cycle the motor back and forth by the specified displacment. The motor
+continues to cycle indefinitely until the stop command is issued.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="Pulser"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Pulser Commands</FONT></FONT></B>
+
+<P>These commands control the operation of pulser objects.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>RUN</B></TD>
+
+<TD>Start the pulser running.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+
+<TD>Stop the pulser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RATE &lt;rate></B></TD>
+
+<TD>Sets the pulser rate in Hz.&nbsp; Updates PULSER.DAT with the new rate.</TD>
+</TR>
+</TABLE>
+
+
+<P><A NAME="AV"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>AV Commands</FONT></FONT></B>
+
+<P>These commands will not be used during normal operation of the manipulator.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>ON</B></TD>
+
+<TD>Turn on automatic polling and calculation of acrylic vessel position.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>OFF</B></TD>
+
+<TD>Turn off AV polling and use default vessel position.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>HEAVYWATERLEVEL [level]</B></TD>
+
+<TD>Set heavy water level in cm. Zero is referenced to the center of the
+detector. If no level is given, the current heavy water level is displayed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LIGHTWATERLEVEL [level]</B></TD>
+
+<TD>Set light water level in cm. Zero is referenced to the center of the
+detector. If no level is given, the current light water level is displayed.</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="SenseRope"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>SenseRope
+Commands</FONT></FONT></B>
+
+<P>The SenseRope does not support any additional commands.
+
+<P>
+<HR width="100%">
+</BODY>
+</HTML>

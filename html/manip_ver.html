@@ -1,0 +1,151 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+   <TITLE>Manipulator</TITLE>
+</HEAD>
+<BODY>
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>&nbsp;
+<HR size=4 width="100%">
+<P><B><FONT SIZE=+2>Revision History</FONT></B>
+<P>
+
+<B>2013/10/03 Version 5.1 - PH</B>
+<UL>
+<LI>added global POLLS command
+<LI>fixed problem with duplicate AVR's in free list
+<LI>made AVR commands expert
+<LI>don't add duplicate identical adjacent commands to history buffer
+</UL>
+
+<B>2012/10/12 Version 5.0 - PH</B>
+<UL>
+<LI>adapted to run on Linux with AVR32 USB hardware
+<LI>added AVR32 object and INIT and VER commands
+<LI>changed date format in log files
+</UL>
+
+<B>2006/03/16 Version 4.1 - PH</B>
+<UL>
+<LI>added "zpoll" command
+<LI>changed alias to allow controlling with original name
+</UL>
+
+<B>2005/01/13 Version 4.0 - PH</B>
+<UL>
+<LI>added alias for all objects, and alias command for PolyAxis
+  (Note: You must add ALIAS as first entry for each polyaxis
+  if you want the aliases to be persistent when you quit MANIP.)
+</UL>
+
+<B>2005/01/07 Version 3.9 - PH</B>
+<UL>
+<LI>changed AV class to turn off polls when sensing is off
+<LI>AV monitor command polls sensropes to get actual raw lengths
+</UL>
+
+<B>2003/05/05 Version 3.8 - PH</B>
+<UL>
+<LI>reset source orientation if ropes disconnected
+<LI>save AV position and rotation in AV.DAT
+</UL>
+
+<B>2003/03/31 Version 3.7 - PH</B>
+<UL>
+<LI>added PolyAxis SOURCEOFFSET and SOURCEORIENTATION commands
+<LI>added optional SOURCE_ORIENTATION setting to POLYAXIS.DAT
+	(Note: Add SOURCE_ORIENTATION after SOURCE_OFFSET in
+	POLYAXIS.DAT if you want to save this setting.)
+<LI>don't allow PolyAxis to move if any Axis has polls off
+</UL>
+
+<B>2003/01/13 Version 3.6 - PH</B>
+<UL>
+<LI>added ALLOW command
+</UL>
+
+<B>2001/12/18 Version 3.5 - PH</B>
+<UL>
+<LI>turn off motor windings at regular intervals if status is off
+<LI>added PRESENT_CELL to DYE.DAT
+<LI>added printout of raw loadcell readings for calibration point
+</UL>
+
+<B>2001/10/24 Version 3.4 - PH</B>
+<UL>
+<LI>additional expert commands now extend the timeout
+<LI>added 5 virtual dye cells
+</UL>
+
+<B>2000/12/07 Version 3.3 - PH</B>
+<UL>
+<LI>the RESET command now also resets error stop status
+<LI>added extra message if polyaxis stops due to an axis error
+</UL>
+
+<B>2000/10/03 Version 3.2 - PH</B>
+<UL>
+<LI>total re-write of network code
+<LI>write loadcell calibrations to command log file
+<LI>added PUT and GET commands
+</UL>
+
+<B>2000/09/05 Version 3.1 - PH</B>
+<UL>
+<LI>added checks for source position in guide tubes
+<LI>added VESSEL_THICKNESS and TUBE_RADIUS to AV.DAT
+</UL>
+
+<B>2000/08/23 Version 3.0 - PH</B>
+<UL>
+<LI>added expert mode with password access
+<LI>added ability to access Axis commands through PolyAxis
+<LI>added new PolyAxis "single axis" mode when running individual axes
+<LI>added extra logic in PolyAxis to check while driving single axis
+<LI>added umbilical "addSlack" command
+<LI>added slack printout to monitor command
+<LI>log changes in umbilical length due to "init" command
+<LI>automatic umbilical "init" when entering vessel in 3 axis mode
+<LI>added Axis "tensionLimits" command
+</UL>
+
+<B>2000/06/05 Version 2.8 - PH</B>
+<UL>
+<LI>compensate for umbilical slack when using PolyAxis 'locate' or
+  umbilical 'init' commands
+<LI>add stop messages to command log output
+<LI>stop on encoder or tension errors at axis level
+<LI>added axis 'errorstop' command
+</UL>
+
+<B>1998/07/07 Version 1.4.1 - PH</B>
+<UL>
+<LI>avoid sending error messages to remote hosts with command responses
+</UL>
+
+<B>1998/05/26 Version 1.4 - PH</B>
+<UL>
+<LI>stop ALL polyaxis and axis on STOP command
+<LI>ESC key now performs STOP command
+<LI>added AV attachments to AV MONITOR command
+<LI>added GUIDETUBE PolyAxis motion type
+<LI>allow only one connection per host
+</UL>
+
+<B>1996/12/10 Version 1.1 - PH</B>
+<UL>
+<LI>changed lots of stuff
+</UL>
+
+<B>1995/07/25 Version 0.1 - Tom Radcliffe</B>
+<UL>
+<LI>original DOS version created (drives sources using fuzzy logic)
+</UL>
+
+<P>
+<HR width="100%">
+</BODY>
+</HTML>

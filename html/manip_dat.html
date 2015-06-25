@@ -1,0 +1,1444 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+</HEAD>
+<BODY>
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4>
+Calibration Manipulator Software</FONT>&nbsp;
+<HR size=4 width="100%">
+<B><a href="manip_ver.html">Version 5.0</a> - October 12, 2012</B>
+<HR size=4 width="100%">
+
+<P><B><FONT SIZE=+2>Data Files</FONT></B>
+
+<P>The data files contain information about the static and dynamic properties
+of the objects created by the manipulator control software. The static
+properties are entered once and never change, and the dynamic properties
+are re-written as they change by the manipulator software.
+
+<P>Quick index of data files explained in this document:
+<UL>
+<LI>
+<A HREF="#WIRING.DAT">WIRING.DAT</A></LI>
+
+<LI>
+<A HREF="#SERVER.DAT">SERVER.DAT</A></LI>
+
+<LI>
+<A HREF="#MOTOR.DAT">MOTOR.DAT</A></LI>
+
+<LI>
+<A HREF="#PULSER.DAT">PULSER.DAT</A></LI>
+
+<LI>
+<A HREF="#LOADCELL.DAT">LOADCELL.DAT</A></LI>
+
+<LI>
+<A HREF="#ENCODER.DAT">ENCODER.DAT</A></LI>
+
+<LI>
+<A HREF="#FILTER.DAT">FILTER.DAT</A></LI>
+
+<LI>
+<A HREF="#DYE.DAT">DYE.DAT</A></LI>
+
+<LI>
+<A HREF="#LASER.DAT">LASER.DAT</A></LI>
+
+<LI>
+<A HREF="#SENSROPE.DAT">SENSROPE.DAT</A></LI>
+
+<LI>
+<A HREF="#AV.DAT">AV.DAT</A></LI>
+
+<LI>
+<A HREF="#AXIS.DAT">AXIS.DAT</A></LI>
+
+<LI>
+<A HREF="#POLYAXIS.DAT">POLYAXIS.DAT</A></LI>
+</UL>
+All data files have a version number as the first line in the file. This
+number is checked by the software to verify that the data file is compatible
+with the current version of the software. The format of this line is "VERSION#.##".
+
+<P>Object definitions in datafiles start with a key statement specifying
+the name of an object, and end with "END;" on a separate line. For example:
+<UL>COUNTERBOARD: WESTROPE
+<UL>DCSLOT: 6
+<BR>DIGITAL: 0xA4
+<BR>ANALOG: 2</UL>
+END;</UL>
+Physical values in the file are assumed to be in cm, kg, Hz and psi unless
+otherwise specified. The following is a list of valid units recognized
+by the manipulator software:
+<UL>cm, mm, in, ft, feet, m
+<BR>kg, g, N, lb, lbs, pound
+<BR>cm^3, cc, cm**3, L, m^3, m**3
+<BR>psi, Pa, kPa, atm
+<BR>Hz, cps, kHz, mHz</UL>
+Comments can be inserted at any point in the file. The delimiter for a
+comment is "//".
+
+<P>Entries marked <B>[optional]</B> may be omitted from the file, but all
+other entries are required and must appear in the specified order. Entries
+marked <B>[dynamic]</B> are rewritten by the manipulator software when
+the status of the related parameter changes. IMPORTANT NOTE: <B>[dynamic]</B>
+entries MUST be followed by a comment on the same line, leaving enough
+space for the maximum length string anticipated for that entry. This is
+necessary because the calibration software will not change the file length
+or overwrite an end of line while updating dynamic entries.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="WIRING.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>WIRING.DAT</FONT></FONT></B>
+
+<P>This file specifies all of the interconnections of the interfaces between
+the PC and the manipulator hardware. Objects in this file are automatically
+created at program startup by the DataInput object.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD><B>AVR32</B></TD>
+
+<TD><B>SERIAL</B></TD>
+
+<TD>The internal serial number embedded in the AVR32 controller chip.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD ROWSPAN="4"><B>COUNTERBOARD</B></TD>
+
+<TD><B>AVR32</B></TD>
+<TD>The AVR32 controller for this counterboard.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ADC</B></TD>
+
+<TD>[optional] The AVR32 ADC object used to read out analog values (ie. "a0" or "adc0").</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>COUNTER</B></TD>
+
+<TD>[optional] The AVR32 counter object used for encoder readout (ie. "c0").</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DIGITAL</B></TD>
+
+<TD>[optional] A list of the AVR32 digital input objects, separated by commas (ie. "pa16,pa20").</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD ROWSPAN="2"><B>MOTOR</B></TD>
+
+<TD><B>AVR32</B></TD>
+<TD>The AVR32 controller for this motor.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MOTOR</B></TD>
+
+<TD>Name of AVR32 motor object (ie. "m0").</TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="2"><B>PULSER</B></TD>
+
+<TD><B>AVR32</B></TD>
+<TD>The AVR32 controller for this pulser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MOTOR</B></TD>
+
+<TD>Name of AVR32 motor object that drives the pulser (ie. "m0").</TD>
+</TR>
+
+</TR>
+
+<TR>
+<TD VALIGN=TOP ROWSPAN="4"><B>LOCKOUT</B></TD>
+
+<TD><B>AVR32</B></TD>
+<TD>The AVR32 controller for this lockout.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>PULSER</B></TD>
+
+<TD>Associated pulser which specifies connector number for lockout output.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CHANNEL</B></TD>
+
+<TD>Output channel (0=motor AWO, 1=motor direction).</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>MAX_LENGTH</B></TD>
+
+<TD>Maximum length for any central rope or umbilical lockout.&nbsp; Any
+longer rope triggers lockout.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD ROWSPAN="2"><B>CBLASERPOWER</B></TD>
+
+<TD><B>AVR32</B></TD>
+<TD>The AVR32 controller.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DIGITAL</B></TD>
+
+<TD>The AVR32 digital I/O object.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD ROWSPAN="2"><B>CBLASERTRIGGER</B></TD>
+
+<TD><B>AVR32</B></TD>
+<TD>The AVR32 controller.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DIGITAL</B></TD>
+
+<TD>The AVR32 digital I/O object.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD ROWSPAN="2"><B>SENSEROPE</B></TD>
+
+<TD><B>AVR32</B></TD>
+<TD>The AVR32 controller.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>COUNTER</B></TD>
+
+<TD>The AVR32 counter object used for readout (ie. "c0").</TD>
+</TR>
+
+</TABLE>
+
+<BR><A NAME="SERVER.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>SERVER.DAT</FONT></FONT></B>
+
+<P>At startup, MANIP creates all server objects described in SERVER.DAT.&nbsp;
+Hence, multiple servers can be created, but each must have a unique port
+number.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="4"><B>SERVER</B></TD>
+
+<TD><B>PORT_NUMBER</B></TD>
+
+<TD>Port number or socket to be used for connection with remote client.
+Usually 2000.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>MAX_CONNECTIONS</B></TD>
+
+<TD>Maximum number of simultaneous connections allowed by the server.&nbsp;
+Set this to zero for an unlimited number of connections.&nbsp; If the specified
+number of connections is exceeded, then the connection that has been idle
+for the longest time is closed before opening the new connection.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>NUM_LISTENERS</B></TD>
+
+<TD>Number of listeners waiting for new connections on this server.&nbsp;
+This should be a number between 2 and 5.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CLIENT_NAME</B></TD>
+
+<TD>[optional] Name of remote client. Any other remote machines will be
+refused access. The remote client is able to access the full command suite
+of the manipulator software. There may be any number of client names specified,
+one for each client allowed to connect. If no client names are specified,
+then network security is disabled and all remote computers are allowed
+to connect. Currently, a maximum of 32 remote clients may be specified.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="MOTOR.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>MOTOR.DAT</FONT></FONT></B>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="9"><B>MOTOR</B></TD>
+
+<TD><B>POSITION</B></TD>
+
+<TD>[dynamic] Current motor absolute position in user units. The position
+is obtained by keeping track of the total number of motor steps and dividing
+by STEPS_PER_UNIT.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STEPS_PER_UNIT</B></TD>
+
+<TD>Conversion between motor steps and user units.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>UNITS</B></TD>
+
+<TD>Character string representing the type of units used (usually cm or
+deg).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MIN_SPEED</B></TD>
+
+<TD>Minimum motor speed. The motor will stop if an attempt is made to drive
+it below this speed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>START_SPEED</B></TD>
+
+<TD>Starting motor speed. This is the initial speed the motor takes when
+starting up from a stopped position. This speed cannot be less than MIN_SPEED.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CRUISE_SPEED</B></TD>
+
+<TD>Cruising speed. This is the ultimate speed that the motor will ramp
+up to when moving in step mode to its final destination position. Cannot
+be greater than MAX_SPEED.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MAX_SPEED</B></TD>
+
+<TD>Maximum motor speed. This is the maximum allowed motor speed when driven
+in velocity mode. Should be greater than cruise speed to allow extra control
+range for tension compensation if the motor is connected to an Axis.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NORM_ACCEL</B></TD>
+
+<TD>Normal motor acceleration/decceleration in units/s/s. This is the normal
+acceleration profile that the motor will use when ramping up or down in
+speed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MAX_ACCEL</B></TD>
+
+<TD>Maximum motor acceleration. This should be greater than the normal
+acceleration to allow extra control range while deccelerating to prevent
+overshoot of the destination position.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="PULSER.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>PULSER.DAT</FONT></FONT></B>
+
+<P>This file specifies the parameters for pulser objects.&nbsp; The RATE
+entry is written by the manipulator software when the pulser RATE command
+is executed.&nbsp; Currently, the only pulser object used is the LaserTriggerPulser.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="4"><B>LOADCELL</B></TD>
+
+<TD><B>SOURCE</B></TD>
+
+<TD>TIO10 source oscillator channel number.&nbsp; Specifies base frequency
+for oscillator, which is the pulser maximum rate.&nbsp; The minimum rate
+is the base frequency divided by 65536.&nbsp; Available channels are: 5
+(5e6Hz), 11 (1e6Hz), 12 (62500Hz), 13 (3906.25Hz), 14 (244.14Hz) and 15
+(15.26Hz).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MIN_RATE</B></TD>
+
+<TD>Minimum pulser rate in Hz.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MAX_RATE</B></TD>
+
+<TD>Maximum pulser rate in Hz.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RATE</B></TD>
+
+<TD>[dynamic] Current pulser rate in Hz.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="LOADCELL.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>LOADCELL.DAT</FONT></FONT></B>
+
+<P>This file specifies the calibration constants for loadcells. Loadcell
+entries for SLOPE, OFFSET and DATE are written by the manipulator software
+when a loadcell CALIBRATION command is executed.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="4"><B>LOADCELL</B></TD>
+
+<TD><B>MAXLOAD</B></TD>
+
+<TD>Maximum load carried by loadcell.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SLOPE</B></TD>
+
+<TD>[dynamic] Slope of conversion from ADC value to load in Newtons.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>OFFSET</B></TD>
+
+<TD>[dynamic] Zero offset in Newtons according to the formula: load = slope
+* ADC + offset</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DATE</B></TD>
+
+<TD>[dynamic] Date of last loadcell calibration.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="ENCODER.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>ENCODER.DAT</FONT></FONT></B>
+
+<P>Specifies constants for the digital rotary encoders.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="3"><B>ENCODER</B></TD>
+
+<TD><B>SLOPE</B></TD>
+
+<TD>Distance corresponding to one encoder count.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POSITION</B></TD>
+
+<TD>[dynamic] Current position of the encoder .</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DATE</B></TD>
+
+<TD>Date of last calibration.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="FILTER.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>FILTER.DAT</FONT></FONT></B>
+
+<P>Constants for laser attenuation filter wheels. There are 8 filters numbered
+0 through 7 on a wheel. The wheel is driven by a stepper motor and connected
+to an encoder. It also has a switch tripped by a tab to provide absolute
+positioning information.
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="20"><B>FILTER</B></TD>
+
+<TD><B>MOTOR</B></TD>
+
+<TD>Name of the motor connected to the filter wheel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ENCODER</B></TD>
+
+<TD>Name of the encoder.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TAB_POSITION</B></TD>
+
+<TD>[dynamic] Encoder reading when the tab trips the limit switch.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PRESENT_POSITION</B></TD>
+
+<TD>[dynamic] Current position of the filter wheel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP0</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 0.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND0</B></TD>
+
+<TD>Attenuation factor for filter number 0.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP1</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 1.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND1</B></TD>
+
+<TD>Attenuation factor for filter number 1.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP2</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 2.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND2</B></TD>
+
+<TD>Attenuation factor for filter number 2.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP3</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 3.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND3</B></TD>
+
+<TD>Attenuation factor for filter number 3.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP4</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 4.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND4</B></TD>
+
+<TD>Attenuation factor for filter number 4.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP5</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 5.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND5</B></TD>
+
+<TD>Attenuation factor for filter number 5.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP6</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 6.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND6</B></TD>
+
+<TD>Attenuation factor for filter number 6.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STOP7</B></TD>
+
+<TD>[dynamic] Encoder position for filter number 7.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ND7</B></TD>
+
+<TD>Attenuation factor for filter number 7.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="DYE.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>DYE.DAT</FONT></FONT></B>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="18"><B>DYE</B></TD>
+
+<TD><B>MOTOR</B></TD>
+
+<TD>Name of motor that drives the dye selecting mirror.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ENCODER</B></TD>
+
+<TD>Name of encoder on the mirror drive.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>START_LIMIT</B></TD>
+
+<TD>Position of limit switch at start of travel (cm).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>END_LIMIT</B></TD>
+
+<TD>Position of limit switch at end of travel (cm).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NEUTRAL_POSITION</B></TD>
+
+<TD>Mirror position to select straight-through beam path (cm).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PRESENT_POSITION</B></TD>
+
+<TD>Current mirror position (cm).</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_POSITION0</B></TD>
+
+<TD>Mirror position to select dye cell number 0.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_FREQUENCY0</B></TD>
+
+<TD>Laser light frequency of dye number 0.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_POSITION1</B></TD>
+
+<TD>Mirror position to select dye cell number1.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_FREQUENCY1</B></TD>
+
+<TD>Laser light frequency of dye number 1.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_POSITION2</B></TD>
+
+<TD>Mirror position to select dye cell number2.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_FREQUENCY2</B></TD>
+
+<TD>Laser light frequency of dye number 2.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_POSITION3</B></TD>
+
+<TD>Mirror position to select dye cell number3.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_FREQUENCY3</B></TD>
+
+<TD>Laser light frequency of dye number 3.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_POSITION4</B></TD>
+
+<TD>Mirror position to select dye cell number 4.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CELL_FREQUENCY4</B></TD>
+
+<TD>Laser light frequency of dye number 4.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>STARTSWITCHMASK</B></TD>
+
+<TD>Bit mask for start limit switch on control board.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ENDSWITCHMASK</B></TD>
+
+<TD>Bit mask for end limit switch on control board.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="LASER.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>LASER.DAT</FONT></FONT></B>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="30"><B>LASER</B></TD>
+
+<TD><B>LASERTYPE</B></TD>
+
+<TD>String representing the type of laser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DYELASERNAME</B></TD>
+
+<TD>Name of dye object associated with the laser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>FILTERWHEEL</B></TD>
+
+<TD>Name of 1st attenuation filter wheel object.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>FILTERWHEEL</B></TD>
+
+<TD>Name of 2nd attenuation filter wheel object.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PRESSURECELL</B></TD>
+
+<TD>Name of nitrogen high pressure cell object.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PRESSURECELL</B></TD>
+
+<TD>Name of nitrogen low pressure cell object.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RATE</B></TD>
+
+<TD>Trigger rate for laser in Hz.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MINGASFLOW</B></TD>
+
+<TD>Minimum averaged nitrogen gas flow rate for operation of laser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MINGASPRESSURE</B></TD>
+
+<TD>Minimum averaged nitrogen gas pressure for operation of the laser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ABSMINGASFLOW</B></TD>
+
+<TD>Minimum transient nitrogen gas flow rate for operation of the laser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ABSMINGASPRESSURE</B></TD>
+
+<TD>Minimum transient nitrogen gas pressure for operation of the laser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NUMFREQUENCIES</B></TD>
+
+<TD>Number of different dye frequencies available. Current maximum is 5.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LASERSTATUS</B></TD>
+
+<TD>[dynamic] Status of laser.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CONTROLMASK</B></TD>
+
+<TD>Bit mask for the 3 control bits. NOTE: All bit masks are now specified
+in WIRING.DAT, and are no longer used here.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LASEROFF</B></TD>
+
+<TD>Bit pattern for laser off status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LASERWARMUP</B></TD>
+
+<TD>Bit pattern for laser warmup status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LASERREADY</B></TD>
+
+<TD>Bit pattern for laser ready status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LASERRUNNING</B></TD>
+
+<TD>Bit pattern for laser running status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>WARMUPMASK</B></TD>
+
+<TD>Bit mask for laser warmup status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>READYMASK</B></TD>
+
+<TD>Bit mask for laser ready status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RUNNINGMASK</B></TD>
+
+<TD>Bit mask for laser running status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POWERONMASK</B></TD>
+
+<TD>Bit mask for power on status.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POWER_12V</B></TD>
+
+<TD>Mask for remote 12 volt power.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POWER_40V</B></TD>
+
+<TD>Mask for remote 40 volt power.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>REMOTEUNLOCK</B></TD>
+
+<TD>Mask for remote unlock.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>REMOTETRIGGER</B></TD>
+
+<TD>Mask for remote trigger.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DYEMOTOR1</B></TD>
+
+<TD>Mask for dye stir motor number 1.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DYEMOTOR2</B></TD>
+
+<TD>Mask for dye stir motor number 2.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DYEMOTOR3</B></TD>
+
+<TD>Mask for dye stir motor number 3.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DYEMOTOR4</B></TD>
+
+<TD>Mask for dye stir motor number 4.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="SENSROPE.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>SENSROPE.DAT</FONT></FONT></B>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="6"><B>SENSROPE</B></TD>
+
+<TD><B>SNOUT</B></TD>
+
+<TD>X-Y-Z coordinates for position of senserope exit.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NECK_ATTACH</B></TD>
+
+<TD>X-Y-Z coordinates for position of attachment block to acrylic vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DELTA</B></TD>
+
+<TD>X-Y-Z offset from NECK_ATTACH to the individual rope hole.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ZERO_OFFSET</B></TD>
+
+<TD>Offset to convert from raw ADC reading to absolute rope length.&nbsp;
+<BR>LENGTH = ZERO_OFFSET + RAW_ADC * SLOPE</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ADC_ZERO</B></TD>
+
+<TD>ADC value for a senserope when the vessel is in its rest position.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SLOPE</B></TD>
+
+<TD>Conversion factor from ADC counts to cm of senserope motion.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="AV.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>AV.DAT</FONT></FONT></B>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="35"><B>AV</B></TD>
+
+<TD><B>NECK_RING_STATIC_POSITION</B></TD>
+
+<TD>Nominal X-Y-Z position for center of neck ring.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NECK_RING_RADIUS</B></TD>
+
+<TD>Radius of neck ring measured to the center of the inside curvature.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NECK_RING_ROC</B></TD>
+
+<TD>Radius of curvature of the inside edge of the neck ring.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NECK_RADIUS</B></TD>
+
+<TD>Radius of the acrylic vessel neck.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>NECK_LENGTH</B></TD>
+
+<TD>Length of the acrylic vessel neck.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>VESSEL_RADIUS</B></TD>
+
+<TD>Inside radius of the acrylic vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>VESSEL_THICKNESS</B></TD>
+
+<TD>The nominal thickness of the acrylic vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TUBE_RADIUS</B></TD>
+
+<TD>Radius of the innermost surface of the PSUP.  Used in calculation
+to avoid hitting the PSUP when driving sources in a guide tube.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>D2O_LEVEL</B></TD>
+
+<TD>[dynamic] Level of the heavy water in the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>H2O_LEVEL</B></TD>
+
+<TD>[dynamic] Level of the heavy water in the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>THICKNESS_OF_TOP_BLOCKS</B></TD>
+
+<TD>Thickness of rope attachment blocks on top of AV neck.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>BLOCK_LABEL</B></TD>
+
+<TD>Label for the 1st manipulator side attachment block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POSITION</B></TD>
+
+<TD>X-Y-Z position of the attachment block. Measured at the hole where
+the rope leaves the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RADIUS</B></TD>
+
+<TD>Radius of curvature of the block as the rope wraps up around the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>OFFSET</B></TD>
+
+<TD>Horizontal offset from rope exit on block to center of radius of curvature.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>BLOCK_LABEL</B></TD>
+
+<TD>Label for the 2nd manipulator side attachment block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POSITION</B></TD>
+
+<TD>X-Y-Z position of the attachment block. Measured at the hole where
+the rope leaves the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RADIUS</B></TD>
+
+<TD>Radius of curvature of the block as the rope wraps up around the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>OFFSET</B></TD>
+
+<TD>Horizontal offset from rope exit on block to center of radius of curvature.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>BLOCK_LABEL</B></TD>
+
+<TD>Label for the 3rd manipulator side attachment block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POSITION</B></TD>
+
+<TD>X-Y-Z position of the attachment block. Measured at the hole where
+the rope leaves the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RADIUS</B></TD>
+
+<TD>Radius of curvature of the block as the rope wraps up around the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>OFFSET</B></TD>
+
+<TD>Horizontal offset from rope exit on block to center of radius of curvature.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>BLOCK_LABEL</B></TD>
+
+<TD>Label for the 4th manipulator side attachment block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POSITION</B></TD>
+
+<TD>X-Y-Z position of the attachment block. Measured at the hole where
+the rope leaves the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RADIUS</B></TD>
+
+<TD>Radius of curvature of the block as the rope wraps up around the block.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>OFFSET</B></TD>
+
+<TD>Horizontal offset from rope exit on block to center of radius of curvature.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSEROPE</B></TD>
+
+<TD>Name of the 1st senserope attached to the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSEROPE</B></TD>
+
+<TD>Name of the 2nd senserope attached to the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSEROPE</B></TD>
+
+<TD>Name of the 3rd senserope attached to the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSEROPE</B></TD>
+
+<TD>Name of the 4th senserope attached to the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSEROPE</B></TD>
+
+<TD>Name of the 5th senserope attached to the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSEROPE</B></TD>
+
+<TD>Name of the 6th senserope attached to the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSEROPE</B></TD>
+
+<TD>Name of the 7th senserope attached to the vessel.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SENSING</B></TD>
+
+<TD>Specifies whether AV sensing is 'on' or 'off'. If sensing is off, the
+static vessel positions are used.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="AXIS.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>AXIS.DAT</FONT></FONT></B>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="31"><B>AXIS</B></TD>
+
+<TD><B>MOTOR</B></TD>
+
+<TD>Name of motor attached to axis.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LOADCELL</B></TD>
+
+<TD>Name of loadcell attached to axis.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ENCODER</B></TD>
+
+<TD>[optional] Name of encoder attached to axis. An axis does not require
+an encoder to function.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>STOP_FLAG</B></TD>
+
+<TD>[optional] Number of flag bit to stop axis motion.&nbsp; The flag bit
+number must be between 0 and 3.&nbsp; The order of STOP_FLAG, HIGH_FLAG
+and LOW_FLAG in the data file does not matter, and multiple entries for
+each type may be used, provided that each flag bit is used no more than
+once.&nbsp; If the specified flag bit goes high, then axis motion is halted.&nbsp;
+Note that the flag bits may only be used if the axis has an encoder, since
+they are associated with the same digital channel as the encoder.&nbsp;
+Flag bits are printed out in the order 0 1 2 3 by the Axis MONITOR command
+if one or more flags bits are defined in the data file.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>HIGH_FLAG</B></TD>
+
+<TD>[optional] Number of flag bit to stop axis motion in the positive direction.&nbsp;
+If this bit goes high, then axis motion is halted if the motor is moving
+in a positive direction (i.e. lengthening a rope).&nbsp; See the STOP_FLAG
+entry for more information about the flag bits.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>LOW_FLAG</B></TD>
+
+<TD>[optional] Number of flag bit to stop axis motion in the negative direction.&nbsp;
+If this bit goes high, then axis motion is halted if the motor is moving
+in a negative direction (i.e. shortening a rope).&nbsp; See the STOP_FLAG
+entry for more information about the flag bits.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LENGTH</B></TD>
+
+<TD>[dynamic] Current rope length in cm measured from the top attachment
+point.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ENCODER_ERROR</B></TD>
+
+<TD>[dynamic, optional] Mean encoder error used to correct for drift. This
+is the mean difference in cm between motor position and encoder reading,
+taking into account the extra rope taken up by the spring if a loadcell
+and spring are present. Only required if an encoder is present. See <A HREF="http://www.sno.phy.queensu.ca/private/calibration/manipulator/manip_calc.html#AxisError">calculations
+documentation</A> for more information on encoder error.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ALARM_STATUS</B></TD>
+
+<TD>[dynamic] Current alarm status. (0=none, 1=warned, 2=stopped)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ALARM_ACTION</B></TD>
+
+<TD>[dynamic] Action for Axis tension alarm. (0=none, 1=warn, 2=stop)</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ALARM_TENSION</B></TD>
+
+<TD>[dynamic] High tension alarm threshold.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>DEADLENGTH</B></TD>
+
+<TD>The rope length between the top attachment and the encoder (or motor
+drive if no encoder is present). This is the length of rope which does
+not effect the source position, but must be known so an accurate stretch
+vs. tension can be calculated.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>ELASTICITY</B></TD>
+
+<TD>Rope elasticity in 1/Newtons.</TD>
+</TR>
+
+<TR>
+<TD><B>NON_LINEAR_ELASTICITY</B></TD>
+
+<TD>Rope non-linear elasticity coefficient.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>MIN_TENSION</B></TD>
+
+<TD>Absolute minimum rope tension in Newtons. Motion of the source will
+be halted if the rope tension drops below this minimum value.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>MAX_TENSION</B></TD>
+
+<TD>Absolute maximum rope tension in Newtons. The motion of the source
+will be stopped if the rope tension goes above this maximum value.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CONTROL_TENSION</B></TD>
+
+<TD>Ideal control rope tension in Newtons. This tension is used for the
+central rope in the vessel, and the side ropes in the neck.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>MIN_CONTROL_TENSION</B></TD>
+
+<TD>Minimum calculated rope tension for driving the source. The calculated
+tension at the destination is checked against this tension before a high-level
+source move command is executed. This tension effectively defines the region
+of the vessel in which the source may be moved.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>MAX_CONTROL_TENSION</B></TD>
+
+<TD>Maximum calculated rope tension for driving the source. The calculated
+tension at the destination is checked against this tension before a high-level
+source move command is executed.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MIN_SPRING_TENSION</B></TD>
+
+<TD>[optional] Rope tension at minimum extension of the spring.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MAX_SPRING_TENSION</B></TD>
+
+<TD>[optional] Rope tension at maximum extension of the spring.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SPRING_STRETCH</B></TD>
+
+<TD>[optional] Amount of rope let out by the full stretch of the spring,
+from MIN_TENSION to MAX_TENSION.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>RADIUS</B></TD>
+
+<TD>[optional] Radius of pulley on carriage. Only rquired if there is a
+carriage pulley for this rope.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>OFFSET</B></TD>
+
+<TD>[optional] X-Y-Z coordinates of offset from carriage center to the
+pulley or attachment on the carriage. Only required if non-zero.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TOP_RADIUS</B></TD>
+
+<TD>[optional] Radius of pulley at top attachment. Only needed if top attachment
+is a pulley.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PULLEY_AXIS</B></TD>
+
+<TD>[optional] X-Y-Z direction of rotation of the carriage pulley (as a
+unit vector) for the direction it turns when pulled up the rope towards
+the top bushing. Not required only if the rope is a central rope.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>TOP</B></TD>
+
+<TD>X-Y-Z position of top attachment. If a feedthrough, the position of
+the center. If a pulley, the position of the pulley axis.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>LINEAR_DENSITY</B></TD>
+
+<TD>[umbilical only] Umbilical weight in air expressed per cm of length.
+Not used for the control ropes as they are assumed massless.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>CROSS_SECTION</B></TD>
+
+<TD>[umbilical only] Nominal umbilical cross-sectional area in cm^2. Used
+to calculate the buoyancy in heavy water.</TD>
+</TR>
+
+<TR>
+<TD><B>SLACK</B></TD>
+
+<TD>[dynamic, umbilical only] Extra slack in umbilical length beyond tabulated
+value.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>INDEX_FILE</B></TD>
+
+<TD>[umbilical only] Full path name for index file of tabulated umbilical
+tension and length calculations. See section on <A HREF="http://www.sno.phy.queensu.ca/private/calibration/manipulator/manip_umbil.html">Umbilical
+Lookup Tables</A> for a description of how to generate this file.</TD>
+</TR>
+</TABLE>
+<BR><A NAME="POLYAXIS.DAT"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>POLYAXIS.DAT</FONT></FONT></B>
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD ROWSPAN="12"><B>POLYAXIS</B></TD>
+
+<TD><B>AXES</B></TD>
+
+<TD>[dynamic] List of all axes connected to this polyaxis, including umbilical
+if connected.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>POSITION</B></TD>
+
+<TD>[dynamic] Current position of manipulator. X-Y-Z coordinates in cm.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>MOTION</B></TD>
+
+<TD>[dynamic] Specifies the motion strategy for movement within the vessel.
+Strategy can be DIRECT, ORTHO or UMBIL. See the <A HREF="http://www.sno.phy.queensu.ca/private/calibration/manipulator/manip_cmd.html#PolyAxis">polyaxis
+commands</A> for more detail on the different strategies.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>EQUALIZE_TENSIONS</B></TD>
+
+<TD>[dynamic] Flag to turn on or off tension equalization mode.</TD>
+</TR>
+
+<TR>
+<TD VALIGN=TOP><B>CENTRAL_TENSION</B></TD>
+
+<TD>The tension of the central rope while driving with the umbilical for
+single-axis mode, and 3-axis mode in the vessel neck.&nbsp; The tension
+is decreased by the source buoyancy when operating in water.&nbsp; This entry
+is not used if no umbilical is attached.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SOURCE_MASS</B></TD>
+
+<TD>Gravitational force on source in air.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SOURCE_VOLUME</B></TD>
+
+<TD>Displacement volume of source.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SOURCE_HEIGHT</B></TD>
+
+<TD>Distance of lowest point on source from reference point on carriage.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SOURCE_WIDTH</B></TD>
+
+<TD>Width of source.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SOURCE_SHAPE</B></TD>
+
+<TD>General shape of source. One of: RECTANGLE, CYLINDER X, CYLINDER Y,
+CYLINDER Z, or SPHERE. If source is irregular, use RECTANGLE and enter
+largest dimensions for SOURCE_HEIGHT and SOURCE_WIDTH.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>THETA_NAME</B></TD>
+
+<TD>[r_source only] Name of theta-drive motor.</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>PHI_NAME</B></TD>
+
+<TD>[r_source only] Name of phi-drive motor.</TD>
+</TR>
+</TABLE>
+
+<HR WIDTH="100%">
+</BODY>
+</HTML>

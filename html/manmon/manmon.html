@@ -1,0 +1,580 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>SNO Online Monitoring</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.12-20smp i686) [Netscape]">
+</head>
+<body>
+
+<center>
+<h1>manmon</h1>
+<h3>Ver 2.9</h3>
+</center>
+<hr WIDTH="100%">
+<b>manmon</b> is the graphical user interface to the SNO calibration
+manipulator and the SNO calibration laser.  It is a Tcl/Tk script running
+on any machine supporting <b>dp_wish</b> (the TCP/IP version of Tcl/Tk).
+
+<UL>
+<LI><A HREF="manmon.html#starting">Starting Manmon</A>
+<LI><A HREF="manmon.html#stopping">Stopping Manmon</A>
+<LI><A HREF="manmon.html#mainwindow">Main Window</A>
+<li><A HREF="manmon.html#sourcewindow">Source Window</A>
+<li><A HREF="manmon.html#expertmode">Expert Mode</A>
+<li><A HREF="manmon.html#bugs">Known Bugs</A>
+</ul>
+
+
+
+
+
+
+
+
+
+
+<hr width="100%">
+<P><A NAME="starting"></A><B><FONT COLOR="#800000">
+<FONT SIZE=+1>Starting Manmon</FONT></FONT></B><br>
+<ol>
+<li> Log on to a computer with manmon installed using the
+  account <b>manipulator</b>.  Current machines running manmon
+  are:
+  <pre>
+          site:   alcor, polaris
+          queens: cygnus
+  </pre>
+<li> Change directory to the manmon directory:
+  <pre>
+      alcor> cd manmon
+  </pre>
+<li> Start the manmon program,
+  <pre>
+      alcor> manmon
+  </pre>
+</ol>
+The main manmon window (showing a cross section of the detector) 
+should appear.  Before connecting to the manipulator computer, there is
+no water drawn in the cavity.  Manmon automatically tries to connect to the 
+manipulator computer.  If it successfully connects then the light and
+heavy water levels in the cavity should be drawn on the main window.
+<p>
+  If manmon fails to connect to the manipulator computer try again.
+Sometimes there is a problem connecting and a repeated effort usually
+succeeds.
+
+
+<hr width="100%">
+<P><A NAME="stopping"></A><B><FONT COLOR="#800000">
+<FONT SIZE=+1>Stopping Manmon</FONT></FONT></B><br>
+To stop manmon, go to the <b>File</b> menu on the main window
+and select <b>Exit</b>.  Manmon should disconnect from the manip
+and shutdown.
+
+
+
+<hr width="100%">
+<P><A NAME="mainwindow"></A><B><FONT COLOR="#800000">
+<FONT SIZE=+1>Main Window</FONT></FONT></B><br>
+  The main manmon window appears when the program is started.  
+<center>
+<img src="./figures/manmon_main.gif">
+</center>
+
+<TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>AV mode:</B></TD>
+<TD>Indicates if manipulator is caculating AV position</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>connections:</B></TD>
+<TD>
+  The number of clients connected to the manipulator computer.  There
+are usually at least 4 clients: The DAQ computer, the CMA computer
+and the manip logger computer (polaris).
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>max poll time:</B></TD>
+<TD>
+  The manipulator computer polls the manipulator hardware in a continuous
+loop.  <b>max poll time</b> indicates the maximum time taken to 
+loop through the hardware in the last several seconds.  The units are
+milliseconds.  If this looping time becomes too large, a "watchdog timer"
+error will occur and the manipulator hardware shuts off.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>operator mode:</B></TD>
+<TD>
+  The normal operator mode is <b>Normal</b> which allows the manipulation
+of source using high level commands (referred to as <b>polyaxis</b> commands).
+These normal mode operations have many safety checks to prevent improper
+operation of the hardware.  However sometimes it is necessary to directly
+operate the  low level manipulator hardware.  Out of necessity, these
+low level operations have little or no checking of error conditions.
+To prevent casual use of low level commands, the  maniplator computer
+has an "expert mode".  The <b>operator mode</b> indicates if the manipulator
+computer is currently in normal or expert mode.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Strip Chart</B></TD>
+<TD>
+  Below the status panel on the main window is a strip chart showing
+the max poll time.  Normally, the maximum poll time is less than
+50 ms.  However, there is a known problem where due to ethernet
+trafic, the manipulator computer freezes for a large fraction of a second
+and the poll time can become of order 500ms or more.  If the poll time
+goes above 250 ms, the manipulator computer will stop any source movement.
+To diagnose an unexpected stop due the slow hardware polling, check this
+strip chart to see if there are large poll times.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Source Display</B></TD>
+<TD>
+  The bottom of the main window contains a display of the currently
+shown calibration source.  It indicates the position of the source
+as well as the water levels in the cavity and AV.  The buttons on the
+right can be used to zoom in on the source or pan around the vessel.
+</TD>
+</TR>
+</table>
+  
+<h4>Menu Bar</h4>
+<ul>
+<li><b>File Menu</b>
+
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>Connect</B></TD>
+<TD>
+  Connect manmon to the manipulator computer.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Disconnect</B></TD>
+<TD>
+  Disconnect manmon from the manipulator computer.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Exit</B></TD>
+<TD>
+  Disconnect manmon from the manipulator computer and exit manmon.
+</TD>
+</TR>
+</table>
+
+
+
+<li><b>Windows Menu</b>
+
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>Sources</B></TD>
+<TD>
+  This submenu gives a list of all the sources that the manipulator
+  computer knows about.  Selecting a source displays the <b>source window</b>
+  for that source.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Axes</B></TD>
+<TD>
+  This submenu lists all the axes in the manipulator system (ropes and
+  umbilicals).  Selecting an axis will open the <b>axis window</b> for
+  that axis.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>AV</B></TD>
+<TD>
+  Open a window displaying the AV status.
+</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><B>Laser</B></TD>
+<TD>
+  Open the <b>laser window</b> used to control the calibration laser.
+</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><B>Command</B></TD>
+<TD>
+  Open a command dialog window.  This allows the operator to send
+  commands directly to the manipulator computer.
+</TD>
+</TR>
+</table>
+
+
+<li><b>Connections</b>
+
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>Edit Connections</B></TD>
+<TD>
+  Opens a window to view what clients are connected to the manipulator
+  computer.  Clients can be disconnected using this window.
+</TD>
+</TR>
+
+</table>
+
+
+<li><b>Options</b>
+
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD WIDTH="150"><B>Expert Mode</B></TD>
+<TD>
+  Toggle in or out of expert mode.  Password is required to enter expert
+  mode.  No password is required to leave expert mode and it will auto
+  time out after 30 minutes.
+</TD>
+</TR>
+
+</table>
+
+
+</ul>
+
+
+
+<hr width="100%">
+<P><A NAME="sourcewindow"></A><B><FONT COLOR="#800000">
+<FONT SIZE=+1>Source Window</FONT></FONT></B><br>
+The source window shows information related to the source polyaxis.
+A polyaxis is the
+multirope (and umbilical) object connected to a source.
+<center>
+<img src="./figures/manmon_source.gif">
+</center>
+
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD><B>Pivot Position:</B></TD>
+<TD>
+  Shows the location of pivot on the source carriage in the detector.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Source Position:</B></TD>
+<TD>
+  Shows the location of the centre of the source.  Note that the
+manipulator positions sources using the pivot location.  The source
+location is an offset from the pivot that is stored in a data file.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Net Force</B></TD>
+<TD>
+  Not used.
+</TD>
+</TR>
+
+
+<TR VALIGN=TOP>
+<TD><B>Length Error:</B></TD>
+<TD>
+  If side ropes are connected to the source, the source position in the
+vessel is determined by the side ropes.  The manipulator computer then
+calculates what the length of the central rope should be and compares it
+to the measure central rope length.  The difference is the length error.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>carriage tilt:</B></TD>
+<TD>
+  The calculated tilt of the manipulator carriage.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Length:</B></TD>
+<TD>
+  The length of each axis connected to the source is displayed.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Tension:</B></TD>
+<TD>
+  The tension of each axis connected to the source is displayed.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Error:</B></TD>
+<TD>
+  The encoder error of each axis connected to the source is displayed.
+  The encoder error is the discrepancy between the position that the
+  stepper motor drives the source to and the length determined by the
+  shaft encoder on the axis.  A large encoder error can indicate that
+  either the shaft encoder or the motor has failed.  Thus the manipulator
+  computer shuts down if the encoder error reaches +/- 10 (units are cm).
+  However, an encoder error can also accumulate if there is a miscalibration
+  of either the motor or encoder.
+</TD>
+</TR>
+
+
+<TR VALIGN=TOP>
+<TD><B>dE/dL:</B></TD>
+<TD>
+  The rate of change of encoder error with change in the length that
+the motor tries to drive the axis to.  A small dE/dL is indicative of
+a miscalibration of either encoder or motor.   Small is of order 0.05
+(a 5% miscalibration).  A large dE/dL (of order 0.5 or 1) is indicative
+of a failure of a motor or encoder.  
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Velocity:</B></TD>
+<TD>
+  Velocity at which axis is driven.  Positive velocities mean that
+the axis is getting longer (usually the source is moving down),
+negative velocities mean that the axis is getting shorter (source
+moving up).
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Alarm Tension:</B></TD>
+<TD>
+  The tension at which an axis generates an alarm stop.  If the
+load cell goes over this tension, an alarm is generated and depending
+on the alarm action the manipulator computer may refuse to move
+this axis (this is the usual action).
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Alarm Action:</B></TD>
+<TD>
+The action that the manipulator computer will take if the axis tension
+exceeds the alarm level.  
+<pre>
+  0 = no action
+  1 = warning
+  2 = stop axis
+</pre>
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Alarm status:</B></TD>
+<TD>
+  The present status of the alarm and the peak  tension since the
+manipulator was last turned on (note that the peak value is lost
+when the manipulator computer is shut off).
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>flags:</B></TD>
+<TD>
+  Axis flags are digital inputs usually used as interlocks.  The use
+  of these bits is not uniform across all URMs at present:
+  <ul>
+  <li> URM2ROPE<br>
+    no bits used
+  <li> URM2UMBILICAL<br>
+    bit 0 (left most) used to indicate umbilical carriage too far forward
+    (i.e. too much umbilical has been played out and the take up reel will
+    come off it's rail).
+  <li> URM3ROPE<br>
+    bit 0 (leftmost) rope overtension.
+  <li> URM3UMBILICAL<br>
+    bit 0 - too much umbilical out.  bit 1 - too much umbilical on URM.
+  </ul>
+  If an interlock is failed, the bit is red and the axis is not allowed
+  to operate.  If the bit is green the interlock is ok.
+</TD>
+</TR>
+
+TR VALIGN=TOP>
+<TD><B>SnapShot</B></TD>
+<TD>
+  Snapshot records the state of the source to a file 
+labeled <b><SOURCE>_yymmdd.snapshot</b>.
+  Source position, rope tensions and lengths are recorded to a file.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>SnapShot2</B></TD>
+<TD>
+  Snapshot2 records the state of the source to a file 
+labeled <b><SOURCE>_yymmdd.snapshot2</b>.
+  Information include is the date, hour,min,sec, the position, 
+the error values and the
+  information on each axis including encoder and motor info.  
+One entry per line in an ascii
+  file.</TD>
+</TR>
+
+TR VALIGN=TOP>
+<TD><B>Position the source/pivot</B></TD>
+<TD>
+  Select how the source will be moved.  Either by the centre of the
+source or by the manipulator pivot.  Default is the centre of the 
+source.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Move By</B></TD>
+<TD>
+  Move the source by the amounts dx,dy,dz.  Source is moved either
+with reference to the manipulator pivot or the centre of the source
+depending on the position select.
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD><B>Move To</B></TD>
+<TD>
+  Move the source to absolute location x,y,z.  Source is moved either
+with reference to the manipulator pivot or the centre of the source
+depending on the position select.
+</TD>
+</TR>
+
+
+<TR VALIGN=TOP>
+<TD><B>Diag To</B></TD>
+<TD>
+  Move the source along a diagonal set at <b>angle</b> to 
+  a <b>radius</b>
+ Source is moved either
+with reference to the manipulator pivot or the centre of the source
+depending on the position select.
+</TD>
+</TR>
+
+
+<TR VALIGN=TOP>
+<TD><B>STOP</B></TD>
+<TD>
+  Immediately halt the manipulator.
+</TD>
+</TR>
+
+
+</table>
+
+  
+<h4>Menu Bar</h4>
+<ul>
+<li><b>File Menu</b>
+
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD><B>Close Window</B></TD>
+<TD>
+  Closes the source window.
+</TD>
+</TR>
+</table>
+
+<li><b>Options Menu</b>
+
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD><B>Stepping Control</B></TD>
+<TD>
+  Window to allow source movements in small steps.
+</TD>
+</TR>
+<TD><B>Logging</B></TD>
+<TD>
+  Log source status to file.
+</TD>
+</TR>
+<TD><B>Reset Umbilical</B></TD>
+<TD>
+  Reset the umbilical encoder.  Requires expert mode.
+</TD>
+</TR>
+</table>
+
+
+<li><b>Axes Menu</b><br>
+  Lists the axes connected to the source and opens axis windows
+  for them.
+
+<li><b>Charts Menu</b>
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR VALIGN=TOP>
+<TD><B>Position</B></TD>
+<TD>
+  Strip charts of source position
+</TD>
+</TR>
+<TD><B>Ropes</B></TD>
+<TD>
+  Strip charts of rope parameters (length, tension, erorrs etc).
+</TD>
+</TR>
+</table>
+
+</ul>
+
+
+
+<hr width="100%">
+<P><A NAME="expertmode"></A><B><FONT COLOR="#800000">
+<FONT SIZE=+1>Expert Mode</FONT></FONT></B><br>
+
+  Low level manipulator operations are excluded under normal
+operation.  However, it is sometimes necessary to access the
+low level manipulator commands.  To do this from manmon, you
+must enable <b>expert mode</b>.  To see if you are in expert mode,
+look at the <b>operator mode</b> status on the main manmon window.
+It will be either "Normal" or "Expert" (indicated in red).  
+<ol>
+<li> In the main window, go to the <b>Options</b> menu.  Select
+  <b>Expert Mode</b>.
+<li> Enter the expert mode password in the dialog box.
+</ol>
+Once enabled, expert mode persists for 30 minutes.  To disable expert
+mode, select <b>Expert Mode</b> from the <b>Options</b> menu.
+
+
+
+
+<hr width="100%">
+<P><A NAME="bugs"></A><B><FONT COLOR="#800000">
+<FONT SIZE=+1>Known Bugs</FONT></FONT></B><br>
+
+<ul>
+<li> The axis command from within a source still does not get
+  the source list right.
+<li> can't use source axis alarmtension
+<li> can't use source axis alarmaction
+</ul>
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,63 @@
+VERSION1.00
+// Revisions:   03/04/97 Fist version -- Richard Ford
+//
+// 12/5/97 Pressure cell names moved to laser.dat
+//         (since HWIO now supports shared CB ownership).
+//         See wiring.dat
+//                                            Richard Ford
+//
+// 12/5/97 The Counter Board laser controller bit masks
+//         are no longer used as the mask is now specified
+//         in the wiring.dat file. The data entry is retained
+//         here for information only.
+//                                            Richard Ford
+//
+// 22/6/98 Changed filterwheel filters to better provide
+//         dynamic range. Now wheel A is a decade wheel,
+//         and wheel B is the fine adjustment wheel.
+//                                            Richard Ford
+FILTER: filterWheelA
+	MOTOR: filterWheelAMotor
+	ENCODER: filterWheelAEncoder
+	TAB_POSITION: 0.000000                  //rewritten calibrated tab stop
+	PRESENT_POSITION: -9337.500000             /
+	STOP0: 112.500000                   //rewritten stop position
+	ND0: 9.99
+	STOP1: 157.500000                   //rewritten stop position
+	ND1: 6.0
+	STOP2: 202.500000                   //rewritten stop position
+	ND2: 5.0
+	STOP3: 247.500000                   //rewritten stop position
+	ND3: 4.0
+	STOP4: 292.500000                   //rewritten stop position
+	ND4: 3.0
+	STOP5: 337.500000                   //rewritten stop position
+	ND5: 2.0
+	STOP6: 22.500000                    //rewritten stop position
+	ND6: 1.0
+	STOP7: 67.500000                    //rewritten stop position
+	ND7: 0.0
+END;
+
+FILTER: filterWheelB
+	MOTOR: filterWheelBMotor
+	ENCODER: filterWheelBEncoder
+	TAB_POSITION: 0.000000                     //rewritten calibrated tab stop
+	PRESENT_POSITION: -180.703125          //rewritten present position
+	STOP0: 115.312500                  //rewritten stop position
+	ND0: 9.99
+	STOP1: 160.312500                   //rewritten stop position
+	ND1: 2.0
+	STOP2: 205.312500                   //rewritten stop position
+	ND2: 0.6
+	STOP3: 250.312500                  //rewritten stop position
+	ND3: 0.5
+	STOP4: 295.312500                  //rewritten stop position
+	ND4: 0.2
+	STOP5: 340.312500                  //rewritten stop position
+	ND5: 0.08
+	STOP6: 385.312500                  //rewritten stop position
+	ND6: 0.03
+	STOP7: 70.312500                   //rewritten stop position
+	ND7: 0.0
+END;

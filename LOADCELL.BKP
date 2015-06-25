@@ -1,0 +1,120 @@
+VERSION1.00
+// 10" port on glovebox
+LOADCELL: urm1RopeLOADCELL
+	MAXLOAD:    300. lb     // maximum load in pounds
+	SLOPE: 0.078656       // conversion from ADC value to newtons
+	OFFSET: -12.852424                                /
+	DATE: Fri Sep 04 16:50:33 1998 // last calibration date
+END;
+
+// 6" port on glovebox
+LOADCELL: centralrope2loadcell
+	MAXLOAD:    300. lb     // maximum load in pounds
+	SLOPE: 0.078656       // conversion from ADC value to newtons
+	OFFSET: -12.852424                                /
+	DATE: Fri Sep 04 16:50:33 1998 // last calibration date
+END;
+
+// 4" port on glovebox
+LOADCELL: urm2ropeloadcell
+	MAXLOAD:    300. lb     // maximum load in pounds
+	SLOPE: 0.215246       // conversion from ADC value to newtons
+	OFFSET: -36.764099                                /
+	DATE: Fri Apr 23 15:36:53 1999 // last calibration date
+END;
+
+// old central calibration
+//      SLOPE: 0.567912       // conversion from ADC value to newtons
+//      OFFSET: -377.199677   //  according to N = S*adc + offset
+
+
+// side rope load cells
+
+LOADCELL: northropeloadcell
+	MAXLOAD:    50. lb      // maximum load in pounds
+	SLOPE: 0.078859                                            /
+	OFFSET: -4.873486                                  /
+	DATE: Sun Apr 25 14:15:44 1999 // last calibration date
+END;
+
+LOADCELL: southropeloadcell
+	MAXLOAD:    50. lb      // maximum load in pounds
+	SLOPE: 0.131453      // conversion from ADC value to newtons
+	OFFSET: -2.103248                                  /
+	DATE: Sun Apr 25 14:58:23 1999 // last calibration date
+END;
+
+
+LOADCELL: eastropeloadcell
+	MAXLOAD:    50. lb      // maximum load in pounds
+	SLOPE: 0.134730                                            /
+	OFFSET: -4.796388                                  /
+	DATE: Sun Apr 25 14:34:35 1999 // last calibration date
+END;
+
+LOADCELL: westropeloadcell
+	MAXLOAD:    50. lb      // maximum load in pounds
+	SLOPE: 0.061209      // conversion from ADC value to newtons
+	OFFSET: 37.441547                                  /
+	DATE: Sun Apr 25 14:42:43 1999 // last calibration date
+END;
+
+
+
+
+//
+// Guide tubes
+
+xLOADCELL: guiderope3LOADCELL
+	MAXLOAD:    50. lb      // maximum load in pounds
+	SLOPE: 0.051613         // conversion from ADC value to newtons
+	OFFSET: 8.175430        //  according to N = S*adc + offset
+	DATE: Wed Aug 20 12:52:34 1997 // last calibration date
+END;
+
+
+LOADCELL: urm2UmbilicalLOADCELL
+	MAXLOAD:    300. lb     // maximum load in pounds
+	SLOPE: -0.131252      // conversion from ADC value to newtons
+	OFFSET: -43.300194                            /
+	DATE: Wed Apr 21 13:01:18 1999 // last calibration date
+END;
+
+
+LOADCELL: urm1umbilicalloadcell
+	MAXLOAD:    300. lb     // maximum load in pounds
+	SLOPE: -0.176884      // conversion from ADC value to newtons
+	OFFSET: -30.211786                            /
+	DATE: Thu Nov 26 15:17:32 1998 // last calibration date
+END;
+
+
+LOADCELL: testropeloadcell
+	MAXLOAD:    50. lb      // maximum load in pounds
+	SLOPE: 0.130364         // conversion from ADC value to newtons
+	OFFSET: -29.331959      //  according to N = S*adc + offset
+	DATE: Mon Sep 28 10:45:40 1998 // last calibration date
+END;
+
+LOADCELL: testUmbilicalLOADCELL
+	MAXLOAD:    300. lb     // maximum load in pounds
+	SLOPE: -0.130677      // conversion from ADC value to newtons
+	OFFSET: -46.011467                            /
+	DATE: Mon Sep 28 10:01:09 1998 // last calibration date
+END;
+
+LOADCELL: N2LASERHIPRESSURELOADCELL
+	MAXLOAD:   150. psi                             /
+	SLOPE: 0.0845                                   /      
+	OFFSET: -30.0               
+	DATE \: Tue Mar 31 12:12:12 1998
+END;
+
+LOADCELL: N2LASERLOWPRESSURELOADCELL
+	MAXLOAD:   150. psi
+	SLOPE: 0.091                                    /
+	OFFSET: -50.2                                   /
+	DATE \: Tue Mar 31 12:12:12 1998
+END;
+
+

@@ -1,0 +1,219 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.01 (Macintosh; I; 68K) [Netscape]">
+</HEAD>
+<BODY>
+<FONT COLOR="#FF0000"><FONT SIZE=+3>DRAFT</FONT></FONT>&nbsp;
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>&nbsp;
+<HR SIZE=4 WIDTH="100%">
+
+<P><B><FONT SIZE=+2>Calculation Methods</FONT></B>
+<BR>
+<BR>The manipulator software contains all the code to calculate the manipulator
+position, rope tensions and lengths, and acrylic vessel position. All
+of these calculations are performed in real time during the polling loop
+cycle of of the manipulator software. Calculations for umbilical lengths
+and tensions are done off line by the CATENARY program, and stored in a
+lookup table for use by the manipulator software.
+
+<P>This document explains the general calculation methods employed by the
+manipulator software.
+<BR>
+<BR>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="RopeLengths"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Physical
+Rope Lengths</FONT></FONT></B>
+<BR>
+<BR>The unstretched lengths of the control ropes are derived from the <B>position
+of the encoder wheel</B>, accounting for stretch in the rope as it passes
+over the wheel. <B>Rope stretch</B> is calculated based on the measured
+tension and the tabulated value for the elasticity of the rope. On a continuous
+basis, the Axis object calculates the total length of unstretched rope
+(corrected to a tension of zero) which has passed over the encoder wheel.
+To illustrate the importance of this calculation, imagine pulling a 1 meter
+length of rope over a wheel of 1 meter circumference. The wheel will turn
+exactly once. Now, if you stretch the rope by 10 cm and pull it back across
+the wheel, the wheel will not return to its original position. The same
+is true of our encoder wheel. This effect would throw off our length measurement
+if we didn't account for the stretch on a continuous basis as the rope
+moves over the wheel.
+
+<P>The calculated unstretched rope length is then <B>adjusted according
+to the rope tension</B> and elasticity to provide an estimate of the total
+length of rope actually deployed.
+
+<P>Rope lengths displayed by the software are the lengths of the active
+control region of the rope (i.e. only the rope that moves below the last
+feedthrough or pulley). The rope "dead length" also contributes to the
+total stretch of the rope, and is accounted for by the software. The "dead
+length" is the length of rope between the point where it leaves the encoder
+wheel, and the point where it leaves the last feedthrough or pulley before
+entering the vessel.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="ModelledRopeLengths"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Modelled
+Rope Lengths</FONT></FONT></B>
+<BR>
+<BR>The software calculates the <B>expected rope lengths at each source
+position</B>. The ropes are assumed to be massless, and therefore follow
+straight lines. The side attachment blocks are modelled as a hole where
+the rope exits, and a horizontal surface to the beginning of a section
+of circular curvature. The rope lengths are calculated properly over all
+the curved surfaces such as the pulleys and the curved section of the side
+attachment blocks. The rope is assumed to be infinitely flexible and infinitely
+thin, and the top feedthroughs are considered as points with no curvature
+or spatial extent.
+
+<P>The <B>i</B>ntersection with the <B>acrylic vessel neck ring</B> is
+treated as an intersection with a circle in 3 dimensions, and the radius
+of curvature of the neck ring itself is taken into account.
+
+<P>The <B>radius of the pulleys</B> on the carriage is also included in
+the model, as well as the tilt of the carriage due to torques from the
+ropes acting on the pulleys. Hence the rope length calculation relies
+on a calculation of the rope lengths.
+
+<P>The effect of <B>off-axis motion</B> and off-axis location of attachment
+points on rope lengths is included in the model, but is assumed to be small
+for small source displacements to reduce the number of iteration loops
+needed when calculating the source position.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="ManipulatorPosition"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Manipulator
+Position</FONT></FONT></B>
+
+<P>The calculated position is given with respect to a <B>fixed frame of
+reference</B> with origin at the center of the detector. Motion of the
+acrylic vessel is monitored, and used to transform the position of rope
+attachment points into the fixed frame of reference.
+
+<P>The manipulator position is determined based on the calculated lengths
+of the control ropes. For a <B>3-axis</B> configuration, while the source
+is <B>in the body of the vessel</B>, only the <B>side ropes are used to
+determine the position</B>. The algorithm starts with the source at the
+center of the vessel and calculates the rope lengths and the source motion
+generated by rope length changes at this position. The estimated position
+is then corrected by an amount specified by the differences between the
+actual rope lengths and their lengths at this position assuming that the
+directions of the ropes don't change. This assumption is good for small
+displacements, but for large displacements the change in rope angle is
+significant, and the new estimate of the source position will be inaccurate.
+To obtain an accurate estimate, this procedure is iterated until the change
+in position between iterations is small (less than 0.03 cm with the current
+version of the software). Typically only 4 iterations are necessary when
+starting from the center of the vessel. However, to speed calculations,
+the initial position of the source is taken from the last reported position.
+With this as a starting point, only 2 iterations are usually necessary
+while the source is moving, and only 1 while stationary.
+
+<P>The iteration loop is actually more complicated than explained above.
+Inside each iteration, the rope tensions are calculated to determine the
+<B>carriage tilt and off-axis position</B>. The carriage tilt has a significant
+effect on the rope lengths at a given position, so it is necessary to include
+this in the calculations. As well, the off-axis position of the source
+due to pull from off-axis attachment points is also calculated. For example,
+even when the source is moving in the X-Z plane, the attachment points
+can have a non-zero Y coordinate by of the order 10 cm or more. The rope
+tensions and attachment point locations are used to determine the off-axis
+position of the source, and this is done in each iteration of the calculations.
+
+<P>The <B>effect of umbilical tension</B> is included in these calculations
+by interpolating the horizontal and vertical components of umbilical tension
+from the pre-calculated lookup tables, transforming these into the plane
+of motion of the source, and using the result as an external force acting
+on the center of the manipulator carriage.
+
+<P>With a <B>3-axis</B> configuration<B>, in the neck of the vessel</B>
+the source position is calculated using <B>the central rope and one side
+rope</B>. This method is used primarily to reduce calculation time, and
+is very inaccurate and susceptible to errors in side rope lengths and errors
+in the modelled glovebox geometry. The software is not designed to produce
+accurate position estimates while the source is in the vessel neck with
+a 3-axis system. If accurate positioning is desired in the neck, a 1-axis
+system is preferred.
+
+<P>With a <B>1-axis</B> system, the source position is calculated based
+only on the <B>length of the central rope</B> and the location of the feedthrough.
+The source is assumed to hang directly downwards below the feedthrough
+location.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="PositionError"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Position
+Error</FONT></FONT></B>
+
+<P>The displayed position error value is taken from the <B>difference between
+the measured and calculated length</B> for the rope which is not used in
+the position calculation (i.e. the central rope while in the vessel).
+For a single-axis system, this error is always zero. The error value gives
+you an idea of how well the manipulator is performing. Large errors are
+an indication that the source position is not being modelled properly.
+If everything is running very well, this error can be limited to <B>less
+than one centimeter</B>, however an error of less than 3 centimeters is
+acceptable.
+
+<P>Position errors are <B>typically caused</B> by inaccuracies in the modelled
+attachment points and rope stretch characteristics, and due to inaccuracies
+in the measured tensions. Errors of the order 3-5 centimeters can result
+under normal circumstances if the rope is not properly conditioned. Also,
+various physical problems such as slippage over the encoder wheel can contribute
+to large position errors, but these types of errors should not be experienced
+during normal running of the manipulator system.
+
+<P>The system accuracy <B>degenerates with the distance travelled</B> by
+the manipulator, as the rope stretch uncertainties can be cumulative.
+Even for a manipulator that is performing properly, the position errors
+will continue to increase with usage. For this reason, the position of
+the manipulator should be <A HREF="manip_proc.html#CalibratingPosition">calibrated</A>
+periodically. Error values quoted above are typical values for one round
+trip of the vessel.
+
+<P>Note: The position error should not be confused with an <A HREF="#AxisError">Axis
+error </A>which is reported for each rope.
+
+<P>
+<HR SIZE=4 WIDTH="100%">
+
+<P><A NAME="AxisError"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Axis
+Error or Encoder Error</FONT></FONT></B>
+
+<P>Axis errors (or Encoder errors) give an indication of the agreement
+between the motor, encoder and loadcell. A large axis error does not necessarily
+effect the the position accuracy.&nbsp; The encoder defines the system
+accuracy, but the error may be generated by a motor, loadcell or spring
+calibration problem.
+
+<P>The axis errors are calculated using the following formula:
+<UL><B>&lt;Axis Error> = &lt;Encoder Position> - &lt;Motor Position> -
+(&lt;Loadcell Tension> / &lt;Spring Constant>)</B></UL>
+Where the spring constant is in N/cm.&nbsp; Limits are imposed on the spring
+stretch based on the rope tensions at the extremes of the spring travel.
+
+<P>Some drift between the encoder and the motor is expected due to rope
+stretch as it is wound onto the storage drum.&nbsp; For this reason, a
+'mean' encoder error is calculated and allowed to drift with the Axis Error.&nbsp;
+Currently the maximum drift rate is hard-coded to 0.5% of the rope length
+change.&nbsp; The reported errors have been drift-corrected by subtracting
+this 'mean' error.
+
+<P>The maximum allowed error is 10cm in length, plus an additional uncertainty
+of 4 Newtons in the loadcell tension measurement.&nbsp; If the Axis error
+gets above this threshold a <A HREF="manip_user.html#SafetyShutoffs">safety
+shutoff</A> is imposed and the manipulator motion is stopped.&nbsp; The
+section on <A HREF="manip_proc.html#RecoveringAxisError">Recovering from
+an Axis Error </A>explains a procedure for dealing with this circumstance.
+
+<P>
+<HR WIDTH="100%">
+</BODY>
+</HTML>

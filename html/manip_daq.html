@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 (Macintosh; I; PPC) [Netscape]">
+</HEAD>
+<BODY>
+<FONT COLOR="#FF0000"><FONT SIZE=+3>DRAFT</FONT></FONT>&nbsp;
+<HR width="100%">
+
+<P><IMG SRC="manip.GIF" HEIGHT=32 WIDTH=32><FONT SIZE=+4> Calibration Manipulator
+Software</FONT>&nbsp;
+<HR SIZE=4 WIDTH="100%">
+
+<P><B><FONT SIZE=+2>DAQ Manipulator Object</FONT></B>
+
+<P>This document describes the Macintosh DAQ manipulator interface.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="Connecting"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Connecting
+to the Manipulator Hardware</FONT></FONT></B>
+
+<P>The manipulator object must first be created in the DAQ configuration
+window. The object type is 'MANI', and it should be available in <B>Add
+Module</B> menu as a hardware object. Refer to DAQ documentation for information
+about creating a new object.
+
+<P>Select <B>Configure</B> from the manipulator object popup menu, and
+set the network address of the PC DAQ computer. The default network port
+number of 2000 may be changed by specifying the port number after the IP
+address, separated by a space.
+
+<P>Before connecting to the manipulator PC, set up the polling options
+in the Configure dialog. You should also verify that the PC manipulator
+software is up and running. To connect to the manipulator PC, click the
+<B>Connect</B> button in the manipulator object <B>Basic Ops</B> dialog.
+
+<P>Once connected, all manipulator commands may be executed remotely. Also,
+<B>automatic polling</B> and <B>piping to the data stream</B> begin, and
+continue as long as the connection is maintained. A red box flashes in
+the Configure dialog beside the corresponding polling setting each time
+a polling command is sent to the manipulator PC.  Note that quitting SHaRC
+will disconnect the manipulator and halt the flow of records into the data
+stream.
+
+<P>Commands are issued to the manipulator through the <B>Send</B>, <B>Goto</B>
+and <B>Stop!</B> buttons in the Basic Ops dialog. The <B>Send</B> button
+sends the text entered in the Command edit field directly to the manipulator
+PC. <B>Goto</B> sends a "&lt;source> To &lt;new position>" command for
+the currently selected source, and the X-Y-Z position specified in the
+dialog. The <B>Stop</B> button sends a "Stop" command to the manipulator,
+halting motion of all sources.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="Graphics"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Graphics
+Display</FONT></FONT></B>
+
+<P>The manipulator <B>Special Ops</B> dialog gives a graphical display
+of the manipulator position within the SNO detector. The nominal positions
+of the acrylic vessel and PSUP are also shown on the display. The display
+can be zoomed in/out using the (+) and (-) buttons at the top of the window.
+Only one source at a time is displayed, and this source is set from the
+Basic Ops source menu.
+
+<P>Sources will only be visible on the display if they are connected to
+a manipulator rope. Sources connected to the central ropes will appear
+within the vessel, and sources connected to the guide tube ropes will appear
+in a guide tube at the appropriate distance from the center of the vessel.
+
+<P>Clicking the mouse anywhere inside the vessel moves the target (crosshair)
+indicator, and enters these coordinates into the <B>New Position</B> fields
+of the Basic Ops dialog. Clicking on the Basic Ops <B>Goto</B> button will
+cause the source to move to this location.
+
+<P>
+<HR size=4 width="100%">
+
+<P><A NAME="SupportFiles"></A><B><FONT COLOR="#800000"><FONT SIZE=+1>Support
+Files</FONT></FONT></B>
+
+<P>The manipulator object reads a number of files from the default database
+folder. These files provide information about the source types and geometries.
+
+<P>The file <B>CASL_Database.txt </B>should exist in the database folder.
+It is a text version of the database CASL bank, and is used to look up
+the source ID numbers from the source names used in the manipulator program.
+This file is read each time a connection is made to the manipulator PC.
+
+<P>The <B>source geometry files</B> exist within the "Manipulator" folder
+in the default database folder. These files are ASCII text, and contain
+information about the physical dimensions of the source for drawing purposes.
+Each source should have a corresponding file of the name <B>&lt;source>.poly</B>
+in this folder. The first line of the file specifies the number of polygon
+points needed to describe the 2-dimensional outline of the source, and
+the remaining lines specify the x-y coordinates of the points in centimeters,
+one point per line. All coordinates are referenced to the source holder
+pivot point of (0,0) centimeters.
+
+<P>
+<HR WIDTH="100%">
+</BODY>
+</HTML>

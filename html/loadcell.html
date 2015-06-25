@@ -1,0 +1,130 @@
+<h1>Calibration of the Loadcells</h1>
+
+<h5>Chris Jillings, Queen's, June 26, 1997</h5>
+
+
+<p>This document replaces the version written on July 11, 1996
+
+<h3>Introduction</h3>
+
+<p>The loadcell calibration  relates the weight in Newtons of the load and
+ADC channels. The current calibration for each loadcell is stored in
+loadcell.dat. This calibration is read upon construction of the
+loadcell (ie startup). The easiest way to look at raw ADC values is to
+set the slope to 1.0 and the offset to zero.
+
+<h3>Electronics</h3>
+<p>The loadcells produce a differential output which is passed to a
+two-stage differential amp on the counterboard. The net gain on the
+counterboard is 270 for the side ropes and 800 for the central rope.
+The two signals out of the differential amp are passed to the
+data concentrator where an instrumentation amp with a gain of 2 is used
+to give a single output (0-10V). This output is passed to a 12-bit ADC
+with an input range of -10 to 10V. Since our signals are all positive,
+we have effectively an 11-bit (0 to 2047) ADC.
+
+<h3>Required Equipment</h3>
+<ul>
+<li>The test unit, which can supply both an encoder signal an analog voltage.
+<li>A voltmeter.
+<li>A fine screwdriver for adjusting pots.
+<li>A phillips screwdriver to open the counterboard boxes.
+<li>A clip to make contact with IC pins. (Not essential, but it makes
+life easier.)
+</ul>
+
+<h3>Procedures</h3>
+<h4>Counterboard Boxes</h4>
+
+<li>Turn off power to the data concentrator chassis.
+<li>Remove the cover from the counterboard.
+<li>Remove the D-connector from axis and replace with D connector from
+the test unit. (The two short wires coming out from the test unit are
+for use if there is no power on the counterboard. We don't need them.)
+<li>Turn the power on the rack back on. 
+<li>Set the dial on the test unit to zero. The test unit output will
+be zero volts.
+<li> Measure the voltage between pin 6 on U20 and pin 6 on
+U4. Adjust the OFFSET ADJ pot such that the voltage difference 
+measured is zero.
+<li>Set the dial on the test unit to 0.005 V. Make sure the test
+unit's switch is at the ``+" position.
+<li>The next step depends on the capcity of the loadcell.
+<ol>
+<li>300-pound load cells: Adjust the GAIN 1 pot to give a gain of 28.3
+(ie 0.141 V between pin 6 of U20 and pin 6 of U4.)
+<li>100-pound load cells: Adjust the GAIN 1 pot to give a gain of 16.4
+(ie 0.082 V between pin 6 of U20 and pin 6 of U4.)
+</ol>
+<li>Now measure the output of the counterboard. The output will be
+labelled, for example, An2. No *not* measure across T1 and T2.
+<li>The next step depends on the capcity of the loadcell.
+<ol>
+<li>300-pound loadcell: For the test unit set at 0.005, the output
+should be 4 V. This is the input to the data concentrator card.
+Adjust GAIN 2 to set the voltage.
+<li>100-pound loadcell: For the test unit set at 0.005, the output
+shoud be 1.35 V.
+</ol>
+
+</ul>
+
+<h4>The Data Concentrators</h4>
+
+<p>You may not need to do this unless the cards are new. 
+
+<ul>
+<li>Find the right channel. On the data concentrator board the channel Set the dial on the test unit to zero.
+number is written beside the appropriate circuitry. Each differential
+amp uses 3 op amps. The op amps come two per chip. The input op amps
+for channel 1 are on chip U1; for channel 2, U3; for channel 3, U4;
+for channel 4, U6. The output op amps for channels 1 and two are on
+U2; for channels 3 and 4, U5.  
+<li>Measure between Ux:A pin 3 and Ux:B pin 5. The voltage difference 
+should be the same as that on the output of the counterboard.  
+<li>Set the dial on the test unit to zero.
+<li>Measure between the ground test pin and the appropriate signal test pin.  
+<li>By adjusting the offset pot, VRx, set the voltage to 0.01 V.
+<li>Which loadcell are you calibrating?
+<ol>
+<li>300-pound loadcell: Set the test unit to 0.005 V. Adjust the gain
+to get 8 V.
+<li>100-pound loadcell: Set the test unit to 0.005 V. Adjust the gain
+to get 2.71 V.
+</ol>
+<li> Done.
+</ul>
+
+
+<h4>If a Loadcell Becomes Damaged</h4>
+
+<p>If the cells have been damaged then with no load on the cell other than the
+weight of the pulley, there is a 5 to 10 mV signal at the cell itself.
+The cells are still linear. This offset must be corrected or it too
+will be amplified hundreds of times and passed to the ADC.
+
+<ul>
+<li>Take all load off the cell except for the weight of the pulley.
+<li>Measure at the test pin on the data concentrator card. Adjust the
+zero offset on the counterboard until the test pin is at 100 mV.
+</ul>
+
+<h4>Physical Calibration</h4>
+
+<ul>
+<li>From within newmot, type xxxloadcell calibrate.
+(For example EastRopeLoadcell calibrate.)
+<li>Hang a known weight on the rope.
+<li>Type xxxloadcell point "weight". Include units. (Example:
+eastRopeLoadcell point 5 kg.
+<li>Repeat for a few different weights.
+<li>Type xxxloadcell calibrate again.
+<li>The calibration is now performed with a fit to a straight line.
+<li>The fit and the date/time of fit are now entered into 
+loadcell.dat automatically.
+</ul>
+
+
+<p>Now you are done.
+
+

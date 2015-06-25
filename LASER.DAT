@@ -1,0 +1,49 @@
+VERSION1.00
+// Revisions: 29/03/97 Fist version -- Richard Ford
+//
+// 12/5/97 Pressure cell names moved from filter.dat
+//         (since HWIO now supports shared CB ownership).
+//         See wiring.dat
+//                                            Richard Ford
+//
+// 12/5/97 The Counter Board laser controller bit masks
+//         are no longer used as the mask is now specified
+//         in the wiring.dat file. State masks are given here
+//         for the laser control three bits. Note that the
+//         bit read routine always right shifts the data
+//         so that the states here are all right shifted
+//         compared to the mask control in wiring.dat
+//                                            Richard Ford
+//
+LASER: N2LASER
+	LASERTYPE:  NITROGEN DYE LASER
+	DYELASERNAME: dyeLaser
+	FILTERWHEEL: filterWheelA
+	FILTERWHEEL: filterWheelB
+	PRESSURECELL: N2LaserHiPressureLoadcell
+	PRESSURECELL: N2LaserLowPressureLoadcell
+	RATE: 20.000000                 //re-written laser pulser rate
+	MINGASFLOW: -200.0
+	MINGASPRESSURE: 0.0
+	ABSMINGASFLOW: -300.0
+	ABSMINGASPRESSURE: 0.0
+	NUM_FREQUENCIES: 5
+	LASERSTATUS: 6.000000           //re-written status (see laser.cpp)
+	CONTROL_MASK:     0X0007        //Mask to see the 3 control bits
+	LASEROFF:         0X0007        //   states for remote laser status
+	LASERWARMUP:      0X0006        //     "
+	LASERREADY:       0X0005        //     "
+	LASERRUNNING:     0X0001        //     "
+//      WARMUPMASK:       0X0100        //   masks for remote laser status(0=set)
+//      READYMASK:        0X0200        //     "
+//      RUNNINGMASK:      0X0400        //     "
+//      POWERONMASK:      0X0800        //     "                          (1=set)
+//      POWER_12V:        0X0020        //   masks for remote trigger and power
+//      POWER_40V:        0X0010        //     "
+//      REMOTEUNLOCK:     0X0040        //     "
+//      REMOTETRIGGER:    0X0080        //     "
+//      DYEMOTOR1:        0X8000        //   masks for dye stir motors
+//      DYEMOTOR2:        0X4000        //     "
+//      DYEMOTOR3:        0X2000        //     "
+//      DYEMOTOR4:        0X1000        //     "
+END;

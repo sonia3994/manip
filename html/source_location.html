@@ -1,0 +1,184 @@
+<HTML>
+<HEAD> 
+<TITLE>Source Positioning</TITLE>
+</HEAD>
+<BODY>
+<p align=center>
+<H1>Calibration Source Location</H1>
+<h4> http://www.sno.phy.queensu.ca/private/calibration/manipulator/source_location.html 
+</h4>
+<h4>Updated 2 August 1999</h4>
+This note describes the current information available on positioning
+the calibration source.  While the general information will not change,
+the user should be cautious about specific numbers used.
+
+<h3>Coordinate System</h3>
+  The manipulator positions sources in the detector relative
+to a ficticious <b>global coordinate system</b> which is defined
+as centred on the position that the engineering drawings intended the
+centre of the Acrylic Vessel to hang.  The axes of this coordinate system
+are oriented the same as detector coordinates:  Z in up. Y is 
+"construction north", i.e towards the pipes in the AV chimney.  X is towards
+the control room door.
+
+<p>
+  In fact the AV is currently hanging about 4 cm below the global coordinate
+system origin.  The AV position in global coordinates is measured using
+<b>neck monitors</b> and should be recorded in the data stream.  It 
+only changed during water fill and is now very stable.
+  
+<p>
+  The relative position of the global coordinate system and the
+PSUP is inferred from measurements made by Davis Earle.  These
+measurements will be incorporated later.
+
+<h3>Pivot - Centre Offset</h3>
+<p>
+The part of the calibration source manipulator lowered into the detector
+consists of a carriage and weight assembly below which is attached the
+calibration source (see figure).
+<center>
+<img src="sourcepos.gif">
+</center>
+The manipulator system uses the pivot of the manipulator carriage (the
+point that the ropes are attached to)
+to
+position a source in the detector.  The pivot is used because the distance
+from the pivot to the centre of the source depends on which source is
+used.  When doing calibration runs with the source, the detector operator
+should record in the log book the <b>pivot position</b>.  Sometimes the
+operator also records the location of the centre of the source.  However,
+anybody analyzing data from the sources should be sure that the operator
+recorded the correct position for the centre of the source (there have
+been several instances of using  the wrong value for the <b>pivot-centre</b>
+distance).  <b>The pivot location is the best information available on
+the position of a source</b>.
+</p>
+  
+
+<p>
+Below are the current best numbers for the distance from the
+manipulator pivot to the centre of the calibration sources.
+Various changes in the hardware could result in these numbers
+changing so varify them before using.
+<center>
+<table border=1>
+<tr><td>Source   <td> Pivot-Centre Distance <td> Reference <td> Date
+<tr><td>Laserball <td>  66.4 cm  <td> logbook 2 pg 78  <td> 99/04/28
+<tr><td>N16       <td>  70.97cm  <td> logbook 2 pg 96  <td> 99/05/19
+</table>
+</center>
+</p>
+</body>
+</html>
+
+<h3>Positioning accuracy</h3>
+
+<p>
+  There are several issues regarding the accuracy with which the source
+is positioned.  The certainty with which we locate the source depends
+on the mode of deployment.  The source can be deployed in either
+<b>single axis mode</b> or in <b>three axis mode</b>.
+</p>
+<p>
+  While it is not usually recorded in the log book what the mode
+of deployment for the source is, one can usually infer it from the
+position.  In single axis mode, the source moves along a line directly
+below the gatevalve through which it is deployed.  For three axis
+deployment, the source moves along either the xz or yz plane.  If
+one is looking at the calibration banks in the data stream, single axis
+deployment will only have two axes attached (the central rope and
+umbilical).  Three axis deployment will have four axes attached
+(central rope, umbilical and two side ropes).
+
+
+<h4>Single Axis Deployment</h4>
+<p>
+  In <b>Single Axis Mode</b> the source is lowered straight down into 
+the detector on a <b>central rope</b> and <b>umbilical</b> attached to
+the <b>Umbilical Retrevial Mechanism</b> (URM).  Gravity determines that
+the source always hangs directly below the URM which is centred on a
+gate valve attached to the glovebox (this is not exactly true, see
+below).  The horizontal position of the
+source is thus determined by the position of the gate valve on the
+glovebox.  The position of the gate valves were determined from the
+engineering drawings.  The horizontal alignment of the glovebox and
+gate valve has only been roughly confirmed at the few cm level but
+there are no indications of a gross misalignment.
+<center>
+<table border=1>
+<tr><td>Valve<td>size<td> X(cm) <td> Y(cm)
+<tr><td>1    <td>10 inch <td>   0.000 <td> -21.590 
+<tr><td>2    <td> 6 inch <td>  16.906 <td>  23.495
+<tr><td>3    <td> 4 inch <td> -16.035 <td>  23.495
+</table>
+</center>
+Since January, the sources have been deployed through gatevalve
+3 on the glovebox.  This is the 4 inch gate valve located at 
++y and -x (north west).
+</p>
+ 
+<p>
+  The vertical position of the source is determined by measuring
+the length of rope deployed from the URM.  The positioning accuracy
+has been determined by attaching a footswitch to the manipulator
+and touching the bottom of the AV.  The measured position is consistant
+with independent measurements and drawings to the order of 2cm and
+is reproducable to the order of 1 cm.  
+</p>
+  
+<p>
+  It was noted that the statement that the source hangs directly
+below the gate valve is not quite true.  This is because most of
+the weight of the source is supported by the central rope which
+is attached off centre by approximately 1 cm.  This means that
+a source hangs at a slight angle if it is in single axis mode.
+The amount of the displacement has not been measured but it is on
+the order of 1 to 2 cm at most for the laserball and N16 sources.
+It should also be noted that this offset is not present when the
+source is supported in three axis mode because the side ropes take
+most of the load in a symmetric fashion.
+
+<h4>Three Axis Deployment</h4>
+<p>
+  <b>Three axis deployment</b> is when the side ropes are connected
+to the source.  This then allows the source to be positioned in either
+the XZ plane (if the east and west side ropes are attached) or in
+the YZ plane (if the north and south side ropes are attached).  The source
+does not move in exactly the XZ or YZ plane.  This is because the
+URM and side ropes do not all lie in a plane.  However, the deviation
+from the XZ or YZ plane is small, usually no more than 2 cm and the
+actual position is measured and recorded.
+</p>
+<p>
+  The positioning accuracy of the manipulator in three axis mode
+is still under investigation.  Measurements of the positioning
+accuracy at the bottom of the AV within +/- 2.5 m of the central
+axis indicate an absolute positioning accuracy of better than 2cm.
+The accuracy is expected to be at least this good along the central
+axis with the acception of points near the top of the AV.
+</p>
+<p>
+  For points along the central axis above z=570cm, the manipulator
+positioning alogrithms have problems and points may not be accurate
+to better than 10cm.
+</p>
+<p>
+  For points far off the central axis 
+(far means 2m or more away in the top half of the AV)
+we have not yet determined the
+positioning accuracy.  However, constraints on the rope lengths are
+expected to give an accuracy better than 10 cm.
+</p>
+
+<h4>Controversy with positioning</h4>
+Having said how well we can position a source, there is a controversy.
+Specifically, laserball analysis by Bill Frati shows what appears to
+be a 15cm shift  in the source position after it is first moved to
+a location in the detector.  The data
+show an apparent movement of the source over 20 to 30 seconds with it
+coming to rest at a point different from its intended position.  These
+conclusions are still under investigation but for now the user should
+be cautious of the source position.
+
+

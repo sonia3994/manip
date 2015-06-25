@@ -1,0 +1,15 @@
+centralropeloadcell    polls off
+centralropeencoder     polls off
+eastropeloadcell       polls off
+eastropeencoder        polls off
+westropeloadcell       polls off
+westropeencoder        polls off
+laserumbilical         polls off
+laserumbilicalencoder  polls off
+laserumbilicalloadcell polls off
+northrope polls off
+northropeencoder polls off
+northropeloadcell polls off
+southrope polls off
+southropeencoder polls off
+southropeloadcell polls off

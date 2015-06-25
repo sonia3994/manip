@@ -1,0 +1,133 @@
+VERSION2.00
+
+// central and north encoder slope changed
+// from 0.2392 to 0.2421 - PH 02/07/97
+// 6" port on glovebox
+ENCODER:        centralrope2encoder
+	SLOPE:  0.235476                                // conversion from one digital count to cm (was .2421)
+	POSITION: 299.528900                                 /
+	DATE:   8-18-97        // last calibration date - PH
+END;
+
+
+
+
+// side ropes
+
+ENCODER:  northropeencoder
+	SLOPE:  0.058869          // conversion from one digital count to cm (was .2421, then -0.235476)
+	POSITION: 2325.581543                                /
+	DATE:   2013-10-10    // last calibration date - PH
+END;
+
+ENCODER:  southropeencoder
+	SLOPE:  0.058869          // conversion from one digital count to cm (was .2421, then -0.235476)
+	POSITION: 2330.241699                                /
+	DATE:   2013-10-10    // last calibration date - PH
+END;
+
+
+ENCODER:  eastropeencoder
+	SLOPE:  0.058869          // conversion from one digital count to cm (was .2421, then -0.235476)
+	POSITION: -22762.839844                              /
+	DATE:   2013-10-10    // last calibration date - PH
+END;
+
+ENCODER:  westropeencoder
+	SLOPE:  0.058869          // conversion from one digital count to cm (was .2421, then -0.235476)
+	POSITION: -10598.070312                              /
+	DATE:   2013-10-10    // last calibration date - PH
+END;
+
+
+
+
+
+
+ENCODER:  guiderope3Encoder
+	SLOPE:  0.235476                                // conversion from one digital count to cm
+	POSITION: 121946.132812  // rope length for zero position
+	DATE:   8-18-97        // last calibration date - PH
+END;
+
+
+
+
+
+
+// URM-1
+
+ENCODER: urm1ropeencoder
+	SLOPE:  0.235476                                // conversion from one digital count to cm (was .2421)
+	POSITION: 1598.160034                                /
+	DATE:   8-18-97        // last calibration date - PH
+END;
+
+
+ENCODER: urm1umbilicalencoder
+	SLOPE:  -0.0575819          // conversion from one digital count to cm
+	POSITION: 1962.478027                                 /
+	DATE:   8-18-97        // last calibration date - PH
+END;
+
+
+
+// URM-2
+
+ENCODER: urm2ropeencoder
+	SLOPE:  0.058869          // conversion from one digital count to cm (was .2421, then -0.235476)
+	POSITION: 994.246643                                 /
+	DATE:   2013-10-10    // last calibration date - PH
+END;
+
+
+ENCODER: urm2umbilicalencoder
+	SLOPE:  -0.05805          // conversion from one digital count to cm
+	POSITION: 1540.190430                                 /
+	DATE:   8-18-97        // last calibration date - PH
+END;
+
+
+
+
+// Test Umbilical
+
+ENCODER:        testropeEncoder
+	SLOPE:  0.058869          // conversion from one digital count to cm (was .2421, then -0.235476)
+	POSITION: -10311.335938                              /
+	DATE:   2013-10-10    // last calibration date - PH
+END;
+
+//  -0.06575
+ENCODER:  testUmbilicalEncoder
+	SLOPE:  -0.06164     // conversion from one digital count to cm (was -0.05805)
+	POSITION: 2881.938965                                 /
+	DATE:   8-18-97        // last calibration date - PH
+END;
+
+
+
+
+
+//-----------------------------------------
+// laser
+
+ENCODER: dyeLaserEncoder
+	SLOPE:      0.000248047          // conversion from one digital count to cm ( 256 x 4 x 10 counts == 4000 steps == 1" )
+	POSITION: 11.443400              //
+	DATE:   13-10-22                 // last calibration date
+END;
+
+ENCODER: filterWheelAEncoder
+	SLOPE:      0.703125             // conversion from one digital count to degrees  ( 128 x 4 counts == 400 steps == 360 deg )
+	POSITION: -9337.500000           //
+	DATE:   13-10-22                 // last calibration date
+END;
+
+ENCODER: filterWheelBEncoder
+	SLOPE:       0.703125            // conversion from one digital count to degrees
+	POSITION: -180.703125            //
+	DATE:   00-00-00                 // last calibration date
+END;
+
+

@@ -1,0 +1,347 @@
+VERSION2.01
+
+// Revisions:   02/07/97 PH - added RADIUS
+//                                              02/10/97 PH - added ELASTICITY
+//                                              02/11/97 PH - added SPRING_TENSION, SPRING_STRETCH
+//
+// All AXIS objects in this file are created automatically
+// To stop one from being created, change its type to
+// anything but AXIS.  - PH
+//
+// Vectran 1/16 dry elasticity is 1.836e-5
+
+// The position numbers were updated from the Feb 6/97 survey - PH
+
+xAXIS: centralRope2      //axis0p
+	MOTOR:  centralRope2Motor   //motor0
+	LOADCELL: centralRope2Loadcell  //loadcell0
+	ENCODER:  centralRope2Encoder   //encoder0
+	LENGTH: 1479.207397                              /
+	ENCODER_ERROR: -1.312069                                /
+	ALARM_STATUS: 0                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 0                                            // was 453.0 PH 02/07/97
+	ELASTICITY: 1.598e-5                                     // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 3.0               // minimum acceptable tension (N)
+	MAX_TENSION: 200               // maximum acceptable tension (N)
+	CONTROL_TENSION: 8             // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 180        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 4.0               // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 25.0              // maximum spring rope tension (N)
+	SPRING_STRETCH: 61.0                                     // amount of rope let out when fully stretched (cm)
+	TOP:  16.906  23.495 1600.0                  // (no bottom attachment)
+END;
+
+
+																					 // pulley axis direction
+//  TOP:  -0.353 52.405 1418.391
+//END;
+
+
+
+// side ropes
+
+
+AXIS: northrope      //axis1p
+	MOTOR:  northropemotor    //motor1
+	LOADCELL: northropeloadcell
+	ENCODER:  northropeencoder      //encoder1
+	LENGTH: 2014.631714            // rewritten length
+	ENCODER_ERROR: -0.000251       // rewritten encoder error
+	ALARM_STATUS: 2                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 311                                                          // was 453 PH 02/07/97
+	ELASTICITY: 1.598e-5                                     // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 2.5               // minimum acceptable tension (N)
+	MAX_TENSION: 200               // maximum acceptable tension (N)
+	CONTROL_TENSION: 10            // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 90        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 2.72       // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 19.76      // maximum spring rope tension (N)
+	SPRING_STRETCH: 52.4           // amount of rope let out when fully stretched (cm)
+	RADIUS: 1.3                                                                              // carriage pulley radius
+	OFFSET: 0 3.0 0.0                                                // carriage pulley offset
+	TOP_RADIUS: 0               // top pulley radius
+	PULLEY_AXIS: 1 0 0                                              // pulley axis direction
+	TOP:  0.0 40.005 1422.04
+END;
+
+AXIS: southrope      //axis1p
+	MOTOR:  southropemotor    //motor1
+	LOADCELL: southropeloadcell
+	ENCODER:  southropeencoder      //encoder1
+	STOP_FLAG: 0
+	LOW_FLAG: 1
+	HIGH_FLAG: 2
+	LENGTH: 2019.320068            // rewritten length
+	ENCODER_ERROR: 0.000393        // rewritten encoder error
+	ALARM_STATUS: 2                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 311                                                          // was 453 PH 02/07/97
+	ELASTICITY: 1.598e-5                                     // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 2.5               // minimum acceptable tension (N)
+	MAX_TENSION: 200               // maximum acceptable tension (N)
+	CONTROL_TENSION: 10            // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 90        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 3.15       // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 20.90      // maximum spring rope tension (N)
+	SPRING_STRETCH: 58.0           // amount of rope let out when fully stretched (cm)
+	RADIUS: 1.3                                                                              // carriage pulley radius
+	OFFSET: 0 -3.0 0.0                                                // carriage pulley offset
+	TOP_RADIUS: 0               // top pulley radius
+	PULLEY_AXIS: -1 0 0                                              // pulley axis direction
+	TOP:  0.0 -51.435 1422.04
+END;
+
+
+AXIS: eastRope      //axis1p
+	MOTOR:  eastRopemotor    //motor1
+	LOADCELL: eastRopeLoadcell
+	ENCODER:  eastRopeEncoder      //encoder1
+	STOP_FLAG: 0
+	LENGTH: -23079.492188          // rewritten length
+	ENCODER_ERROR: -21681.306641   // rewritten encoder error
+	ALARM_STATUS: 2                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 311                                                          // was 453 PH 02/07/97
+	ELASTICITY: 1.598e-5           // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 2               // minimum acceptable tension (N)
+	MAX_TENSION: 240               // maximum acceptable tension (N)
+	CONTROL_TENSION: 6             // normal control tension (N)
+	MIN_CONTROL_TENSION: 2         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 240        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 1.0       // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 22     // maximum spring rope tension (N)
+	SPRING_STRETCH: 54           // amount of rope let out when fully stretched (cm)
+	RADIUS: 1.3                                                                              // carriage pulley radius
+	OFFSET: 3.0 0.0 0.0            // carriage pulley offset
+	TOP_RADIUS: 0                  // top pulley radius
+	PULLEY_AXIS: 0 -1 0            // pulley axis direction
+	TOP:  53.34 1.905 1422.04
+END;
+
+AXIS: westRope      //axis1p
+	MOTOR:  westRopemotor    //motor1
+	LOADCELL: westRopeLoadcell
+	ENCODER:  westRopeEncoder      //encoder1
+	LENGTH: -10894.254883          // rewritten length
+	ENCODER_ERROR: -1953.100830    // rewritten encoder error
+	ALARM_STATUS: 2                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 311                                                          // was 453 PH 02/07/97
+	ELASTICITY: 1.598e-5           // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 3               // minimum acceptable tension (N)
+	MAX_TENSION: 200               // maximum acceptable tension (N)
+	CONTROL_TENSION: 8            // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 90        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION:  2.67      // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 23.11      // maximum spring rope tension (N)
+	SPRING_STRETCH: 63.9           // amount of rope let out when fully stretched (cm)
+	RADIUS: 1.3                                                                              // carriage pulley radius
+	OFFSET: -3.0 0.0 0.0           // carriage pulley offset
+	TOP_RADIUS: 0                  // top pulley radius
+	PULLEY_AXIS: 0 1 0             // pulley axis direction
+	TOP:  -53.34 1.905 1422.04
+END;
+
+
+
+
+
+
+
+
+
+xAXIS: guiderope3   //axis2p
+	MOTOR:  guiderope3Motor     //motor2
+	LOADCELL: guiderope3Loadcell   //loadcell2
+	ENCODER:  guiderope3Encoder    //encoder2
+	LENGTH: 122026.382812          // rewritten length
+	ENCODER_ERROR: 631.508789                               /
+	ALARM_STATUS: 0                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 110                                  // was 453.0 PH 02/07/97
+	ELASTICITY: 1.598e-5                                     // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 2.5               // minimum acceptable tension (N)
+	MAX_TENSION: 100               // maximum acceptable tension (N)
+	CONTROL_TENSION: 10            // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 90        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 3.0        // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 23.0       // maximum spring rope tension (N)
+	SPRING_STRETCH: 54.8                                     // amount of rope let out when fully stretched (cm)
+	RADIUS: 1.3                                                                              // carriage pulley radius
+	OFFSET: 0. -3.0 0.0                                              // carriage pulley offset
+	TOP_RADIUS: 0               // top pulley radius
+	PULLEY_AXIS: 1 0 0                                               // pulley axis direction
+	TOP:  -0.321 -53.681 1418.496
+END;
+
+
+// urm1
+
+
+AXIS: urm1rope      //axis0p
+	MOTOR:  urm1RopeMotor   //motor0
+	LOADCELL: urm1RopeLoadcell  //loadcell0
+	ENCODER:  urm1RopeEncoder   //encoder0
+	LENGTH: 1598.488281                              /
+	ENCODER_ERROR: 0.001641                                 /
+	ALARM_STATUS: 2                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 0                                            // was 453.0 PH 02/07/97
+	ELASTICITY: 1.598e-5                                     // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 0.01               // minimum acceptable tension (N)
+	MAX_TENSION: 200               // maximum acceptable tension (N)
+	CONTROL_TENSION: 5             // normal control tension (N)
+	MIN_CONTROL_TENSION: 4         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 90        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 4.0               // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 25.0              // maximum spring rope tension (N)
+	SPRING_STRETCH: 61.0                                     // amount of rope let out when fully stretched (cm)
+	TOP:  0.000 -21.590 1600.0                  // (no bottom attachment)
+END;
+
+
+AXIS: urm1Umbilical Umbilical     // umbilical axis object
+	MOTOR:  urm1UmbilicalMotor      //motor2
+	LOADCELL: urm1UmbilicalLoadcell //loadcell2
+	ENCODER: urm1UmbilicalEncoder
+	LENGTH: 1448.008057                  // rewritten length
+	ENCODER_ERROR: 0.000000                                   /
+	ALARM_STATUS: 0                           // rewritten alarm status
+	ALARM_ACTION: 2                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 250.000000      // high tension alarm setting (N)
+	DEADLENGTH: 514.47                                       // was 453.0 PH 02/07/97
+	ELASTICITY: 0
+	MIN_TENSION: -10.0             // minimum acceptable tension (N)
+	MAX_TENSION: 100               // maximum acceptable tension (N)
+	CONTROL_TENSION: 10            // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 90        // maximum allowed control tension (N)
+	TOP:  0.0 0.0 1600.0                  // (no bottom attachment)
+	LINEAR_DENSITY: 0
+	CROSS_SECTION: 0
+	SLACK: 10.000000               // slack in cm
+	INDEX_FILE:  ../catenary/a_index.dat
+END;
+
+
+// urm2
+
+xAXIS: urm2rope      //axis0p
+	MOTOR:  urm2ropemotor   //motor0
+	LOADCELL: urm2ropeLoadcell  //loadcell0
+	ENCODER:  urm2ropeEncoder   //encoder0
+	LENGTH: 992.658203                               /
+	ENCODER_ERROR: -3.505162                                /
+	DEADLENGTH: 0                                            // was 453.0 PH 02/07/97
+	ELASTICITY: 1.598e-5                                     // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 3.0               // minimum acceptable tension (N)
+	MAX_TENSION: 200               // maximum acceptable tension (N)
+	CONTROL_TENSION: 8             // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 160        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 5.36              // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 26.86             // maximum spring rope tension (N)
+	SPRING_STRETCH: 66.65                 // amount of rope let out when fully stretched (cm)
+	TOP:  -16.035 23.495 1600.0           // (no bottom attachment)
+END;
+
+																					 // pulley axis direction
+
+xAXIS: urm2umbilical umbilical     // umbilical axis object
+	MOTOR:  urm2umbilicalmotor      //motor2
+	LOADCELL: urm2umbilicalloadcell //loadcell2
+	ENCODER: urm2umbilicalencoder
+	LENGTH: 1025.720459            // rewritten length
+	ENCODER_ERROR: 13.818782                                  /
+	DEADLENGTH: 514.47                                       // was 453.0 PH 02/07/97
+	ELASTICITY: 0
+	MIN_TENSION: -10.0             // minimum acceptable tension (N)
+	MAX_TENSION: 100               // maximum acceptable tension (N)
+	CONTROL_TENSION: 10            // normal control tension (N)
+	MIN_CONTROL_TENSION: 5         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 100       // maximum allowed control tension (N)
+	TOP:  -16.035 23.495 1600.0                   // (no bottom attachment)
+	LINEAR_DENSITY: 0
+	CROSS_SECTION: 0
+	SLACK: 40.000000               // slack in cm
+	INDEX_FILE:  C:\catenary\full\a_index.dat
+END;
+
+
+//----------------------------------------------
+// axes for testing at Queen's
+
+xAXIS: testrope      //axis0p
+	MOTOR:  testropeMotor   //motor0
+	LOADCELL: testropeLoadcell  //loadcell0
+	ENCODER:  testropeEncoder   //encoder0
+	LENGTH: -10316.829102                            /
+	ENCODER_ERROR: -826.147827                              /
+	ALARM_STATUS: 0                           // rewritten alarm status
+	ALARM_ACTION: 0                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 200.000000      // high tension alarm setting (N)
+	DEADLENGTH: 0                                            // was 453.0 PH 02/07/97
+	ELASTICITY: 1.598e-5                                     // dry VECTRAN 1/16 inch rope elasticity (1/N)
+	NON_LINEAR_ELASTICITY: 1.310e-4
+	MIN_TENSION: 2.0               // minimum acceptable tension (N)
+	MAX_TENSION: 140               // maximum acceptable tension (N)
+	CONTROL_TENSION: 5             // normal control tension (N)
+	MIN_CONTROL_TENSION: 3.0         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 120        // maximum allowed control tension (N)
+	MIN_SPRING_TENSION: 0.5               // minimum spring rope tension (N)
+	MAX_SPRING_TENSION: 24.0               // maximum spring rope tension (N)
+	SPRING_STRETCH: 64.0                                     // amount of rope let out when fully stretched (cm)
+	TOP:  9.0 -25.0 1600.0                  // (no bottom attachment)
+END;
+
+
+xAXIS: testUmbilical Umbilical     // umbilical axis object
+	MOTOR:  testUmbilicalMotor      //motor2
+	LOADCELL: testUmbilicalLoadcell //loadcell2
+	ENCODER: testUmbilicalEncoder
+	LENGTH: 2367.468994                  // rewritten length
+	ENCODER_ERROR: -0.409908                                  /
+	ALARM_STATUS: 0.000000                    // rewritten alarm status
+	ALARM_ACTION: 0                // alarm action (0=none, 1=warn, 2=stop)
+	ALARM_TENSION: 150              // high tension alarm setting (N)
+	DEADLENGTH: 514.47                                       // was 453.0 PH 02/07/97
+	ELASTICITY: 0
+	MIN_TENSION: -20.0             // minimum acceptable tension (N)
+	MAX_TENSION: 150               // maximum acceptable tension (N)
+	CONTROL_TENSION: 10            // normal control tension (N)
+	MIN_CONTROL_TENSION: 1         // minimum allowed control tension (N)
+	MAX_CONTROL_TENSION: 90        // maximum allowed control tension (N)
+	TOP:  0.0 0.0 1600.0                  // (no bottom attachment)
+	LINEAR_DENSITY: 0
+	CROSS_SECTION: 0
+	SLACK: 20.000000               // slack in cm
+	INDEX_FILE:  C:\phil\catenary\b_data\b_index.dat
+END;
+
+
+
+
+
+

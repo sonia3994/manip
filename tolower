@@ -1,0 +1,8 @@
+#!/usr/bin/perl -w
+use strict;
+@ARGV or die "Syntax: tolower FILE [FILE...]\n";
+foreach (@ARGV) {
+print "$_\n";
+rename $_, lc $_;
+}
+

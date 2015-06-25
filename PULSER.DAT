@@ -1,0 +1,15 @@
+VERSION1.00
+
+PULSER:  laserTriggerPulser
+	SOURCE:         13                                       // source oscillator channel
+	MIN_RATE:       0.1
+	MAX_RATE:       50
+	RATE: 20.000000                 // re-written rate
+END;
+
+PULSER:  ledPulser
+	SOURCE:       13
+	MIN_RATE:     0.1
+	MAX_RATE:     500
+	RATE: 10.000000                      // re-written rate
+END;

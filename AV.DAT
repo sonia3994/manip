@@ -1,0 +1,71 @@
+VERSION1.00
+
+AV: AV
+	CENTER: -1.7451074 -1.1516254 -5.3956299                 //
+	YPR: 0.075734288 -0.11734473 0.051509771                 //
+	ROPE0_LENGTH: 74.2                                      //
+	ROPE1_LENGTH: 56.9                   //
+	ROPE2_LENGTH: 72.8                   //
+	ROPE3_LENGTH: 75.4                   //
+	ROPE4_LENGTH: 73                     //
+	ROPE5_LENGTH: 75.1                   //
+	ROPE6_LENGTH: 73.4                   //
+	NECK_RING_STATIC_POSITION: 0 0 583.856    // fraser's best number
+	NECK_RING_RADIUS: 50.8 CM                // was 42.0 CM
+	NECK_RING_ROC: 2.54 CM
+	NECK_RADIUS: 55 CM
+	NECK_LENGTH: 1500 CM
+	VESSEL_RADIUS: 6.1 M
+	VESSEL_THICKNESS: 5.5 CM
+	TUBE_RADIUS: 851 CM
+	D2O_LEVEL: -221              // rewritten elevation of D2O surface
+	H2O_LEVEL: 1340              // rewritten elevation of H2O surface
+	HEIGHT_TOP_OF_NECK: 1285.24 CM
+	THICKNESS_OF_SS_FLANGE: 1.50622 CM
+	THICKNESS_OF_TOP_BLOCKS: 1.4605
+	TOP_BLOCK_POS_SURVEY_1: -17.015768 -86.505592 1288.350708
+	TOP_BLOCK_POS_SURVEY_2: -64.930199 58.954628 1288.147705
+	TOP_BLOCK_POS_SURVEY_3: 84.941360 27.408747 1288.122681
+	TOP_BLOCK_POS_VESSEL_1: -18.015768 -86.505592 1285.24
+	TOP_BLOCK_POS_VESSEL_2: -65.930199 58.954628  1285.24
+	TOP_BLOCK_POS_VESSEL_3:  83.941360  27.408747 1285.24
+	DELTA_1:  .0 .0 0               // X,Y ONLY       "
+	DELTA_2:  .0 .0 0               // X,Y ONLY       "
+	DELTA_3:  .0 .0 0               // X,Y ONLY       "
+	DELTA_4:  .0 .0 0               // X,Y ONLY       "
+	DELTA_5:  .0 .0 0               // X,Y ONLY       "
+	DELTA_6:  .0 .0 0               // X,Y ONLY       "
+	DELTA_7:  .0 .0 0               // X,Y ONLY       "
+	BLOCK_LABEL: north
+	POSITION: 0 589.633 100.18
+	RADIUS: 0
+	OFFSET: 0
+	BLOCK_LABEL: south
+	POSITION: 0 -589.633 100.18
+	RADIUS: 0
+	OFFSET: 0
+	BLOCK_LABEL: east
+	POSITION: 589.633 0 100.18
+	RADIUS: 0.635
+	OFFSET: 1.826
+	BLOCK_LABEL: west
+	POSITION: -589.633 0 100.18
+	RADIUS: 0.635
+	OFFSET: 1.826
+	SENSEROPE:  srope1
+	SENSEROPE:  srope2
+	SENSEROPE:  srope3
+	SENSEROPE:  srope4
+	SENSEROPE:  srope5
+	SENSEROPE:  srope6
+	SENSEROPE:  srope7
+	SENSING:    OFF
+	POLL_TECHNIQUE: 2  			// 1 = old technique; 2 = mat inv; 3 = mrqfit
+	SKIPPED_ROPE:   2      // only used for some techniques: ropes 1 to 7
+	CHISQUARE_LIMIT: 5.0
+	ROPE_DIFF_LIMIT: 2.0
+	POSITION_AGREEMENT: 1.0E-4
+	CONSISTENCY_AGREEMENT: 2.0
+	ORTHOG_CHECK: 0.1
+END:
+

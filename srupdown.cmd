@@ -1,0 +1,14 @@
+eastrope down 100
+eastrope up 100
+eastrope down 100
+eastrope up 100
+eastrope down 100
+eastrope up 100
+eastrope down 100
+eastrope up 100
+eastrope down 100
+eastrope up 100
+eastrope down 100
+eastrope up 100
+eastrope down 100
+eastrope up 100
